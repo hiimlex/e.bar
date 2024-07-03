@@ -1,0 +1,44 @@
+@import "../../base.scss";
+
+.products {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-4;
+	width: 100%;
+
+	&-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&-filters {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.chips {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+
+		gap: $unit-3;
+	}
+
+	.search {
+		font-size: 16px;
+		font-weight: 500;
+	}
+
+	&-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
+		justify-content: space-between;
+		align-content: flex-start;
+		gap: $unit-4;
+	}
+}

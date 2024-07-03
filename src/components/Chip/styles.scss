@@ -1,0 +1,39 @@
+@import "../../base.scss";
+
+.chip {
+	padding: 12px 16px;
+	color: $color-text-placeholder;
+	background: $color-gray-1;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 600;
+	width: fit-content;
+
+	transition: $transition-all;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&-primary {
+		&:hover {
+			background: rgba($color-primary, 0.6);
+		}
+
+		&.active {
+			background: $color-primary;
+			color: $color-text-dark;
+		}
+	}
+
+	&-secondary {
+		&:hover {
+			background: rgba($color-secondary, 0.6);
+		}
+
+		&.active {
+			background: $color-secondary;
+			color: $color-white;
+		}
+	}
+}

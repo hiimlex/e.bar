@@ -1,3 +1,2 @@
-import { createStoreHook } from "react-redux";
-
-const store = createStoreHook();
+export * from "./slicers";
+export * from "./Store";

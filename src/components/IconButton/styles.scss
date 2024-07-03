@@ -1,0 +1,85 @@
+@import "../../base.scss";
+
+.iconbutton {
+	border: none;
+	outline: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+
+	&-sm {
+		width: 24px;
+		height: 24px;
+	}
+
+	&-md {
+		width: 30px;
+		height: 30px;
+	}
+
+	&-lg {
+		width: 36px;
+		height: 36px;
+	}
+
+	&-outlined {
+		&.iconbutton-primary {
+			background-color: transparent;
+			border: 1px solid $color-primary;
+			color: $color-primary;
+
+			&:hover {
+				background-color: rgba($color-primary, 0.2);
+			}
+		}
+
+		&.iconbutton-secondary {
+			background-color: rgba($color-secondary, 0.2);
+			border: 1px solid $color-secondary;
+			color: $color-secondary;
+
+			&:hover {
+				background-color: rgba($color-secondary, 0.3);
+			}
+		}
+	}
+
+	&-filled {
+		&.iconbutton-primary {
+			background-color: $color-primary;
+			color: $color-text-dark;
+
+			&:hover {
+				background-color: darken($color-primary, 10%);
+			}
+		}
+
+		&.iconbutton-secondary {
+			background-color: $color-secondary;
+			border-color: $color-secondary;
+			color: $color-white;
+
+			&:hover {
+				background-color: darken($color-secondary, 10%);
+			}
+		}
+
+		&.iconbutton-default {
+			background-color: $color-text-placeholder;
+			color: $color-white;
+
+			&:hover {
+				background-color: darken($color-text-placeholder, 10%);
+			}
+		}
+	}
+
+	transition: $transition-all;
+
+	&:hover {
+		cursor: pointer;
+		scale: 1.1;
+	}
+}

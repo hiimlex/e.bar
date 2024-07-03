@@ -1,0 +1,24 @@
+@import "../../base.scss";
+
+.input {
+	outline: none;
+	border: none;
+	border-bottom: 1px solid $color-gray-3;
+	padding: 8px 12px;
+	padding-bottom: 12px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-text-darker;
+
+	&-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&-label {
+		font-size: 13px;
+		font-weight: 500;
+		font-weight: 600;
+		color: $color-text-placeholder;
+	}
+}

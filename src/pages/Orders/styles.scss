@@ -1,0 +1,46 @@
+@import "../../base.scss";
+
+.orders {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-4;
+	width: 100%;
+
+	&-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&-filters {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&-actions {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: $unit-3;
+	}
+
+	.chips {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+
+		gap: $unit-3;
+	}
+
+	&-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(340px, 360px));
+		justify-content: space-between;
+		align-content: flex-start;
+		gap: $unit-4;
+	}
+}

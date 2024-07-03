@@ -1,0 +1,24 @@
+@import "../../base.scss";
+
+.order-by {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: $unit-1;
+	font-weight: 500;
+
+	padding: 6px;
+	width: fit-content;
+
+	&:hover {
+		cursor: pointer;
+		scale: 1.05;
+	}
+
+	&-label {
+		font-size: 16px;
+		color: $color-text-placeholder;
+	}
+
+	transition: $transition-all;
+}

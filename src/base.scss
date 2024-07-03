@@ -1,1 +1,49 @@
-$color-primary: #ff0000;
+$color-primary: #f7e349;
+$color-primary-hover: #FAE20B;
+$color-secondary: #201f20;
+$color-background: #FCFCFC;
+$color-white: #fff;
+
+$color-gray-1: #F4F4F4;
+$color-gray-2: #E5E5E5;
+$color-gray-3: #AFAFAF;
+
+$color-success: #39C87B;
+$color-danger: #FF4A4A;
+
+
+$color-text-placeholder: #505050;
+$color-text-dark: #313131;
+$color-text-darker:#201f20;
+
+$shadow-soft: 0 2px 5px 1px rgba(#313131, 0.1);
+$shadow-strong: 0 2px 5px 3px rgba(#313131, 0.2);
+$transition-all: all 0.1s ease-in-out;
+
+$unit-1: 6px;
+$unit-2: 12px;
+$unit-3: 18px;
+$unit-4: 24px;
+$unit-5: 30px;
+
+@keyframes flip {
+	0% {
+		transform: rotateX(0deg);
+	}
+	100% {
+		transform: rotateX(180deg);
+	}
+}
+
+@keyframes flip-reverse {
+	0% {
+		transform: rotateX(0deg);
+	}
+	100% {
+		transform: rotateX(180deg);
+	}
+}
+
+
+$animation-flip: flip;
+$animation-flip-reverse: flip-reverse;

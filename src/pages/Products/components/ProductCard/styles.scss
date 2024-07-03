@@ -1,0 +1,86 @@
+@import "../../../../base.scss";
+
+.product {
+	&-card {
+		min-width: 220px;
+		width: 100%;
+		background: $color-gray-1;
+		box-shadow: $shadow-soft;
+
+		display: flex;
+		flex-direction: column;
+		border-radius: $unit-3;
+		overflow: hidden;
+	}
+
+	&-image {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 18px;
+		background: $color-primary;
+		position: relative;
+
+		img {
+			height: 100px;
+			width: auto;
+			object-fit: cover;
+		}
+	}
+
+	&-info {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-3;
+		padding: $unit-3;
+
+		&-name {
+			font-size: 18px;
+			font-weight: 700;
+			color: $color-text-dark;
+		}
+		&-category {
+			font-size: 14px;
+			font-weight: 500;
+			color: $color-secondary;
+		}
+		&-price {
+			font-size: 16px;
+			font-weight: 700;
+			color: $color-text-darker;
+		}
+		&-stock {
+			font-size: 12px;
+			font-weight: 600;
+
+			&-wrapper {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				gap: $unit-2;
+				color: $color-text-placeholder;
+			}
+		}
+		&-row {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		&-col {
+			display: flex;
+			flex-direction: column;
+			gap: $unit-1;
+		}
+	}
+
+	&-edit {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+}

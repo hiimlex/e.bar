@@ -1,0 +1,18 @@
+@import "../../base.scss";
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+
+	&-content {
+		max-width: 1200px;
+		padding: $unit-4;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+}
