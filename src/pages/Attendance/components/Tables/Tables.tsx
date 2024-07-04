@@ -1,5 +1,5 @@
 import { Plus } from "react-feather";
-import { Button, Input, OrderBy } from "../../../../components";
+import { Button, OrderBy } from "../../../../components";
 import "./styles.scss";
 
 interface TablesProps {}
@@ -24,7 +24,9 @@ const Tables: React.FC<TablesProps> = () => {
 							<div className="chip-status chip-status-primary">{"OCUPADA"}</div>
 						</div>
 						<span className="table-info-bartender"></span>
-						<Button className="fill-row" theme="danger">DESATIVAR</Button>
+						<Button className="fill-row" theme="danger">
+							DESATIVAR
+						</Button>
 					</div>
 				))}
 			</div>

@@ -3,14 +3,15 @@ import { Header } from "../Header";
 import "./styles.scss";
 import { ScrollToTop } from "../ScrollToTop";
 import { useBreakpoint } from "../../hooks";
-import { WaiterHeader } from "../WaiterHeader";
-interface MainContainerProps extends PropsWithChildren {
+import { WaiterHeader, WaiterHeaderProps } from "../WaiterHeader";
+interface MainContainerProps extends PropsWithChildren, WaiterHeaderProps {
 	showAdminHeader?: boolean;
 }
 
 const MainContainer: React.FC<MainContainerProps> = ({
 	showAdminHeader,
 	children,
+	...waiterHeaderProps
 }) => {
 	const { breakpoint } = useBreakpoint();
 
@@ -29,7 +30,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
 			)}
 			{isWaiter && (
 				<>
-					{<WaiterHeader />}
+					{<WaiterHeader {...waiterHeaderProps} />}
 					<main className={`wrapper-content wrapper-content-${breakpoint}`}>
 						{children}
 					</main>

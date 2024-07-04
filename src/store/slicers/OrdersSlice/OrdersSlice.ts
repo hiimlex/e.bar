@@ -4,13 +4,7 @@ import {
 	SliceSelectors,
 	createSlice,
 } from "@reduxjs/toolkit";
-import {
-	OrdersFilter,
-	OrdersState,
-	ProductCategoriesFilters,
-	ProductsFilter,
-	ProductsState,
-} from "../../../@types";
+import { OrdersFilter, OrdersState } from "../../../@types";
 import { GenericAction } from "../../Store";
 
 const OrdersSlicer = createSlice<
@@ -39,4 +33,4 @@ export const OrdersActions = OrdersSlicer.actions as {
 
 const OrdersReducer = OrdersSlicer.reducer;
 
-export { OrdersSlicer, OrdersReducer };
+export { OrdersReducer, OrdersSlicer };

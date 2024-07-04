@@ -1,12 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { MainContainer, OrderBy } from "../../components";
 import { SalesWaitersOrder } from "../Sales";
 import "./styles.scss";
+import { Pages } from "../../@types";
 
 interface WaiterOrdersPageProps {}
 
 const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
+	const navigate = useNavigate();
+
+	const goBack = () => {
+		navigate(Pages.WaiterHome);
+	};
+
 	return (
-		<MainContainer>
+		<MainContainer waiterHeaderGoBack waiterHeaderOnBack={goBack}>
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>

@@ -1,5 +1,4 @@
 import { Check } from "react-feather";
-import { Button } from "../../../../components";
 import "./styles.scss";
 
 interface OrderCardProps {}

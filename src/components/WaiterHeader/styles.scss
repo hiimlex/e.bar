@@ -7,4 +7,36 @@
 	justify-content: space-between;
 	width: 100%;
 	padding-bottom: $unit-2;
+	padding: 0 $unit-4;
+
+	&-button {
+		border: none;
+		background: transparent;
+		outline: none;
+		padding: 4px;
+		border-radius: 6px;
+
+		transition: $transition-all;
+
+		&:hover {
+			cursor: pointer;
+			scale: $scale-1;
+		}
+	}
+
+	&-action {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		width: fit-content;
+
+		&:first-child {
+			justify-content: flex-start;
+		}
+
+		&:last-child {
+			justify-content: flex-end;
+		}
+	}
 }

@@ -34,7 +34,10 @@
 		font-size: 18px;
 		font-weight: 600;
 		color: $color-text-placeholder;
-		text-align: right;
+
+		&-value {
+			text-align: right;
+		}
 	}
 
 	&-row {
@@ -65,6 +68,12 @@
 	}
 
 	&-expanded-content {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	&-group {
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
@@ -109,8 +118,14 @@
 }
 
 @media (max-width: 768px) {
-	.sl-order-id {
-		font-size: 18px;
+	.sl-order {
+		&-id {
+			font-size: 18px;
+		}
+
+		&-payment-method {
+			font-size: 16px;
+		}
 	}
 
 	.details {

@@ -15,7 +15,6 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ id }) => {
 			</div>
 			<span className="sl-order-id">Pedido N° {id}</span>
 
-			<div className="sl-order-row"></div>
 			{expand && (
 				<>
 					<div className="details">
@@ -50,8 +49,8 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ id }) => {
 
 				{expand && (
 					<div className="sl-order-grid sl-order-payment-method">
-						<span>Forma de pagamento</span>
-						<span>PIX</span>
+						<span className="sl-order-payment-method-label">Forma de pagamento</span>
+						<span className="sl-order-payment-method-value">PIX</span>
 					</div>
 				)}
 			</div>
