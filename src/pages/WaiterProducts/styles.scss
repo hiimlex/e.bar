@@ -1,0 +1,46 @@
+@import "../../base.scss";
+
+.w-products {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: fit-content;
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-4;
+	}
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+
+		&-scrolled {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+		}
+	}
+
+	&-filters {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: $unit-2;
+	}
+
+	&-subtitle {
+		font-size: 20px;
+		font-weight: 600;
+		color: $color-text-darker;
+	}
+
+	&-list {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-3;
+		height: fit-content;
+	}
+}

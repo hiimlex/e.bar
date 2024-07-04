@@ -8,6 +8,7 @@ import {
 	SalesPage,
 	WaiterHomePage,
 	WaiterOrdersPage,
+	WaiterProductsPage,
 } from "../pages";
 
 const router = createBrowserRouter([
@@ -38,7 +39,11 @@ const router = createBrowserRouter([
 	{
 		path: Pages.WaiterOrders,
 		element: <WaiterOrdersPage />,
-	}
+	},
+	{
+		path: Pages.WaiterProducts,
+		element: <WaiterProductsPage />,
+	},
 ]);
 
 export default router;

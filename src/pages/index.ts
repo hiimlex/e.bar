@@ -5,3 +5,4 @@ export * from "./Orders";
 export * from "./Attendance";
 export * from "./WaiterHome";
 export * from "./WaiterOrders";
+export * from "./WaiterProducts";
