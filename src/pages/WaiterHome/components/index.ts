@@ -1,2 +1,2 @@
-export * from "./WaiterOrders";
+export * from "./WaiterOrdersCard";
 export * from "./WaiterProductCard";

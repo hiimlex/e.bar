@@ -4,7 +4,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	height: 100%;
+	height: fit-content;
 
 	&-content {
 		display: flex;
@@ -41,5 +41,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: $unit-3;
+		height: fit-content;
 	}
 }

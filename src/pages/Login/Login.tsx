@@ -15,7 +15,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
 
 	const onLogin = async () => {
-		// navigation(Pages.Products);
+		// navigate(Pages.Orders);
 		navigate(Pages.WaiterHome);
 	};
 

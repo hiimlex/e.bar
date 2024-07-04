@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Pages, ProductCategoriesArray } from "../../@types";
 import { Button, Chip, MainContainer } from "../../components";
 import { AppDispatch, ProductsActions, RootState } from "../../store";
-import { WaiterOrders, WaiterProductCard } from "./components";
+import { WaiterOrdersCard, WaiterProductCard } from "./components";
 import "./styles.scss";
 
 interface WaiterHomePageProps {}
@@ -40,7 +40,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						</div>
 						<div className="w-home-grid">
 							{Array.from({ length: 4 }).map((_, index) => (
-								<WaiterOrders id={index} key={index} />
+								<WaiterOrdersCard id={index} key={index} />
 							))}
 						</div>
 					</div>

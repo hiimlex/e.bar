@@ -1,10 +1,10 @@
 import "./styles.scss";
-interface WaiterOrders {
+interface WaiterOrdersCardProps {
 	id: number | string;
 	onClick?: () => void;
 }
 
-const WaiterOrders: React.FC<WaiterOrders> = ({ id, onClick }) => {
+const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({ id, onClick }) => {
 	return (
 		<div className="w-order">
 			<div className="w-order-status">
@@ -31,4 +31,4 @@ const WaiterOrders: React.FC<WaiterOrders> = ({ id, onClick }) => {
 	);
 };
 
-export { WaiterOrders };
+export { WaiterOrdersCard };
