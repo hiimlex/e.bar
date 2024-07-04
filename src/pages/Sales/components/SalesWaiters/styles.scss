@@ -1,0 +1,155 @@
+@import "../../../../base.scss";
+
+.sales-waiters {
+	display: flex;
+	flex-direction: row;
+
+	gap: $unit-2;
+	height: 100%;
+	width: 100%;
+	padding-bottom: 12px;
+	overflow: hidden;
+	overflow-x: auto;
+
+	position: relative;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	&-labels {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		font-size: 16px;
+		font-weight: 500;
+		color: $color-gray-3;
+
+		min-height: 420px;
+		max-height: 80vh;
+		transition: $transition-all;
+
+		white-space: nowrap;
+
+		&-sticky {
+			animation: $animation-fade-in 0.2s ease-in-out;
+
+			position: sticky;
+			left: 0;
+			z-index: 2;
+			background: $color-background;
+			padding-right: $unit-2;
+			box-shadow: 2px -2px 3px 1px rgba(#333, 0.1);
+		}
+	}
+
+	&-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		flex: 1;
+		min-height: 420px;
+		max-height: 80vh;
+	}
+
+	&-header {
+		min-height: 60px;
+		height: 60px;
+		background: $color-gray-1;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: $unit-2 $unit-4;
+
+		&-title {
+			font-size: 20px;
+			font-weight: 600;
+			color: $color-text-dark;
+		}
+	}
+
+	&-grid {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: $unit-1;
+		padding: $unit-2 $unit-4;
+
+		&-item {
+			min-width: 400px;
+			width: 400px;
+			max-width: 400px;
+			display: flex;
+		}
+
+		&-list {
+			display: flex;
+			flex-direction: column;
+			gap: $unit-2;
+			padding: $unit-2;
+			height: fit-content;
+			min-height: 100%;
+		}
+	}
+
+	&-content {
+		display: flex;
+		overflow: auto;
+		overflow-x: hidden;
+
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+
+		&-empty {
+			position: sticky;
+			inset: 0;
+			margin: 0 auto;
+			z-index: 2;
+		}
+	}
+
+	&-footer {
+		min-height: 60px;
+		height: 60px;
+		background: $color-gray-1;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: $unit-2 $unit-2;
+
+		&-title {
+			font-size: 20px;
+			font-weight: bold;
+			color: $color-text-darker;
+		}
+	}
+
+	.dashline-vertical {
+		min-height: 100%;
+		position: sticky;
+		top: 0;
+		width: 1px;
+		background: $color-gray-2;
+	}
+
+	.scroll-to-left {
+		position: sticky;
+		z-index: 2;
+		right: 24px;
+
+		top: 0;
+		bottom: 0;
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+}
+
+.no-background {
+	background: none;
+}
+
+.no-padding {
+	padding: 0;
+}

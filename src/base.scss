@@ -4,8 +4,8 @@ $color-secondary: #201f20;
 $color-background: #FCFCFC;
 $color-white: #fff;
 
-$color-gray-1: #F4F4F4;
-$color-gray-2: #E5E5E5;
+$color-gray-1: #f0f0f0;
+$color-gray-2: #d8d8d8;
 $color-gray-3: #AFAFAF;
 
 $color-success: #39C87B;
@@ -13,10 +13,11 @@ $color-danger: #FF4A4A;
 
 
 $color-text-placeholder: #505050;
-$color-text-dark: #313131;
-$color-text-darker:#201f20;
+$color-text-dark: #414141;
+$color-text-darker:#212121;
 
-$shadow-soft: 0 2px 5px 1px rgba(#313131, 0.1);
+$shadow-soft: 0 2px 3px 1px rgba(#313131, 0.1);
+$shadow-normal: 0 2px 5px 1px rgba(#313131, 0.15);
 $shadow-strong: 0 2px 5px 3px rgba(#313131, 0.2);
 $transition-all: all 0.1s ease-in-out;
 
@@ -25,6 +26,10 @@ $unit-2: 12px;
 $unit-3: 18px;
 $unit-4: 24px;
 $unit-5: 30px;
+$unit-6: 36px;
+
+$scale-1: 1.05;
+$scale-2: 1.1;
 
 @keyframes flip {
 	0% {
@@ -44,6 +49,16 @@ $unit-5: 30px;
 	}
 }
 
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 
 $animation-flip: flip;
 $animation-flip-reverse: flip-reverse;
+$animation-fade-in: fade-in;

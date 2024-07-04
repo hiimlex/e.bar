@@ -1,1 +1,2 @@
-export {default as SalesPage} from "./Sales";
+export { default as SalesPage } from "./Sales";
+export * from "./components";

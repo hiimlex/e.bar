@@ -68,7 +68,7 @@
 			&-grid {
 				width: 100%;
 				display: grid;
-				grid-template-columns: 40px 1fr minmax(40px, 80px);
+				grid-template-columns: 40px 1fr minmax(40px, 100px);
 				gap: $unit-2;
 				align-items: flex-start;
 			}
@@ -111,6 +111,7 @@
 				&-value {
 				}
 			}
+			
 			&-payment-method {
 				display: flex;
 				flex-direction: row;

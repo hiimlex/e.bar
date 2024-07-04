@@ -1,0 +1,82 @@
+@import "../../../../base.scss";
+
+.sales-orders {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-3;
+
+	&-group {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+	}
+
+	&-subtitle {
+		font-size: 20px;
+		font-weight: 700;
+		color: $color-text-darker;
+
+		&-tip {
+			font-size: 12px;
+			font-weight: 500;
+			color: $color-text-placeholder;
+		}
+	}
+
+	&-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+
+		&-label {
+			font-size: 16px;
+			font-weight: 500;
+			color: $color-text-placeholder;
+		}
+		&-value {
+			font-size: 16px;
+			font-weight: 600;
+			color: $color-text-dark;
+		}
+		&-currency {
+			display: grid;
+			grid-template-columns: 30px 1fr;
+		}
+
+		&-total {
+			font-size: 18px;
+			font-weight: 700;
+			color: $color-text-darker;
+		}
+	}
+}
+
+.indicators {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: $unit-3;
+
+	&-item {
+		background: $color-gray-1;
+		padding: $unit-1;
+		border-radius: $unit-3;
+		min-width: 160px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		&-value {
+			font-size: 28px;
+			font-weight: bold;
+			color: $color-text-darker;
+		}
+		&-label {
+			font-size: 14px;
+			font-weight: 500;
+			color: $color-text-placeholder;
+		}
+	}
+}

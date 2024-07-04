@@ -2,6 +2,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import "./styles.scss";
 import { NavLink, Pages } from "../../@types";
 import { Link, useLocation } from "react-router-dom";
+import { Brands } from "../Brands";
 
 export const NAV_LINKS: NavLink[] = [
 	{ to: Pages.Orders, label: "Pedidos" },
@@ -33,8 +34,9 @@ const Header: React.FC = () => {
 	return (
 		<div className={`header-wrapper ${!!scrolled ? "header-scrolled" : ""}`}>
 			<div className="header">
-				<div className="header-logo">
-					<span>LOGO</span>
+				<div className="header-brands">
+					<Brands.JobucBrand size={100} />
+					<Brands.SocialSipsBrand size={145	} />
 				</div>
 
 				<nav className="header-nav">

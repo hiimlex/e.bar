@@ -1,0 +1,11 @@
+@import "../../base.scss";
+
+.bl-position {
+	position: fixed;
+
+	bottom: 0;
+	top: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+	right: 12px;
+}

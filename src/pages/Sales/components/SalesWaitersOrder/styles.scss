@@ -1,0 +1,123 @@
+@import "../../../../base.scss";
+
+.sl-order {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: $unit-2;
+	padding: $unit-3;
+	background: $color-white;
+	box-shadow: $shadow-strong;
+	border-radius: $unit-3;
+	white-space: nowrap;
+
+	&-status {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 6px;
+	}
+
+	&-id {
+		font-size: 20px;
+		font-weight: 600;
+		color: $color-text-dark;
+	}
+
+	&-total {
+		font-size: 18px;
+		font-weight: 700;
+		color: $color-text-darker;
+	}
+
+	&-payment-method {
+		font-size: 18px;
+		font-weight: 600;
+		color: $color-text-placeholder;
+		text-align: right;
+	}
+
+	&-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 6px;
+	}
+
+	&-grid {
+		display: grid;
+		grid-template-columns: 1fr minmax(40px, 100px);
+	}
+
+	&-expand {
+		text-align: center;
+		font-size: 16px;
+		font-weight: bold;
+		color: $color-secondary;
+
+		transition: $transition-all;
+
+		&:hover {
+			cursor: pointer;
+			scale: $scale-1;
+		}
+	}
+
+	&-expanded-content {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+}
+
+.details {
+	display: flex;
+	flex-direction: column;
+
+	.details-grid {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 40px 1fr minmax(40px, 100px);
+		gap: $unit-2;
+		align-items: flex-start;
+
+		&-name {
+			font-size: 16px;
+			font-weight: 600;
+			color: $color-text-dark;
+		}
+
+		&-stock {
+			font-size: 16px;
+			font-weight: 500;
+			columns: $color-text-placeholder;
+		}
+
+		&-price {
+			font-weight: 16px;
+			font-weight: 500;
+			color: $color-text-dark;
+		}
+	}
+
+	&-group {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+}
+
+@media (max-width: 768px) {
+	.sl-order-id {
+		font-size: 18px;
+	}
+
+	.details {
+		&-grid {
+			&-name {
+				font-size: 14px;
+			}
+		}
+	}
+}

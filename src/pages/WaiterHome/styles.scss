@@ -1,0 +1,60 @@
+@import "../../base.scss";
+
+.w-home {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-4;
+	}
+
+	&-subtitle {
+		font-size: 20px;
+		font-weight: 600;
+		color: $color-text-darker;
+	}
+
+	&-orders {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+
+		&--header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: $unit-2;
+		}
+	}
+
+	&-products {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+
+		&--header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: $unit-2;
+		}
+	}
+
+	&-grid {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		gap: $unit-3;
+		scroll-behavior: smooth;
+		padding: 4px;
+		height: fit-content;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+}

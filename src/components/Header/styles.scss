@@ -40,7 +40,7 @@
 			&:hover {
 				cursor: pointer;
 				color: $color-primary;
-				scale: 1.05;
+				scale: $scale-1;
 			}
 
 			&.active {
@@ -48,6 +48,13 @@
 				font-weight: 700;
 			}
 		}
+	}
+
+	&-brands {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: $unit-2;
 	}
 
 	transition: $transition-all;

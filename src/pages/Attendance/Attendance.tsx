@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Chip, MainContainer } from "../../components";
-import { Bartenders, Tables } from "./components";
+import { Tables, Waiters } from "./components";
 import "./styles.scss";
 
 interface AttendancePageProps {}
 
-type AttendanceModeType = "tables" | "bartenders";
+type AttendanceModeType = "tables" | "waiters";
 
 const AttendancePage: React.FC<AttendancePageProps> = () => {
-	const [mode, setMode] = useState<AttendanceModeType>("bartenders");
+	const [mode, setMode] = useState<AttendanceModeType>("waiters");
 
 	const handleModeChange = (mode: AttendanceModeType) => {
 		setMode(mode);
@@ -23,8 +23,8 @@ const AttendancePage: React.FC<AttendancePageProps> = () => {
 
 				<div className="attendance-tabs">
 					<Chip
-						onClick={() => handleModeChange("bartenders")}
-						active={mode === "bartenders"}
+						onClick={() => handleModeChange("waiters")}
+						active={mode === "waiters"}
 						clickable
 						theme="primary"
 					>
@@ -41,7 +41,7 @@ const AttendancePage: React.FC<AttendancePageProps> = () => {
 				</div>
 
 				<div className="attendance-tab-content">
-					{mode === "bartenders" && <Bartenders />}
+					{mode === "waiters" && <Waiters />}
 					{mode === "tables" && <Tables />}
 				</div>
 			</div>

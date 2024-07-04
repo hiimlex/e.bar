@@ -5,3 +5,5 @@ export * from "./MainContainer";
 export * from "./Chip";
 export * from "./IconButton";
 export * from "./OrderBy";
+export * from "./Brands";
+export * from "./WaiterHeader";

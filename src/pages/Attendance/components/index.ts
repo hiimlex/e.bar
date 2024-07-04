@@ -1,2 +1,2 @@
 export * from "./Tables";
-export * from "./Bartenders";
+export * from "./Waiters";

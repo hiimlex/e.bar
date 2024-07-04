@@ -1,0 +1,40 @@
+@import "../../../../base.scss";
+
+.w-order {
+	width: 100%;
+	min-width: 240px;
+	display: flex;
+	flex-direction: column;
+	gap: $unit-2;
+	padding: $unit-3;
+	background: $color-white;
+	box-shadow: $shadow-normal;
+	border-radius: $unit-3;
+
+	&-status {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 6px;
+	}
+
+	&-id {
+		font-size: 16px;
+		font-weight: 600;
+		color: $color-text-dark;
+	}
+
+	&-total {
+		font-size: 16px;
+		font-weight: 700;
+		color: $color-text-darker;
+	}
+
+	&-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 6px;
+	}
+}

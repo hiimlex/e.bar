@@ -3,3 +3,5 @@ export * from "./Login";
 export * from "./Sales";
 export * from "./Orders";
 export * from "./Attendance";
+export * from "./WaiterHome";
+export * from "./WaiterOrders";

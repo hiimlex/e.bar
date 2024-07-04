@@ -8,11 +8,15 @@
 	font-size: 14px;
 	font-weight: 600;
 	width: fit-content;
+	line-height: 15px;
+	height: fit-content;
+	white-space: nowrap;
 
 	transition: $transition-all;
 
 	&:hover {
 		cursor: pointer;
+		scale: $scale-1;
 	}
 
 	&-primary {

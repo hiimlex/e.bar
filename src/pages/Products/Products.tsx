@@ -4,6 +4,7 @@ import { Button, Chip, Input, MainContainer } from "../../components";
 import { ProductCard } from "./components";
 import "./styles.scss";
 import { AppDispatch, ProductsActions, RootState } from "../../store";
+import { Plus } from "react-feather";
 
 interface ProductsPageProps {}
 
@@ -20,7 +21,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 			<div className="products">
 				<header className="products-header">
 					<h2 className="page-title">Meus produtos</h2>
-					<Button>ADICIONAR</Button>
+					<Button><Plus size={14} /> ADICIONAR</Button>
 				</header>
 
 				<div className="products-filters">

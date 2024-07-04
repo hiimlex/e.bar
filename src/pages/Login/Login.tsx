@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button, Input } from "../../components";
-import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import { Pages } from "../../@types";
+import { Brands, Button, Input } from "../../components";
+import "./styles.scss";
 
 interface LoginPageProps {}
 
@@ -12,16 +12,21 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		password: "",
 	});
 
-	const navigation = useNavigate();
+	const navigate = useNavigate();
 
 	const onLogin = async () => {
-		navigation(Pages.Products);
+		// navigation(Pages.Products);
+		navigate(Pages.WaiterHome);
 	};
 
 	return (
-		<div className="login-container">
+		<div className="login">
+			<div className="login-brands">
+				<Brands.JobucBrand size={100} />
+				<Brands.SocialSipsBrand size={145} />
+			</div>
 			<div className="login-content">
-				<h2 className="title">Fazer Login</h2>
+				<h2 className="page-title">Fazer Login</h2>
 				<form className="login-form">
 					<Input
 						onChangeValue={(value) =>

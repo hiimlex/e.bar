@@ -79,6 +79,12 @@ input {
 	align-items: center;
 }
 
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .fill-row {
 	align-self: stretch;
 	width: 100%;
@@ -114,8 +120,73 @@ input {
 		background: $color-success;
 		color: $color-white;
 	}
+
+	&-success-outlined {
+		background: rgba($color-success, 0.2);
+		color: $color-success;
+	}
 }
 
 .dashline {
 	border-top: 1px solid $color-gray-2;
+}
+
+.text-currency {
+	display: grid;
+	grid-template-columns: 30px 1fr;
+	gap: 6px;
+
+	&:last-child {
+		text-align: right;
+	}
+}
+
+.button-rounded {
+	min-width: 44px;
+	min-height: 44px;
+	width: 44px;
+	height: 44px;
+	border-radius: 22px;
+	background: $color-secondary;
+	color: $color-white;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: $shadow-soft;
+
+	transition: $transition-all;
+
+	&:hover {
+		cursor: pointer;
+		scale: $scale-2;
+	}
+}
+
+.flex-1 {
+	display: flex;
+	flex: 1;
+}
+
+.link {
+	font-weight: 16px;
+	font-weight: 700;
+	width: fit-content;
+
+	transition: $transition-all;
+
+	&:hover,
+	&:focus,
+	&:active {
+		cursor: pointer;
+		scale: $scale-1;
+	}
+
+	&-primary {
+		color: $color-primary;
+	}
+
+	&-secondary {
+		color: $color-secondary;
+	}
 }

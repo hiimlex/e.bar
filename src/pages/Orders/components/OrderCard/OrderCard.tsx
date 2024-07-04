@@ -19,7 +19,7 @@ const OrderCard: React.FC<OrderCardProps> = () => {
 						<div key={index} className="info-items-grid">
 							<span className="info-items-stock">1x</span>
 							<span className="info-items-name">Carne</span>
-							<span className="info-items-currency info-items-price">
+							<span className="text-currency info-items-price">
 								<span>R$</span>
 								<span>{"10000"}</span>
 							</span>
@@ -30,9 +30,9 @@ const OrderCard: React.FC<OrderCardProps> = () => {
 
 					<div className="info-items-total">
 						<span className="info-items-total-label">Total</span>
-						<span className="info-items-total-currency">
+						<span className="text-currency">
 							<span className="">R$</span>
-							<span className="info-items-total-value"></span>
+							<span className="info-items-total-value">{"10000"}</span>
 						</span>
 					</div>
 					<div className="info-items-payment-method">
