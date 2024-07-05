@@ -8,6 +8,8 @@ export enum Pages {
 	WaiterHome = "/waiter",
 	WaiterOrders = "/waiter/orders",
 	WaiterNewOrder = "/waiter/new-order",
+	WaiterOnOrder = "/waiter/on-order/",
+	WaiterOnOrderAddProduct = "/waiter/on-order/add-product",
 	WaiterProducts =	"/waiter/products",
 	WaiterReports = "/waiter/reports",
 	WaiterSettings = "/waiter/settings",

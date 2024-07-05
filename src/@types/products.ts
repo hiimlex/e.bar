@@ -1,39 +1,48 @@
 export enum ProductCategories {
-	"Bebidas" = 1,
-	"Comidas" = 2,
-	"Refrigerantes" = 3,
-	"Petiscos" = 4,
-	"Destilados" = 5,
+	"Cervejas" = "Cervejas",
+	"Comidas" = "Comidas",
+	"Refrigerantes" = "Refrigerantes",
+	"Petiscos" = "Petiscos",
+	"Destilados" = "Destilados",
 }
 
-export enum ProductCategoriesFilters {
-	"Todos" = 0,
-	"Bebidas" = 1,
-	"Comidas" = 2,
-	"Refrigerantes" = 3,
-	"Petiscos" = 4,
-	"Destilados" = 5,
-	"S/ Estoque" = 6,
-}
-
-export const ProductCategoriesArray: { key: string; value: number | string }[] =
+export const ProductCategoriesArray: { key: string; value: ProductCategory }[] =
 	[
-		{ key: "Todos", value: 0 },
-		{ key: "Bebidas", value: 1 },
-		{ key: "Comidas", value: 2 },
-		{ key: "Refrigerantes", value: 3 },
-		{ key: "Petiscos", value: 4 },
-		{ key: "Destilados", value: 5 },
-		{ key: "S/ Estoque", value: 6 },
+		{ key: "Cervejas", value: "Cervejas" },
+		{ key: "Comidas", value: "Comidas" },
+		{ key: "Refrigerantes", value: "Refrigerantes" },
+		{ key: "Petiscos", value: "Petiscos" },
+		{ key: "Destilados", value: "Destilados" },
 	];
 export type ProductCategory = keyof typeof ProductCategories;
 
 export interface ProductsFilter {
-	category?: ProductCategoriesFilters;
-	search?: string;
+	categoria?: ProductCategory;
+	nome?: string;
+	estoque?: number;
+	direcao?: "asc" | "desc";
+	ordem?: "nome" | "estoque" | "preco";
 }
 
 export interface ProductsState {
-	products: any[];
+	products: IProduct[];
 	filters: ProductsFilter;
+	isLoadingProducts?: boolean;
+}
+
+export interface IProduct {
+	id: number;
+	name: string;
+	category: ProductCategory;
+	price: number;
+	stock: number;
+	image_url: string;
+}
+
+export interface CreateProductPayload {
+	name: string;
+	category: string;
+	price: number;
+	stock: number;
+	image_url: string;
 }

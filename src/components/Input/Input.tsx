@@ -8,6 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	fieldKey?: string;
 	value?: string;
 	hideLabel?: boolean;
+	wrapperClassName?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -17,7 +18,8 @@ const Input: React.FC<InputProps> = ({
 	fieldKey,
 	value,
 	placeholder,
-	hideLabel,
+	hideLabel = false,
+	wrapperClassName,
 	...rest
 }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +30,7 @@ const Input: React.FC<InputProps> = ({
 	const [isFocused, setIsFocused] = useState(false);
 
 	const shouldShowLabel = useMemo(() => {
-		if (!hideLabel) {
+		if (hideLabel) {
 			return false;
 		}
 
@@ -40,7 +42,7 @@ const Input: React.FC<InputProps> = ({
 	}, [hasValue, isFocused, placeholder]);
 
 	return (
-		<div className="input-wrapper">
+		<div className={`input-wrapper ${wrapperClassName}`}>
 			{shouldShowLabel && (
 				<label className="input-label" htmlFor={fieldKey}>
 					{placeholder}
@@ -50,12 +52,16 @@ const Input: React.FC<InputProps> = ({
 				id={fieldKey}
 				name={fieldKey}
 				ref={inputRef}
-				onChange={({ target }) => onChangeValue && onChangeValue(target.value)}
+				onChange={(event) => {
+					onChangeValue && onChangeValue(event.target.value);
+					rest.onChange && rest.onChange(event);
+				}}
 				className={classNames}
 				style={styles}
 				placeholder={placeholder}
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
+				value={value}
 				{...rest}
 			/>
 		</div>

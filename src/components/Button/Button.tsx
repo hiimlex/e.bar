@@ -1,13 +1,16 @@
-import { PropsWithChildren, useMemo } from "react";
+import { ButtonHTMLAttributes, PropsWithChildren, useMemo } from "react";
 import "./styles.scss";
 import { ButtonSizes, ButtonThemes, ButtonVariants } from "../../@types/button";
+import { Spinner } from "../Spinner";
 
-interface ButtonProps extends PropsWithChildren {
+interface ButtonProps
+	extends PropsWithChildren,
+		ButtonHTMLAttributes<HTMLButtonElement> {
 	onClick?: () => void;
-	className?: string;
 	variant?: ButtonVariants;
 	theme?: ButtonThemes;
 	size?: ButtonSizes;
+	loading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +20,9 @@ const Button: React.FC<ButtonProps> = ({
 	variant = "filled",
 	theme = "primary",
 	size = "md",
+	loading = false,
+	disabled,
+	...rest
 }) => {
 	const classNames = useMemo(
 		() =>
@@ -25,14 +31,25 @@ const Button: React.FC<ButtonProps> = ({
 				`button-${variant}`,
 				`button-${theme}`,
 				`button-${size}`,
+				`${loading ? "button-loading" : ""}`,
 				className,
 			].join(" "),
-		[className, variant, theme, size]
+		[className, variant, theme, size, loading]
 	);
 
+	const handleOnClick = () => {
+		if (loading) return;
+		onClick && onClick();
+	};
+
 	return (
-		<button onClick={onClick} className={classNames}>
-			{children}
+		<button
+			disabled={disabled}
+			onClick={handleOnClick}
+			className={classNames}
+			{...rest}
+		>
+			{loading ? <Spinner size={24} theme="secondary" /> : children}
 		</button>
 	);
 };

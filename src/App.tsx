@@ -1,13 +1,17 @@
-import { RouterProvider } from "react-router-dom";
-import router from "./router/Router";
-import "./global.scss";
 import { Provider as StoreProvider } from "react-redux";
+import { RouterProvider } from "react-router-dom";
+import "./global.scss";
+import { ModalProvider, UserProvider } from "./providers";
+import router from "./router/Router";
 import { store } from "./store";
 
 function App() {
 	return (
 		<StoreProvider store={store}>
-			<RouterProvider router={router} />
+			<UserProvider />
+			<ModalProvider>
+				<RouterProvider router={router} />
+			</ModalProvider>
 		</StoreProvider>
 	);
 }

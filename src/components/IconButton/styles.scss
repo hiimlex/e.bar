@@ -67,11 +67,11 @@
 		}
 
 		&.iconbutton-default {
-			background-color: $color-text-placeholder;
-			color: $color-white;
+			background-color: $color-gray-3;
+			color: $color-text-dark;
 
 			&:hover {
-				background-color: darken($color-text-placeholder, 10%);
+				background-color: darken($color-gray-3, 10%);
 			}
 		}
 	}

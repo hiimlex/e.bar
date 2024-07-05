@@ -23,7 +23,7 @@ function useBreakpoint(): BreakpointType {
 	const updateBreakpoint = () => {
 		const { innerWidth: width } = window;
 
-		if (width <= 1080) {
+		if (width <= 780) {
 			setBreakpoint({ breakpoint: "sm" });
 		} else if (width <= 1280) {
 			setBreakpoint({ breakpoint: "md" });

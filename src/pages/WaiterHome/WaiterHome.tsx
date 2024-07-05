@@ -23,7 +23,10 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 			<div className="w-home">
 				<main className="w-home-content">
 					<span className="page-title">Olá, {"Mateus"}</span>
-					<Button className="fill-row">
+					<Button
+						className="fill-row"
+						onClick={() => navigate(Pages.WaiterNewOrder)}
+					>
 						<Plus size={14} /> COMANDA
 					</Button>
 
@@ -47,7 +50,13 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 					<div className="w-home-products">
 						<div className="w-home-products--header">
 							<span className="w-home-subtitle">Produtos</span>
-							<span className="link link-secondary">ver todos</span>
+							<span
+								role="button"
+								className="link link-secondary"
+								onClick={() => navigate(Pages.WaiterProducts)}
+							>
+								ver todos
+							</span>
 						</div>
 						<div className="w-home-grid">
 							{ProductCategoriesArray.map((category, index) => (

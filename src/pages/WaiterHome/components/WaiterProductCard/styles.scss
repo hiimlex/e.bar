@@ -1,6 +1,6 @@
 @import "../../../../base.scss";
 
-.product {
+.w-product {
 	&-card {
 		min-width: 160px;
 		width: 100%;
@@ -35,7 +35,7 @@
 		padding: $unit-2;
 
 		&-name {
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: 700;
 			color: $color-text-dark;
 		}

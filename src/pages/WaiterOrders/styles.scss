@@ -9,7 +9,7 @@
 	&-content {
 		display: flex;
 		flex-direction: column;
-		gap: $unit-4;
+		gap: $unit-2;
 	}
 
 	&-header {
@@ -42,5 +42,8 @@
 		flex-direction: column;
 		gap: $unit-3;
 		height: fit-content;
+		max-height: calc(100vh - 280px);
+		overflow-y: auto;
+		padding:$unit-1;
 	}
 }

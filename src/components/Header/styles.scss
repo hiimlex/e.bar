@@ -67,4 +67,16 @@
 		background: $color-white;
 		box-shadow: $shadow-soft;
 	}
+
+	&-md {
+		max-width: 1000px;
+	}
+
+	&-lg {
+		max-width: 1200px;
+	}
+
+	&-xl {
+		max-width: 1400px;
+	}
 }

@@ -7,8 +7,9 @@
 	gap: $unit-1;
 	font-weight: 500;
 
-	padding: 6px;
+	padding: 8px;
 	width: fit-content;
+	color: $color-text-placeholder;
 
 	&:hover {
 		cursor: pointer;
@@ -17,7 +18,13 @@
 
 	&-label {
 		font-size: 16px;
-		color: $color-text-placeholder;
+	}
+
+	&-active {
+		font-weight: 600;
+		border-radius: 8px;
+		background: $color-secondary;
+		color: white !important;
 	}
 
 	transition: $transition-all;

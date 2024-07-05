@@ -18,14 +18,14 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>
-						<span className="page-title">Minhas comandas</span>
+						<span className="page-title">Minhas<br/>Comandas</span>
 						<div className="w-orders-filters">
 							<OrderBy label="N Mesa" />
 							<OrderBy label="Total" />
 						</div>
 					</header>
 
-					<div className="w-orders-list">
+					<div className="w-orders-list no-scroll">
 						{Array.from({ length: 4 }).map((_, index) => (
 							<SalesWaitersOrder id={index} key={index} />
 						))}

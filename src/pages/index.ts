@@ -6,3 +6,6 @@ export * from "./Attendance";
 export * from "./WaiterHome";
 export * from "./WaiterOrders";
 export * from "./WaiterProducts";
+export * from "./WaiterNewOrder";
+export * from "./WaiterOnOrder";
+export * from "./WaiterOnOrderAddProduct";

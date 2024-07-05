@@ -7,6 +7,9 @@ import {
 	ProductsPage,
 	SalesPage,
 	WaiterHomePage,
+	WaiterNewOrderPage,
+	WaiterOnOrderAddProductPage,
+	WaiterOnOrderPage,
 	WaiterOrdersPage,
 	WaiterProductsPage,
 } from "../pages";
@@ -43,6 +46,18 @@ const router = createBrowserRouter([
 	{
 		path: Pages.WaiterProducts,
 		element: <WaiterProductsPage />,
+	},
+	{
+		path: Pages.WaiterNewOrder,
+		element: <WaiterNewOrderPage />,
+	},
+	{
+		path: Pages.WaiterOnOrder,
+		element: <WaiterOnOrderPage />,
+	},
+	{
+		path: Pages.WaiterOnOrderAddProduct,
+		element: <WaiterOnOrderAddProductPage />,
 	},
 ]);
 

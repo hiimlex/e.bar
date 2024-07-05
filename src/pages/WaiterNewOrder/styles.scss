@@ -1,0 +1,71 @@
+@import "../../base.scss";
+
+.new-order {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: calc(100vh - 140px);
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-4;
+		height: 100%;
+	}
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+
+		&-scroll {
+			position: sticky;
+			background: $color-background;
+			padding-bottom: 24px;
+			z-index: 2;
+			top: -24px;
+		}
+	}
+
+	&-subtitle {
+		font-size: 16px;
+		font-weight: 600;
+		color: $color-text-dark;
+	}
+
+	&-tables {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: $unit-2;
+	}
+
+	&-subtitle {
+		font-size: 16px;
+		font-weight: 600;
+		color: $color-text-darker;
+	}
+
+	&-list {
+		display: flex;
+		flex-direction: row;
+		gap: $unit-3;
+		height: fit-content;
+		padding: $unit-1;
+
+		overflow-x: auto;
+		overflow-y: hidden;
+		max-width: 100%;
+
+		.card {
+			min-width: 240px;
+			padding: 18px;
+			gap: 12px;
+
+			&-selected {
+				background: $color-primary;
+			}
+		}
+	}
+}

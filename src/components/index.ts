@@ -7,3 +7,4 @@ export * from "./IconButton";
 export * from "./OrderBy";
 export * from "./Brands";
 export * from "./WaiterHeader";
+export * from "./Spinner";

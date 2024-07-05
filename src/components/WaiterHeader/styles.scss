@@ -8,6 +8,14 @@
 	width: 100%;
 	padding-bottom: $unit-2;
 	padding: 0 $unit-4;
+	min-height: 42px;
+
+	&-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-3;
+		width: 100%;
+	}
 
 	&-button {
 		border: none;
@@ -38,5 +46,45 @@
 		&:last-child {
 			justify-content: flex-end;
 		}
+	}
+}
+
+.input-search {
+	height: 48px;
+	border-radius: $unit-2;
+	border: 1px solid $color-secondary;
+	width: 100%;
+	padding: $unit-2;
+	font-size: 16px;
+	font-weight: 600;
+	color: $color-secondary;
+
+	&::placeholder {
+		color: $color-text-placeholder;
+		opacity: 1; /* Firefox */
+	}
+
+	&::-ms-input-placeholder {
+		/* Edge 12 -18 */
+		color: $color-text-placeholder;
+	}
+
+	&-close {
+		position: absolute;
+		right: $unit-6;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 4px;
+	}
+
+	&-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 $unit-4;
+		width: 100%;
+
+		position: relative;
 	}
 }

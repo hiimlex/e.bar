@@ -90,4 +90,16 @@
 		opacity: 0.8;
 		scale: $scale-1;
 	}
+
+	&-loading {
+		opacity: 0.8;
+	}
+
+	&:disabled {
+		color: $color-text-placeholder !important;
+		background: $color-gray-3 !important;
+		cursor: not-allowed !important;
+		opacity: 1 !important;
+		scale: 1 !important;
+	}
 }

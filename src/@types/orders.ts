@@ -22,3 +22,7 @@ export interface OrdersState {
 	orders: any[];
 	filters: OrdersFilter;
 }
+
+export interface AttendanceState {
+	order?: any;
+}
