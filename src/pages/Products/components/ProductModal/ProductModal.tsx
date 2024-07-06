@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	CreateProductPayload,
 	ProductCategoriesArray,
 } from "../../../../@types";
 import { ProductsService } from "../../../../api";
 import { Button, Input } from "../../../../components";
-import "./styles.scss";
 import { useModal } from "../../../../hooks";
+import "./styles.scss";
 
 interface ProductModalProps {
 	id?: string;
@@ -59,7 +59,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
 			setLoading(false);
 
-			closeModal(id);
+			if (id) {
+				closeModal(id);
+			}
 
 			if (beforeClose) {
 				beforeClose();
@@ -89,7 +91,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
 			setLoading(false);
 
-			closeModal(id);
+			if (id) {
+				closeModal(id);
+			}
 
 			if (beforeClose) {
 				beforeClose();
@@ -100,8 +104,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
 	};
 
 	return (
-		<div className="add-product">
-			<span className="add-product-title">
+		<div className="product-modal">
+			<span className="product-modal-title">
 				{mode === "create" ? "Adicionar produto" : "Editar produto"}
 			</span>
 
@@ -111,7 +115,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				</div>
 			)}
 			<Input
-			
 				placeholder="URL Imagem"
 				wrapperClassName="fill-row"
 				className="filled-input"
@@ -176,7 +179,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 					disabled={!canAdd}
 					className="fill-row"
 				>
-					SAVE
+					SALVAR
 				</Button>
 			)}
 		</div>

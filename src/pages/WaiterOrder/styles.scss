@@ -1,0 +1,129 @@
+@import "../../base.scss";
+
+.w-on-order {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: calc(100vh - 200px);
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: $unit-4;
+		height: 100%;
+	}
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+
+		&-scroll {
+			position: sticky;
+			background: $color-background;
+			padding-bottom: 24px;
+			z-index: 2;
+			top: -24px;
+		}
+
+		&-title {
+			align-items: flex-end;
+		}
+		
+	}
+
+	&-footer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	&-table {
+		font-size: 18px;
+		font-weight: 600;
+		padding: 6px 12px;
+	}
+
+	.detailed-list {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 100%;
+		gap: $unit-2;
+
+		&-total {
+			display: grid;
+			grid-template-columns: 1fr minmax(40px, 80px);
+			font-size: 18px;
+			font-weight: 700;
+			color: $color-text-darker;
+		}
+
+		&-products {
+			display: flex;
+			flex-direction: column;
+			gap: $unit-1;
+			overflow-y: auto;
+			flex: 1;
+
+			&-stock {
+				font-size: 16px;
+				font-weight: 500;
+				color: $color-text-placeholder;
+			}
+			&-name {
+				font-size: 16px;
+				font-weight: 600;
+				color: $color-text-dark;
+			}
+			&-price {
+				font-size: 16px;
+				font-weight: 600;
+				color: $color-text-dark;
+			}
+
+			&-item {
+				display: grid;
+				grid-template-columns: 40px 1fr minmax(40px, 80px);
+			}
+		}
+	}
+}
+
+.large-button {
+	width: 100%;
+	padding: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 16px;
+	font-weight: 600;
+	border-radius: $unit-2;
+
+	&-primary {
+		color: $color-text-dark;
+		background: $color-primary;
+	}
+	&-secondary {
+		color: $color-white;
+		background: $color-secondary;
+	}
+
+	&-products {
+		display: flex;
+		flex: 1;
+		align-self: stretch;
+		flex-direction: column;
+		max-height: 100%;
+		overflow-y: auto;
+	}
+
+	&:hover {
+		cursor: pointer;
+		scale: $scale-2;
+	}
+}

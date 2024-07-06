@@ -23,7 +23,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: $unit-3;
+		gap: $unit-2;
 	}
 
 	&-search {
@@ -72,5 +72,12 @@
 			font-weight: 500;
 			color: $color-gray-3;
 		}
+	}
+
+	.edit-button {
+		height: 100%;
+		width: fit-content;
+		padding: 12px;
+		border-radius: 12px;
 	}
 }

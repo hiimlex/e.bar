@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Plus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
@@ -8,8 +8,15 @@ import {
 	ProductCategoriesArray,
 	ProductCategory,
 } from "../../@types";
-import { Button, Chip, Input, MainContainer, Spinner } from "../../components";
-import { useModal } from "../../hooks";
+import {
+	Button,
+	Chip,
+	ChipWrapper,
+	Input,
+	MainContainer,
+	Spinner,
+} from "../../components";
+import { useBreakpoint, useModal } from "../../hooks";
 import {
 	AppDispatch,
 	ProductsActions,
@@ -28,10 +35,51 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const [search, setSearch] = useDebounceValue(filters.nome, 300);
 
-	const { openModal, closeModal } = useModal();
+	const { breakpoint } = useBreakpoint();
+	const chipsMaxWidth: number | undefined = useMemo(() => {
+		const arr = {
+			sm: 400,
+			md: 460,
+			lg: 520,
+			xl: undefined,
+		};
+
+		return arr[breakpoint];
+	}, [breakpoint]);
+
+	const { openModal } = useModal();
 
 	const onSelectCategory = (category: ProductCategory | undefined) => {
-		dispatch(ProductsActions.setFilters({ categoria: category }));
+		dispatch(
+			ProductsActions.setFilters({
+				categoria: category,
+				sem_estoque: undefined,
+			})
+		);
+	};
+
+	const onStockFilter = () => {
+		let newFilter: boolean | undefined = !filters.sem_estoque;
+
+		if (!newFilter) {
+			newFilter = undefined;
+		}
+
+		dispatch(
+			ProductsActions.setFilters({
+				sem_estoque: newFilter,
+				categoria: undefined,
+			})
+		);
+	};
+
+	const clearFilters = () => {
+		dispatch(
+			ProductsActions.setFilters({
+				sem_estoque: undefined,
+				categoria: undefined,
+			})
+		);
 	};
 
 	const onSearch = (search?: string) => {
@@ -99,14 +147,22 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 				</header>
 
 				<div className="products-filters">
-					<div className="products-filters-chips">
+					<ChipWrapper maxWidth={chipsMaxWidth}>
 						<Chip
-							active={!filters.categoria}
+							active={!filters.categoria && !filters.sem_estoque}
 							clickable
 							theme="secondary"
-							onClick={() => onSelectCategory(undefined)}
+							onClick={clearFilters}
 						>
 							Todos
+						</Chip>
+						<Chip
+							active={filters.sem_estoque}
+							clickable
+							theme="secondary"
+							onClick={onStockFilter}
+						>
+							S/ Estoque
 						</Chip>
 						{ProductCategoriesArray.map((category, index) => (
 							<Chip
@@ -119,7 +175,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 								{category.key}
 							</Chip>
 						))}
-					</div>
+					</ChipWrapper>
 					<div>
 						<Input
 							placeholder="Buscar..."

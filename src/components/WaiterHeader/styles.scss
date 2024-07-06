@@ -49,6 +49,16 @@
 	}
 }
 
+@keyframes slide-in {
+	0% {
+		transform: translateY(-100%);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
 .input-search {
 	height: 48px;
 	border-radius: $unit-2;
@@ -58,6 +68,9 @@
 	font-size: 16px;
 	font-weight: 600;
 	color: $color-secondary;
+
+	transition: $transition-all;
+	animation: slide-in 0.3s ease-in-out;
 
 	&::placeholder {
 		color: $color-text-placeholder;
@@ -76,6 +89,10 @@
 		align-items: center;
 		justify-content: center;
 		padding: 4px;
+		opacity: 0;
+
+		animation: $animation-fade-in 0.2s ease-in-out forwards;
+		animation-delay: 0.2s;
 	}
 
 	&-wrapper {

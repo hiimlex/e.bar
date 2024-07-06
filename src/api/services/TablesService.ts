@@ -1,10 +1,12 @@
 import { AxiosResponse } from "axios";
-import { ITable } from "../../@types";
+import { ITable, TableFilters } from "../../@types";
 import { queryBuilder } from "../../utils";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
 
-const fetchAll = async (filters?: any): Promise<AxiosResponse<ITable[]>> => {
+const fetchAll = async (
+	filters?: TableFilters
+): Promise<AxiosResponse<ITable[]>> => {
 	try {
 		const url = queryBuilder(Endpoints.GetTables, filters);
 

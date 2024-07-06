@@ -1,12 +1,12 @@
-import { PropsWithChildren, useMemo } from "react";
-import { Header } from "../Header";
-import "./styles.scss";
-import { ScrollToTop } from "../ScrollToTop";
-import { useBreakpoint } from "../../hooks";
-import { WaiterHeader, WaiterHeaderProps } from "../WaiterHeader";
-import { BottomNav } from "../BottomNav/BottomNav";
+import { PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
+import { useBreakpoint } from "../../hooks";
 import { RootState } from "../../store";
+import { BottomNav } from "../BottomNav/BottomNav";
+import { Header } from "../Header";
+import { ScrollToTop } from "../ScrollToTop";
+import { WaiterHeader, WaiterHeaderProps } from "../WaiterHeader";
+import "./styles.scss";
 interface MainContainerProps extends PropsWithChildren, WaiterHeaderProps {
 	showAdminHeader?: boolean;
 	wrapperRef?: React.RefObject<HTMLDivElement>;
@@ -46,7 +46,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
 					>
 						{children}
 					</main>
-					<BottomNav />
+					{/* <BottomNav /> */}
 				</>
 			)}
 			<ScrollToTop />

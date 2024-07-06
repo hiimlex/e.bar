@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Pages } from "../../@types";
 import { useBreakpoint } from "../../hooks";
 import { Brands } from "../Brands";
 import "./styles.scss";
+import { useDispatch } from "react-redux";
+import { UserActions } from "../../store";
 
 export const NAV_LINKS: NavLink[] = [
 	{ to: Pages.Orders, label: "Pedidos" },
@@ -15,7 +17,7 @@ export const NAV_LINKS: NavLink[] = [
 const Header: React.FC = () => {
 	const { breakpoint } = useBreakpoint();
 	const location = useLocation();
-
+	const navigate = useNavigate();
 	const [scrollPosition, setScrollPosition] = useState(0);
 
 	const scrolled = useMemo(() => scrollPosition > 0, [scrollPosition]);
@@ -23,6 +25,14 @@ const Header: React.FC = () => {
 	const handleScroll = () => {
 		const position = window.pageYOffset;
 		setScrollPosition(position);
+	};
+
+	const dispatch = useDispatch();
+
+	const logout = () => {
+		dispatch(UserActions.logout());
+
+		navigate(Pages.Login);
 	};
 
 	useEffect(() => {
@@ -34,7 +44,7 @@ const Header: React.FC = () => {
 	}, []);
 
 	return (
-		<div className={`header-wrapper ${!!scrolled ? "header-scrolled" : ""}`}>
+		<div className={`header-wrapper ${scrolled ? "header-scrolled" : ""}`}>
 			<div className={`header header-${breakpoint}`}>
 				<div className="header-brands">
 					<Brands.JobucBrand size={100} />
@@ -55,7 +65,9 @@ const Header: React.FC = () => {
 							</Link>
 						);
 					})}
-					<span className="header-nav-link">Sair</span>
+					<span className="header-nav-link" onClick={logout}>
+						Sair
+					</span>
 				</nav>
 			</div>
 		</div>

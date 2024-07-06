@@ -6,32 +6,29 @@ import {
 	createSlice,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import {
-	IProduct,
-	ProductCategoriesFilters,
-	ProductsFilter,
-	ProductsState,
-} from "../../../@types";
+import { IProduct, ProductsFilter, ProductsState } from "../../../@types";
 import { ProductsService } from "../../../api";
 import { GenericAction, RootState } from "../../Store";
 
-const fetchProducts: any = createAsyncThunk<
+const fetchProducts = createAsyncThunk<
 	IProduct[],
-	void,
+	boolean | undefined,
 	{ rejectValue: AxiosError }
->("Products/fetchProducts", async (_, { getState, rejectWithValue, dispatch }) => {
-	try {
-		dispatch(ProductsActions.setIsLoadingProducts(true));
-		const filters = (getState() as RootState).products.filters;
-		
+>(
+	"Products/fetchProducts",
+	async (loading, { getState, rejectWithValue, dispatch }) => {
+		try {
+			dispatch(ProductsActions.setIsLoadingProducts(loading));
+			const filters = (getState() as RootState).products.filters;
 
-		const { data } = await ProductsService.fetchAll(filters);
+			const { data } = await ProductsService.fetchAll(filters);
 
-		return data;
-	} catch (error) {
-		return rejectWithValue(error as AxiosError);
+			return data;
+		} catch (error) {
+			return rejectWithValue(error as AxiosError);
+		}
 	}
-});
+);
 
 const ProductsSlicer = createSlice<
 	ProductsState,
@@ -59,7 +56,7 @@ const ProductsSlicer = createSlice<
 			state.isLoadingProducts = false;
 		});
 
-		builder.addCase(fetchProducts.rejected, (state, action) => {
+		builder.addCase(fetchProducts.rejected, (state) => {
 			state.products = [];
 			state.isLoadingProducts = false;
 		});
@@ -68,7 +65,7 @@ const ProductsSlicer = createSlice<
 
 export const ProductsActions = ProductsSlicer.actions as {
 	setFilters: ActionCreatorWithPayload<ProductsFilter>;
-	setIsLoadingProducts: ActionCreatorWithPayload<boolean>;
+	setIsLoadingProducts: ActionCreatorWithPayload<boolean | undefined>;
 };
 
 const ProductsReducer = ProductsSlicer.reducer;

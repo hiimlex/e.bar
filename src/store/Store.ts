@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
 	AttendanceReducer,
-	AttendanceSlice,
 	OrdersReducer,
 	ProductsReducer,
 	UserReducer,
 } from "./slicers";
+import { SafeAny } from "../@types";
 
 export const store = configureStore({
 	reducer: {
@@ -21,7 +21,7 @@ export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
-export interface GenericAction<T = any> {
+export interface GenericAction<T = SafeAny> {
 	type: string;
 	payload: T;
 }

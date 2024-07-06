@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 export enum Endpoints {
 	GetProducts = "/produtos",
-	GetProduct = "/produtos/:id",
+	GetProduct = "/produtos/:productId",
 	CreateProduct = "/produtos",
 	UpdateProduct = "/produtos/:productId",
-	DeleteProduct = "/produtos/:id",
+	DeleteProduct = "/produtos/:productId",
 
 	Login = "/login",
 	Me = "/me",
@@ -15,8 +16,8 @@ export enum Endpoints {
 	DeleteTable = "/mesas/:tableId",
 
 	GetWaiters = "/garcons",
-	GetWaiter = "/garcons/:id",
+	GetWaiter = "/garcons/:waiterId",
 	CreateWaiter = "/garcons",
-	UpdateWaiter = "/garcons/:id",
-	DeleteWaiter = "/garcons/:id",
+	UpdateWaiter = "/garcons/:waiterId",
+	DeleteWaiter = "/garcons/:waiterId",
 }

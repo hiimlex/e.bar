@@ -19,7 +19,7 @@ export type ProductCategory = keyof typeof ProductCategories;
 export interface ProductsFilter {
 	categoria?: ProductCategory;
 	nome?: string;
-	estoque?: number;
+	sem_estoque?: boolean;
 	direcao?: "asc" | "desc";
 	ordem?: "nome" | "estoque" | "preco";
 }

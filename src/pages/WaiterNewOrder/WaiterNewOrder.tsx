@@ -25,7 +25,9 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	};
 
 	const createOrder = () => {
-		navigate(Pages.WaiterOnOrder);
+		const to = Pages.WaiterOrder.replace(":orderId", "1");
+
+		navigate(to);
 	};
 
 	return (
@@ -47,7 +49,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 						<div className="new-order-list no-scroll">
 							{Array.from({ length: 12 }).map((_, index) => {
-								let isSelected = selectedTable === index;
+								const isSelected = selectedTable === index;
 								return (
 									<div
 										role="button"

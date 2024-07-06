@@ -12,4 +12,7 @@ export interface ModalContextType {
 export enum ModalIds {
 	AddProduct = "add-product",
 	EditProduct = "edit-product",
+
+	AddWaiter = "add-waiter",
+	EditWaiter = "edit-waiter",
 }

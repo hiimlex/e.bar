@@ -1,6 +1,8 @@
+import { SafeAny } from "../@types";
+
 export function queryBuilder(
 	url: string,
-	params?: { [key: string]: any },
+	params?: { [key: string]: SafeAny },
 	pathVariables?: Record<string, string>
 ): string {
 	if (pathVariables) {
@@ -12,9 +14,10 @@ export function queryBuilder(
 	const query = [];
 	for (const key in params) {
 		if (
-			params.hasOwnProperty(key) &&
+			Object.prototype.hasOwnProperty.bind(params, key) &&
 			params[key] !== undefined &&
-			params[key] !== null
+			params[key] !== null &&
+			params[key] !== ""
 		) {
 			query.push(`${key}=${params[key]}`);
 		}

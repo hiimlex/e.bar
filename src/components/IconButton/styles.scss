@@ -82,4 +82,10 @@
 		cursor: pointer;
 		scale: $scale-2;
 	}
+
+	&:disabled {
+		cursor: not-allowed !important;
+		background: $color-gray-3 !important;
+		scale: 1 !important;
+	}
 }

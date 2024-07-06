@@ -1,17 +1,23 @@
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Pages, ProductCategoriesArray } from "../../@types";
-import { Chip, MainContainer } from "../../components";
-import { AppDispatch, ProductsActions, RootState } from "../../store";
+import { Pages, ProductCategoriesArray, ProductCategory } from "../../@types";
+import { Chip, MainContainer, Spinner } from "../../components";
+import {
+	AppDispatch,
+	ProductsActions,
+	RootState,
+	fetchProducts,
+} from "../../store";
 import { ProductsRowCard } from "./components";
 import "./styles.scss";
-import { useScroll } from "../../hooks";
-import { useEffect, useRef } from "react";
 
 interface WaiterProductsPageProps {}
 
 const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
-	const { filters } = useSelector((state: RootState) => state.products);
+	const { filters, products, isLoadingProducts } = useSelector(
+		(state: RootState) => state.products
+	);
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -22,9 +28,45 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		navigate(Pages.WaiterHome);
 	};
 
-	const onSelectCategory = (category: number) => {
-		dispatch(ProductsActions.setFilters({ category }));
+	const onSelectCategory = (categoria?: ProductCategory) => {
+		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: false }));
 	};
+
+	const onStockFilter = () => {
+		let newFilter: boolean | undefined = !filters.sem_estoque;
+
+		if (!newFilter) {
+			newFilter = undefined;
+		}
+
+		dispatch(
+			ProductsActions.setFilters({
+				sem_estoque: newFilter,
+				categoria: undefined,
+			})
+		);
+	};
+
+	const clearFilters = () => {
+		dispatch(
+			ProductsActions.setFilters({
+				sem_estoque: undefined,
+				categoria: undefined,
+			})
+		);
+	};
+
+	const loadProducts = useCallback(
+		async (enableLoader = true) => {
+			await dispatch(fetchProducts(enableLoader));
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[filters]
+	);
+
+	useEffect(() => {
+		loadProducts();
+	}, [loadProducts]);
 
 	return (
 		<MainContainer
@@ -44,13 +86,29 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 						</span>
 						<div className="w-products-filters">
 							<div className="w-products-filters-chips scrollable-x no-scroll">
+								<Chip
+									active={!filters.categoria && !filters.sem_estoque}
+									clickable
+									theme="secondary"
+									onClick={clearFilters}
+								>
+									Todos
+								</Chip>
+								<Chip
+									active={filters.sem_estoque}
+									clickable
+									theme="secondary"
+									onClick={onStockFilter}
+								>
+									S/ Estoque
+								</Chip>
 								{ProductCategoriesArray.map((category, index) => (
 									<Chip
 										key={index}
-										active={+category.value === filters.category}
+										active={category.value === filters.categoria}
 										clickable
 										theme="secondary"
-										onClick={() => onSelectCategory(+category.value)}
+										onClick={() => onSelectCategory(category.value)}
 									>
 										{category.key}
 									</Chip>
@@ -59,11 +117,20 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 						</div>
 					</header>
 
-					<div className="w-products-list no-scroll">
-						{Array.from({ length: 12 }).map((_, index) => (
-							<ProductsRowCard key={index} />
-						))}
-					</div>
+					{!isLoadingProducts ? (
+						<div className="w-products-list no-scroll">
+							{products.map((product, index) => (
+								<ProductsRowCard product={product} key={index} />
+							))}
+						</div>
+					) : (
+						<div className="w-home-loading">
+							<Spinner size={32} theme="primary" />
+							<span className="w-home-loading-message">
+								Carregando produtos...
+							</span>
+						</div>
+					)}
 				</main>
 			</div>
 		</MainContainer>

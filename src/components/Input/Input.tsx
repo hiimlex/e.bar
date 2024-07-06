@@ -9,6 +9,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	value?: string;
 	hideLabel?: boolean;
 	wrapperClassName?: string;
+	mode?: "controlled" | "uncontrolled";
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
 	placeholder,
 	hideLabel = false,
 	wrapperClassName,
+	mode = "uncontrolled",
 	...rest
 }) => {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +41,15 @@ const Input: React.FC<InputProps> = ({
 		}
 
 		return (isFocused && hasValue) || hasValue;
-	}, [hasValue, isFocused, placeholder]);
+	}, [hasValue, isFocused, placeholder, hideLabel]);
+
+	const inputProps = useMemo(() => {
+		if (mode === "controlled") {
+			return {
+				value,
+			};
+		}
+	}, [mode, value]);
 
 	return (
 		<div className={`input-wrapper ${wrapperClassName}`}>
@@ -61,7 +71,7 @@ const Input: React.FC<InputProps> = ({
 				placeholder={placeholder}
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
-				value={value}
+				{...inputProps}
 				{...rest}
 			/>
 		</div>

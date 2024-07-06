@@ -12,6 +12,7 @@ interface IconButtonProps extends PropsWithChildren {
 	variant?: IconButtonVariants;
 	theme?: IconButtonThemes;
 	size?: IconButtonSizes;
+	disabled?: boolean;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -21,6 +22,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 	variant = "filled",
 	theme = "primary",
 	size = "md",
+	disabled,
 }) => {
 	const classNames = useMemo(
 		() =>
@@ -35,7 +37,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 	);
 
 	return (
-		<button onClick={onClick} className={classNames}>
+		<button onClick={onClick} className={classNames} disabled={disabled}>
 			{children}
 		</button>
 	);

@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pages } from "../../@types";
 import { Brands, Button, Input } from "../../components";
 import "./styles.scss";
 import { AUTH_TOKEN_KEY, AuthService } from "../../api";
-import { useDispatch } from "react-redux";
-import { AppDispatch, UserActions } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, UserActions } from "../../store";
 
 interface LoginPageProps {}
 
@@ -53,8 +53,25 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
+			alert("Email ou senha inválidos!");
 		}
 	};
+
+	const { isAuthenticated, waiter, isAdmin } = useSelector(
+		(state: RootState) => state.user
+	);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			if (!isAdmin && waiter) {
+				navigate(Pages.WaiterHome);
+			}
+
+			if (isAdmin && waiter) {
+				navigate(Pages.Orders);
+			}
+		}
+	}, [isAuthenticated, isAdmin, waiter]);
 
 	return (
 		<div className="login">

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import { Pages } from "../@types";
 import {
 	AttendancePage,
@@ -6,58 +6,116 @@ import {
 	OrdersPage,
 	ProductsPage,
 	SalesPage,
+	WaiterAddProductsPage,
 	WaiterHomePage,
 	WaiterNewOrderPage,
-	WaiterOnOrderAddProductPage,
-	WaiterOnOrderPage,
+	WaiterOrderPage,
+	WaiterOrderProductsPage,
 	WaiterOrdersPage,
 	WaiterProductsPage,
 } from "../pages";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const router = createBrowserRouter([
 	{
-		path: "/",
+		path: "",
+		element: <Navigate to={Pages.Login} />,
+	},
+	{
+		path: Pages.Login,
 		element: <LoginPage />,
 	},
 	{
 		path: Pages.Products,
-		element: <ProductsPage />,
+		element: (
+			<ProtectedRoute>
+				<ProductsPage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.Sales,
-		element: <SalesPage />,
+		element: (
+			<ProtectedRoute>
+				<SalesPage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.Attendance,
-		element: <AttendancePage />,
+		element: (
+			<ProtectedRoute>
+				<AttendancePage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.Orders,
-		element: <OrdersPage />,
+		element: (
+			<ProtectedRoute>
+				<OrdersPage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.WaiterHome,
-		element: <WaiterHomePage />,
+		element: (
+			<ProtectedRoute>
+				<WaiterHomePage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.WaiterOrders,
-		element: <WaiterOrdersPage />,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrdersPage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.WaiterProducts,
-		element: <WaiterProductsPage />,
+		element: (
+			<ProtectedRoute>
+				<WaiterProductsPage />
+			</ProtectedRoute>
+		),
 	},
 	{
 		path: Pages.WaiterNewOrder,
-		element: <WaiterNewOrderPage />,
+		element: (
+			<ProtectedRoute>
+				<WaiterNewOrderPage />
+			</ProtectedRoute>
+		),
 	},
 	{
-		path: Pages.WaiterOnOrder,
-		element: <WaiterOnOrderPage />,
+		path: Pages.WaiterOrder,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrderPage />
+			</ProtectedRoute>
+		),
 	},
 	{
-		path: Pages.WaiterOnOrderAddProduct,
-		element: <WaiterOnOrderAddProductPage />,
+		path: Pages.WaiterOrderProducts,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrderProductsPage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterAddProducts,
+		element: (
+			<ProtectedRoute>
+				<WaiterAddProductsPage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: "*",
+		element: <Navigate to="/" />,
 	},
 ]);
 

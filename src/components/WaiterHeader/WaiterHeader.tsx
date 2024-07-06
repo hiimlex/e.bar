@@ -38,6 +38,8 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 			if (waiterHeaderOnSearch) {
 				waiterHeaderOnSearch("");
 			}
+
+			setShowSearch(false);
 		}
 	};
 

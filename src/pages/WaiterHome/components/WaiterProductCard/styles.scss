@@ -29,8 +29,10 @@
 	}
 
 	&-info {
+		height: 100%;
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 		gap: $unit-2;
 		padding: $unit-2;
 
