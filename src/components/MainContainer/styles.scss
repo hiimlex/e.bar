@@ -19,13 +19,21 @@
 		width: 100%;
 		min-height: 100%;
 		overflow-x: hidden;
+		overflow-y: hidden;
 
 		display: flex;
 		flex-direction: column;
+		position: relative;
 
 		&-sm {
 			max-width: 100%;
 			overflow-x: hidden;
+			min-height: 480px;
+			overflow-y: auto;
+			height: 100%;
+
+			margin-bottom: $bottom-nav-height;
+			// height: calc(100vh - $bottom-nav-height - $waiter-header-height);
 		}
 
 		&-md {
@@ -42,7 +50,6 @@
 	}
 
 	&-sm {
-		padding-top: $unit-4;
-		-webkit-overflow-scrolling: touch;
+		height: 100%;
 	}
 }

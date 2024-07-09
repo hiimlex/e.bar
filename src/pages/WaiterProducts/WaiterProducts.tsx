@@ -29,7 +29,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	};
 
 	const onSelectCategory = (categoria?: ProductCategory) => {
-		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: false }));
+		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
 	};
 
 	const onStockFilter = () => {

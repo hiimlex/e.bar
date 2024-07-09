@@ -101,7 +101,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					/>
 				</form>
 				<Button disabled={!canLogin} loading={loading} onClick={onLogin}>
-					CONTINUAR
+					Continuar
 				</Button>
 			</div>
 		</div>

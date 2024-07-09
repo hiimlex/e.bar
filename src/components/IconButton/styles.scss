@@ -15,13 +15,13 @@
 	}
 
 	&-md {
-		width: 30px;
-		height: 30px;
+		width: 28px;
+		height: 28px;
 	}
 
 	&-lg {
-		width: 36px;
-		height: 36px;
+		width: 32px;
+		height: 32px;
 	}
 
 	&-outlined {
@@ -49,7 +49,7 @@
 	&-filled {
 		&.iconbutton-primary {
 			background-color: $color-primary;
-			color: $color-text-dark;
+			color: $color-white;
 
 			&:hover {
 				background-color: darken($color-primary, 10%);

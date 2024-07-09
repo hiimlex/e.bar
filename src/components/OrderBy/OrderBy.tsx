@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowUp, ArrowDown, Filter } from "react-feather";
+import { ArrowDown, ArrowUp } from "react-feather";
 import "./styles.scss";
 
 interface OrderByProps {
@@ -41,10 +41,7 @@ const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
 		>
 			<span className="order-by-label">{label}</span>
 			{order === "asc" && <ArrowUp strokeWidth={2} size={20} />}
-			{order === "desc" && (
-				<ArrowDown strokeWidth={2} size={20} />
-			)}
-			{order === "" && <Filter strokeWidth={2} size={20} />}
+			{order === "desc" && <ArrowDown strokeWidth={2} size={20} />}
 		</div>
 	);
 };

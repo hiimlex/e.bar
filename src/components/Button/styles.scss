@@ -55,7 +55,7 @@
 	&-filled {
 		&.button-primary {
 			background-color: $color-primary;
-			color: $color-text-dark;
+			color: $color-white;
 
 			&:hover {
 				background-color: darken($color-primary, 10%);

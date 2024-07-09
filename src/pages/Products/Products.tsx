@@ -142,7 +142,7 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 				<header className="products-header">
 					<h2 className="page-title">Meus produtos</h2>
 					<Button onClick={openAddProductModal}>
-						<Plus size={14} /> ADICIONAR
+						<Plus size={14} /> Adicionar
 					</Button>
 				</header>
 

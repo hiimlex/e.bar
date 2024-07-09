@@ -4,6 +4,8 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	height: 100%;
+	flex: 1;
 
 	&-content {
 		display: flex;
@@ -52,7 +54,7 @@
 		gap: $unit-3;
 		height: fit-content;
 
-		max-height: calc(100vh - 300px);
+		max-height: 100%;
 		overflow-y: auto;
 	}
 }

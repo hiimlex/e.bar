@@ -1,19 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { SafeAny } from "../@types";
 import {
-	AttendanceReducer,
+	OnOrderReducer,
 	OrdersReducer,
 	ProductsReducer,
 	UserReducer,
+	WaiterReducer,
 } from "./slicers";
-import { SafeAny } from "../@types";
 
 export const store = configureStore({
 	reducer: {
 		products: ProductsReducer,
 		orders: OrdersReducer,
-		attendance: AttendanceReducer,
+		onOrder: OnOrderReducer,
 		user: UserReducer,
+		waiter: WaiterReducer,
 	},
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: false,
+		}),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

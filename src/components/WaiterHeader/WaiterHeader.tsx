@@ -2,6 +2,7 @@ import { ArrowLeft, Search, X } from "react-feather";
 import { Brands } from "../Brands";
 import "./styles.scss";
 import { useRef, useState } from "react";
+import { useBreakpoint } from "../../hooks";
 
 export interface WaiterHeaderProps {
 	waiterHeaderGoBack?: boolean;
@@ -18,6 +19,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	waiterHeaderSearch = false,
 	waiterHeaderSearchPlaceholder,
 }) => {
+	const {breakpoint} = useBreakpoint();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [showSearch, setShowSearch] = useState(false);
 
@@ -45,7 +47,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 
 	return (
 		<div className="w-app-header-wrapper">
-			<header className={`w-app-header`}>
+			<header className={`w-app-header w-app-header-${breakpoint}`}>
 				<div className="flex-1 w-app-header-action">
 					{waiterHeaderGoBack && (
 						<button

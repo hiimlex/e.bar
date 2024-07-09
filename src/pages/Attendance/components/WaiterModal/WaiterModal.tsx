@@ -26,7 +26,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 	const {
 		handleSubmit,
 		control,
-		formState: { isValid, errors },
+		formState: { isValid},
 		reset,
 	} = useForm<CreateWaiterPayload>({
 		mode: "all",
@@ -205,7 +205,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 				loading={loading}
 				disabled={!isValid}
 			>
-				{mode === "create" ? "CRIAR" : "SALVAR"}
+				{mode === "create" ? "Adicionar" : "Salvar"}
 			</Button>
 		</form>
 	);

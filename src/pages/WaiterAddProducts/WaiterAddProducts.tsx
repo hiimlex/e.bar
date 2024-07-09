@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -7,7 +7,7 @@ import {
 	ProductCategoriesArray,
 	ProductCategory,
 } from "../../@types";
-import { Chip, MainContainer, Spinner } from "../../components";
+import { Button, Chip, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
 	ProductsActions,
@@ -41,8 +41,13 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 		navigate(to);
 	};
 
+	const canAddProducts = useMemo(
+		() => Object.keys(toAddProducts).length > 0,
+		[toAddProducts]
+	);
+
 	const onSelectCategory = (categoria?: ProductCategory) => {
-		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: false }));
+		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
 	};
 
 	const onStockFilter = () => {
@@ -163,6 +168,12 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 								Carregando produtos...
 							</span>
 						</div>
+					)}
+
+					{canAddProducts && (
+						<footer className="w-a-footer">
+							<Button className="fill-row">Adicionar</Button>
+						</footer>
 					)}
 				</main>
 			</div>

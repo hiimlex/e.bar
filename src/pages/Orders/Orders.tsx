@@ -1,10 +1,10 @@
+import { RefreshCw } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { OrdersViewFiltersArray } from "../../@types";
 import { Button, Chip, MainContainer, OrderBy } from "../../components";
-import { AppDispatch, OrdersActions, RootState } from "../../store";
-import "./styles.scss";
+import { AppDispatch, RootState } from "../../store";
 import { OrderCard } from "./components";
-import { RefreshCw } from "react-feather";
+import "./styles.scss";
 
 interface OrdersPageProps {}
 
@@ -12,9 +12,9 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 	const { filters } = useSelector((state: RootState) => state.orders);
 	const dispatch = useDispatch<AppDispatch>();
 
-	const onSelectView = (view: number) => {
-		dispatch(OrdersActions.setFilters({ view }));
-	};
+	// const onSelectView = (view: number) => {
+	// 	dispatch(OrdersActions.setFilters({ view }));
+	// };
 
 	return (
 		<MainContainer showAdminHeader>
@@ -44,7 +44,7 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 					<div className="orders-actions">
 						<OrderBy label="N° Mesa" />
 						<Button theme="secondary">
-							<RefreshCw size={18} /> ATUALIZAR
+							<RefreshCw size={18} /> Atualizar
 						</Button>
 					</div>
 				</div>

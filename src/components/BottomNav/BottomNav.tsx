@@ -1,14 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { Home, Settings } from "react-feather";
+import { NavLink, Pages, SafeAny } from "../../@types";
 import "./styles.scss";
-import { NavLink, Pages } from "../../@types";
-import { Home, Settings, User } from "react-feather";
 
 const WAITER_LINKS: NavLink[] = [
-	{
-		to: Pages.WaiterHome,
-		label: Pages.WaiterHome,
-		icon: <Home />,
-	},
 	{
 		to: Pages.WaiterHome,
 		label: Pages.WaiterHome,
@@ -23,14 +17,14 @@ const WAITER_LINKS: NavLink[] = [
 
 interface BottomNavProps {}
 
-const BottomNav: React.FC = () => {
-	const location = useLocation();
-
-
+const BottomNav: React.FC<BottomNavProps> = () => {
+	const style: SafeAny = {
+		"--navlinks": WAITER_LINKS.length,
+	};
 
 	return (
-		<nav className="bottom-nav">
-			{WAITER_LINKS.map((link,index) => (
+		<nav className="bottom-nav" style={style}>
+			{WAITER_LINKS.map((link, index) => (
 				<span key={index} className="bottom-nav-icon">
 					{link.icon}
 				</span>

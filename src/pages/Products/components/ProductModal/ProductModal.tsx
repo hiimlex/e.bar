@@ -168,7 +168,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 					disabled={!canAdd}
 					className="fill-row"
 				>
-					CRIAR
+					Adicionar
 				</Button>
 			)}
 
@@ -179,7 +179,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 					disabled={!canAdd}
 					className="fill-row"
 				>
-					SALVAR
+					Salvar
 				</Button>
 			)}
 		</div>

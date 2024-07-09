@@ -50,7 +50,7 @@
 
 	&-grid {
 		display: grid;
-		grid-template-columns: 1fr minmax(40px, 100px);
+		grid-template-columns: 1fr minmax(30px, 60px);
 	}
 
 	&-expand {
@@ -80,14 +80,14 @@
 	}
 }
 
-.details {
+.s-details {
 	display: flex;
 	flex-direction: column;
 
-	.details-grid {
+	&-grid {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 40px 1fr minmax(40px, 100px);
+		grid-template-columns: 40px 1fr minmax(20px, 68px);
 		gap: $unit-2;
 		align-items: flex-start;
 

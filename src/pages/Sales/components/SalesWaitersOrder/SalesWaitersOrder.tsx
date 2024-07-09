@@ -1,30 +1,39 @@
 import { useState } from "react";
+import { IOrder, StatusToLabel } from "../../../../@types";
 import "./styles.scss";
 interface SalesWaitersOrder {
-	id: number | string;
+	order: IOrder;
 }
 
-const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ id }) => {
+const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 	const [expand, setExpand] = useState(false);
 
 	return (
 		<div className="sl-order">
 			<div className="sl-order-status">
-				<span className="chip-status chip-status-primary">Mesa {id}</span>
-				<span className="chip-status chip-status-success-outlined">Entregue</span>
+				<span className="chip-status chip-status-primary">
+					Mesa {order.table_id}
+				</span>
+				<span className="chip-status chip-status-success-outlined">
+					{StatusToLabel[order.status]}
+				</span>
 			</div>
-			<span className="sl-order-id">Pedido N° {id}</span>
+			<span className="sl-order-id">Comanda N° {order.id}</span>
 
 			{expand && (
 				<>
-					<div className="details">
-						{Array.from({ length: 3 }).map((_, index) => (
-							<div key={index} className="details-grid">
-								<span className="details-grid-stock">1x</span>
-								<span className="details-grid-name">Carne</span>
-								<span className="text-currency details-grid-price">
+					<div className="s-details">
+						{order.products.map((order_product, index) => (
+							<div key={index} className="s-details-grid">
+								<span className="s-details-grid-stock">
+									{order_product.quantity}x
+								</span>
+								<span className="s-details-grid-name">
+									{order_product.name}
+								</span>
+								<span className="text-currency s-details-grid-price">
 									<span>R$</span>
-									<span>{"10000"}</span>
+									<span>{order_product.price}</span>
 								</span>
 							</div>
 						))}
@@ -35,21 +44,16 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ id }) => {
 			{expand && <div className="dashline" />}
 
 			<div className="sl-order-group">
-				<div
-					className={`${
-						expand ? "sl-order-grid" : "sl-order-row"
-					} sl-order-total`}
-				>
+				<div className="sl-order-row sl-order-total">
 					<span>Total</span>
-					<div className="text-currency">
-						<span>R$</span>
-						<span>120</span>
-					</div>
+					<span>R$ {order.total}</span>
 				</div>
 
-				{expand && (
+				{expand && order.payment_method && (
 					<div className="sl-order-grid sl-order-payment-method">
-						<span className="sl-order-payment-method-label">Forma de pagamento</span>
+						<span className="sl-order-payment-method-label">
+							Forma de pagamento
+						</span>
 						<span className="sl-order-payment-method-value">PIX</span>
 					</div>
 				)}

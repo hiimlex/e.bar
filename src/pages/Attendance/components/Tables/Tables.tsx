@@ -1,9 +1,9 @@
-import { Plus } from "react-feather";
-import { Button, OrderBy, OrderByType, Spinner } from "../../../../components";
-import "./styles.scss";
-import { TablesService } from "../../../../api";
 import { useCallback, useEffect, useState } from "react";
+import { Plus } from "react-feather";
 import { ITable, TableFilters } from "../../../../@types";
+import { TablesService } from "../../../../api";
+import { Button, OrderBy, Spinner } from "../../../../components";
+import "./styles.scss";
 
 interface TablesProps {}
 
@@ -48,11 +48,11 @@ const Tables: React.FC<TablesProps> = () => {
 	};
 
 	const activate = async (tableId: number) => {
-		await updateTable(tableId, { active: true });
+		await updateTable(tableId, { is_active: true });
 	};
 
 	const deactivate = async (tableId: number) => {
-		await updateTable(tableId, { active: false });
+		await updateTable(tableId, { is_active: false });
 	};
 
 	const updateTable = async (tableId: number, data: Partial<ITable>) => {
@@ -70,13 +70,16 @@ const Tables: React.FC<TablesProps> = () => {
 		}
 	};
 
-	const onOrderBy = (order: TableFilters["ordem"], direction: TableFilters['direcao']) => {
-		if (direction === "") {
-			order = undefined;
-			direction = undefined;
+	const onOrderBy = (
+		sort_key: TableFilters["sort_key"],
+		sort: TableFilters["sort"]
+	) => {
+		if (sort === "") {
+			sort = undefined;
+			sort_key = undefined;
 		}
 
-		setFilters((curr) => ({ ...curr, ordem: order, direcao: direction }));
+		setFilters((curr) => ({ ...curr, sort, sort_key }));
 	};
 
 	useEffect(() => {
@@ -90,16 +93,16 @@ const Tables: React.FC<TablesProps> = () => {
 				<div className="tables-filters">
 					<OrderBy
 						label="N° Mesa"
-						onOrderChange={(direction) => onOrderBy("numero", direction)}
+						onOrderChange={(direction) => onOrderBy("id", direction)}
 					/>
 				</div>
 				<Button loading={adding} onClick={createTable}>
-					<Plus size={14} /> ADICIONAR
+					<Plus size={14} /> Adicionar
 				</Button>
 			</div>
 			{!loading && (
 				<div className="tables-grid">
-					{tables.map((table, index) => (
+					{tables.map((table) => (
 						<div className="card card-gray" key={table.id}>
 							<div className="flex-row-text">
 								<span className="tables-info-number">Mesa {table.id}</span>
@@ -110,14 +113,14 @@ const Tables: React.FC<TablesProps> = () => {
 							<span className="table-info-bartender">
 								{table.waiter_id || "---"}
 							</span>
-							{table.active ? (
+							{table.is_active ? (
 								<Button
 									className="fill-row"
 									theme="danger"
 									loading={updating === table.id}
 									onClick={() => deactivate(table.id)}
 								>
-									DESATIVAR
+									Desativar
 								</Button>
 							) : (
 								<Button
@@ -126,7 +129,7 @@ const Tables: React.FC<TablesProps> = () => {
 									loading={updating === table.id}
 									onClick={() => activate(table.id)}
 								>
-									ATIVAR
+									Ativar
 								</Button>
 							)}
 						</div>

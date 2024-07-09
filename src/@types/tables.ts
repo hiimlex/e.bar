@@ -3,11 +3,13 @@ import { OrderByType } from "../components";
 export interface ITable {
 	id: number;
 	in_use: boolean;
-	active: boolean;
+	is_active: boolean;
 	waiter_id?: number;
 }
 
 export interface TableFilters {
-	direcao?: OrderByType;
-	ordem?: "numero";
+	sort?: OrderByType;
+	sort_key?: "id";
+	is_active?: boolean;
+	in_use?: boolean;
 }

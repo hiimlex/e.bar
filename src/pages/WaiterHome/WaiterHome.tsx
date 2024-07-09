@@ -1,17 +1,22 @@
-import { Plus } from "react-feather";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Pages, ProductCategoriesArray, ProductCategory } from "../../@types";
+import {
+	IOrder,
+	Pages,
+	ProductCategoriesArray,
+	ProductCategory,
+} from "../../@types";
 import { Button, Chip, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
 	ProductsActions,
 	RootState,
 	fetchProducts,
+	getMyOrders,
 } from "../../store";
 import { WaiterOrdersCard, WaiterProductCard } from "./components";
 import "./styles.scss";
-import { useCallback, useEffect } from "react";
 
 interface WaiterHomePageProps {}
 
@@ -20,6 +25,9 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 		(state: RootState) => state.products
 	);
 	const { waiter } = useSelector((state: RootState) => state.user);
+	const { orders, loading_orders } = useSelector(
+		(state: RootState) => state.waiter
+	);
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
 
@@ -59,9 +67,24 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 		[filters]
 	);
 
+	const loadOrders = useCallback(async () => {
+		await dispatch(getMyOrders());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const navigateToOrder = (order: IOrder) => {
+		const to = Pages.WaiterOrder.replace(":orderId", order.id.toString());
+
+		navigate(to);
+	};
+
 	useEffect(() => {
 		loadProducts();
 	}, [loadProducts]);
+
+	useEffect(() => {
+		loadOrders();
+	}, [loadOrders]);
 
 	return (
 		<MainContainer>
@@ -72,25 +95,38 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						className="fill-row"
 						onClick={() => navigate(Pages.WaiterNewOrder)}
 					>
-						<Plus size={14} /> COMANDA
+						Novo pedido
 					</Button>
 
 					<div className="w-home-orders">
 						<div className="w-home-orders--header">
-							<span className="w-home-subtitle">Minhas comandas</span>
+							<span className="w-home-subtitle">Meus Pedidos</span>
 							<span
 								className="link link-secondary"
 								role="button"
 								onClick={() => navigate(Pages.WaiterOrders)}
 							>
-								ver todas
+								ver todos
 							</span>
 						</div>
-						<div className="w-home-grid">
-							{Array.from({ length: 4 }).map((_, index) => (
-								<WaiterOrdersCard id={index} key={index} />
-							))}
-						</div>
+						{!loading_orders ? (
+							<div className="w-home-grid">
+								{orders.map((order, index) => (
+									<WaiterOrdersCard
+										order={order}
+										onClick={navigateToOrder}
+										key={index}
+									/>
+								))}
+							</div>
+						) : (
+							<div className="w-home-loading">
+								<Spinner size={32} theme="primary" />
+								<span className="w-home-loading-message">
+									Carregando pedidos...
+								</span>
+							</div>
+						)}
 					</div>
 					<div className="w-home-products">
 						<div className="w-home-products--header">

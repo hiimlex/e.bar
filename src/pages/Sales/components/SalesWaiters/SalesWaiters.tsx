@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./styles.scss";
-import { SalesWaitersOrder } from "../SalesWaitersOrder";
 import { ArrowLeft } from "react-feather";
+import "./styles.scss";
 
 interface SalesWaitersProps {}
 
@@ -23,7 +22,7 @@ const SalesWaiters: React.FC<SalesWaitersProps> = () => {
 
 			setShowOverlay(showOverlay);
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (containerRef.current && !addedEvent) {
@@ -72,17 +71,17 @@ const SalesWaiters: React.FC<SalesWaitersProps> = () => {
 				</header>
 				<main className="sales-waiters-content sales-waiters-grid">
 					<div className="sales-waiters-grid-item sales-waiters-grid-list">
-						{Array.from({ length: 5 }).map((_, index) => (
+						{/* {Array.from({ length: 5 }).map((_, index) => (
 							<SalesWaitersOrder id={index} key={index} />
-						))}
+						))} */}
 					</div>
 
 					<div className="dashline-vertical" />
 
 					<div className="sales-waiters-grid-item sales-waiters-grid-list">
-						{Array.from({ length: 1 }).map((_, index) => (
+						{/* {Array.from({ length: 1 }).map((_, index) => (
 							<SalesWaitersOrder id={index} key={index} />
-						))}
+						))} */}
 					</div>
 
 					<div className="dashline-vertical" />

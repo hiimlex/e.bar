@@ -4,7 +4,7 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: $unit-3;
+	gap: $unit-2;
 
 	&-image {
 		display: flex;
@@ -12,16 +12,18 @@
 		justify-content: center;
 		background: $color-primary;
 		position: relative;
-		min-width: 120px;
-		width: 120px;
-		border-radius: $unit-3;
+		width: 80px;
+		border-radius: $unit-2;
 		overflow: hidden;
 		height: fit-content;
+		padding: $unit-1;
 
 		img {
-			height: 80px;
+			height: 52px;
 			width: auto;
 			object-fit: cover;
+			-webkit-filter: drop-shadow(0px 4px 5px #333);
+			filter: drop-shadow(0px 4px 5px #333);
 		}
 	}
 
@@ -29,7 +31,6 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		gap: 3px;
 		width: 100%;
 
 		&-name {
@@ -49,7 +50,7 @@
 		}
 
 		&-price {
-			font-size: 16px;
+			font-size: 14px;
 			font-weight: 600;
 			color: $color-text-dark;
 		}
@@ -81,7 +82,7 @@
 		align-items: center;
 		gap: $unit-2;
 
-		font-size: 16px;
+		font-size: 14px;
 		font-weight: 600;
 		color: $color-text-dark;
 		padding: $unit-1 0;
@@ -89,9 +90,6 @@
 	}
 
 	&.minify {
-		justify-content: flex-start;
-		align-items: flex-start;
-
 		.product-row-image {
 			min-width: 100px;
 			width: 100px;

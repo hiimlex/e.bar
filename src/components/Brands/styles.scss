@@ -1,4 +1,10 @@
+@import "../../base.scss";
+
 .brand-img {
 	height: auto;
 	object-fit: cover;
+}
+.text-logo {
+	font-size: 28px;
+	color: $color-secondary;
 }

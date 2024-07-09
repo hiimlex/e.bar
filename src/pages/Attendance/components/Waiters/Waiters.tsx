@@ -138,7 +138,7 @@ const Waiters: React.FC<WaitersProps> = () => {
 			<div className="flex-row-text">
 				<h4 className="waiters-title">Garçons</h4>
 				<Button onClick={onAddWaiter}>
-					<Plus size={14} /> ADICIONAR
+					<Plus size={14} /> Adicionar
 				</Button>
 			</div>
 			<div className="waiters-actions">
@@ -195,7 +195,7 @@ const Waiters: React.FC<WaitersProps> = () => {
 									onClick={() => onActive(waiter, waiter.active)}
 									disabled={activatingWaiterId === waiter.id.toString()}
 								>
-									{waiter.active ? "DESATIVAR" : "ATIVAR"}
+									{waiter.active ? "Desativar" : "Ativar"}
 								</Button>
 								<IconButton
 									theme="secondary"
