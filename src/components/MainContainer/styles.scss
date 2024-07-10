@@ -31,9 +31,7 @@
 			min-height: 480px;
 			overflow-y: auto;
 			height: 100%;
-
-			margin-bottom: $bottom-nav-height;
-			// height: calc(100vh - $bottom-nav-height - $waiter-header-height);
+			padding-bottom: $unit-6;
 		}
 
 		&-md {

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ITable, Pages } from "../../@types";
 import { OrdersService, TablesService } from "../../api";
-import { Button, MainContainer } from "../../components";
+import { Button, Input, MainContainer } from "../../components";
 import { OnOrderActions } from "../../store";
 import "./styles.scss";
 
@@ -15,6 +15,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 	const [tables, setTables] = useState<ITable[]>([]);
 	const [selectedTable, setSelectedTable] = useState<number | null>(null);
+	const [customers, setCustomers] = useState<number | null>(null);
 
 	const [loading, setLoading] = useState(false);
 
@@ -31,7 +32,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 	const createOrder = async () => {
 		try {
-			if (selectedTable === null) {
+			if (selectedTable === null || customers === null) {
 				return;
 			}
 
@@ -39,9 +40,11 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 			const {
 				data: { id: newOrderId },
-			} = await OrdersService.create(selectedTable);
+			} = await OrdersService.create(selectedTable, customers);
 
-			const { data: [order] } = await OrdersService.fetchAll({
+			const {
+				data: [order],
+			} = await OrdersService.fetchAll({
 				order_id: newOrderId,
 			});
 
@@ -77,8 +80,8 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
-			waiterHeaderGoBack
-			waiterHeaderOnBack={goBack}
+			showGoBack
+			onGoBack={goBack}
 		>
 			<div className="new-order">
 				<main className="new-order-content">
@@ -88,50 +91,65 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 							Comanda
 						</span>
 					</header>
-					<div className="new-order-tables">
-						<span className="new-order-subtitle">Selecionar mesa</span>
+					<main className="new-order-main">
+						<div className="new-order-tables">
+							<span className="new-order-subtitle">Selecionar mesa</span>
 
-						{tables.length === 0 && (
-							<div className="new-order-no-tables">
-								<Slash size={32} />
-								<span>Nenhuma mesa disponível.</span>
-							</div>
-						)}
+							{tables.length === 0 && (
+								<div className="new-order-no-tables">
+									<Slash size={32} />
+									<span>Nenhuma mesa disponível.</span>
+								</div>
+							)}
 
-						{tables.length > 0 && (
-							<div className="new-order-list no-scroll">
-								{tables.map((table, index) => {
-									const isSelected = selectedTable === table.id;
-									return (
-										<div
-											role="button"
-											onClick={() => onSelectTable(table.id)}
-											className={`card card-gray ${
-												isSelected ? " card-selected" : ""
-											}`}
-											key={index}
-										>
-											<div className="flex-row-text">
-												<span className="tables-info-number">
-													Mesa {table.id}
-												</span>
-												<div
-													className={`chip-status chip-status-${
-														isSelected ? "secondary" : "primary"
-													}`}
-												>
-													{table.in_use ? "OCUPADA" : "Livre"}
+							{tables.length > 0 && (
+								<div className="new-order-list no-scroll">
+									{tables.map((table, index) => {
+										const isSelected = selectedTable === table.id;
+										return (
+											<div
+												role="button"
+												onClick={() => onSelectTable(table.id)}
+												className={`card card-gray ${
+													isSelected ? " card-selected" : ""
+												}`}
+												key={index}
+											>
+												<div className="flex-row-text">
+													<span className="tables-info-number">
+														Mesa {table.id}
+													</span>
+													<div
+														className={`chip-status chip-status-${
+															isSelected ? "secondary" : "primary"
+														}`}
+													>
+														{table.in_use ? "OCUPADA" : "Livre"}
+													</div>
 												</div>
+												<span className="table-info-bartender">---</span>
 											</div>
-											<span className="table-info-bartender">---</span>
-										</div>
-									);
-								})}
-							</div>
-						)}
-					</div>
+										);
+									})}
+								</div>
+							)}
+						</div>
+						<div className="new-order-customers">
+							<span className="new-order-subtitle">Para quantas pessoas ?</span>
+
+							<Input
+								placeholder="0"
+								mode="controlled"
+								type="number"
+								onChangeValue={(value) => {
+									setCustomers(+value);
+								}}
+								hideLabel
+							/>
+						</div>
+					</main>
 					<Button
-						disabled={selectedTable === null}
+						disabled={selectedTable === null || !customers}
 						onClick={createOrder}
 						loading={loading}
 					>

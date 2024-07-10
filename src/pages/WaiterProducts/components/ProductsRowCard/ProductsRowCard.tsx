@@ -43,10 +43,6 @@ const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
 				)}
 				{!showAdd && (
 					<>
-						<span className="product-row-info-category">
-							{product.category}
-						</span>
-
 						<span className="product-row-info-price">{`R$ ${product.price}`}</span>
 					</>
 				)}

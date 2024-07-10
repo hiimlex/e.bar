@@ -4,7 +4,7 @@ import { Loader } from "react-feather";
 interface SpinnerProps {
 	size: number;
 	strokeWidth?: number;
-	theme: "primary" | "secondary";
+	theme: "primary" | "secondary" | 'white';
 }
 
 const Spinner: React.FC<SpinnerProps> = ({

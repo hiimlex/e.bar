@@ -76,8 +76,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	return (
 		<div className="login">
 			<div className="login-brands">
-				<Brands.JobucBrand size={100} />
-				<Brands.SocialSipsBrand size={145} />
+				<Brands.EBarBrand />
 			</div>
 			<div className="login-content">
 				<h2 className="page-title">Fazer Login</h2>

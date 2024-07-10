@@ -1,30 +1,11 @@
 interface BrandProps {
-	size: number;
+	size?: number;
 }
 
-import React, { useMemo } from "react";
-import jobucsvg from "../../assets/jobuc_logo.svg";
-import socialsipsvg from "../../assets/socialsips_logo.svg";
+import React from "react";
 import "./styles.scss";
 
-const JobucBrand: React.FC<BrandProps> = ({ size }) => {
-	const styles: React.CSSProperties = useMemo(() => ({ width: size }), [size]);
-
-	return (
-		<>
-			{/* <img
-				src={jobucsvg}
-				className="brand-img"
-				alt="JOBUC Club"
-				style={styles}
-			/> */}
-		</>
-	);
-};
-
-const SocialSipsBrand: React.FC<BrandProps> = ({ size }) => {
-	const styles: React.CSSProperties = useMemo(() => ({ width: size }), [size]);
-
+const EBarBrand: React.FC<BrandProps> = () => {
 	return (
 		<h1 className="text-logo">
 			<strong>e</strong>.bar
@@ -33,6 +14,6 @@ const SocialSipsBrand: React.FC<BrandProps> = ({ size }) => {
 	);
 };
 
-const Brands = { JobucBrand, SocialSipsBrand };
+const Brands = { EBarBrand };
 
 export { Brands };

@@ -103,10 +103,10 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
-			waiterHeaderGoBack
-			waiterHeaderOnBack={goBack}
-			waiterHeaderSearch
-			waiterHeaderSearchPlaceholder="Buscar produtos..."
+			showGoBack
+			onGoBack={goBack}
+			showSearch
+			
 		>
 			<div className="w-a-products">
 				<main className="w-a-products-content">
@@ -150,7 +150,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 					</header>
 
 					{!isLoadingProducts ? (
-						<div className="w-a-products-list no-scroll">
+						<div className={`w-a-products-list no-scroll ${canAddProducts ? 'margin-bottom' : ''}`}>
 							{products.map((product, index) => (
 								<ProductsRowCard
 									product={product}
@@ -171,7 +171,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 					)}
 
 					{canAddProducts && (
-						<footer className="w-a-footer">
+						<footer className="w-a-products-footer">
 							<Button className="fill-row">Adicionar</Button>
 						</footer>
 					)}

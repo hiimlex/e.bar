@@ -71,10 +71,9 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
-			waiterHeaderGoBack
-			waiterHeaderOnBack={goBack}
-			waiterHeaderSearch
-			waiterHeaderSearchPlaceholder="Buscar produtos..."
+			showGoBack
+			onGoBack={goBack}
+			showSearch
 		>
 			<div className="w-products">
 				<main className="w-products-content">

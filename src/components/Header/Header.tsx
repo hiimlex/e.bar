@@ -47,8 +47,7 @@ const Header: React.FC = () => {
 		<div className={`header-wrapper ${scrolled ? "header-scrolled" : ""}`}>
 			<div className={`header header-${breakpoint}`}>
 				<div className="header-brands">
-					<Brands.JobucBrand size={100} />
-					<Brands.SocialSipsBrand size={145} />
+					<Brands.EBarBrand />
 				</div>
 
 				<nav className="header-nav">

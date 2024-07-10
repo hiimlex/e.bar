@@ -17,6 +17,7 @@ export type OrdersViewType = keyof typeof OrdersViewFilters;
 
 export interface CreateOrderPayload {
 	table_id: number;
+	customers:number;
 }
 
 export interface OrdersFilter {

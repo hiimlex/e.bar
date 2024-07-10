@@ -1,7 +1,7 @@
-import { Edit2, Minus, Plus } from "react-feather";
+import { Edit2 } from "react-feather";
+import { IProduct } from "../../../../@types";
 import { IconButton } from "../../../../components";
 import "./styles.scss";
-import { IProduct } from "../../../../@types";
 
 interface ProductCardProps {
 	product: IProduct;

@@ -18,9 +18,12 @@ const fetchAll = async (
 	}
 };
 
-const create = async (table_id: number): Promise<AxiosResponse<IOrder>> => {
+const create = async (
+	table_id: number,
+	customers: number
+): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const res = await api.post(Endpoints.CreateOrder, { table_id });
+		const res = await api.post(Endpoints.CreateOrder, { table_id, customers });
 
 		return res;
 	} catch (error) {

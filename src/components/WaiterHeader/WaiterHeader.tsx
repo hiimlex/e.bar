@@ -1,89 +1,53 @@
-import { ArrowLeft, Search, X } from "react-feather";
+import { ArrowLeft, Menu, Search } from "react-feather";
+import { useBreakpoint } from "../../hooks";
 import { Brands } from "../Brands";
 import "./styles.scss";
-import { useRef, useState } from "react";
-import { useBreakpoint } from "../../hooks";
 
 export interface WaiterHeaderProps {
-	waiterHeaderGoBack?: boolean;
-	waiterHeaderOnBack?: () => void;
-	waiterHeaderSearch?: boolean;
-	waiterHeaderOnSearch?: (value: string) => void;
-	waiterHeaderSearchPlaceholder?: string;
+	showGoBack?: boolean;
+	onGoBack?: () => void;
+	showSearch?: boolean;
+	onSearch?: () => void;
+	showMenu?: boolean;
+	onMenu?: () => void;
 }
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
-	waiterHeaderGoBack = false,
-	waiterHeaderOnBack,
-	waiterHeaderOnSearch,
-	waiterHeaderSearch = false,
-	waiterHeaderSearchPlaceholder,
+	onGoBack,
+	onMenu,
+	onSearch,
+	showGoBack,
+	showSearch,
+	showMenu,
 }) => {
-	const {breakpoint} = useBreakpoint();
-	const inputRef = useRef<HTMLInputElement>(null);
-	const [showSearch, setShowSearch] = useState(false);
-
-	const onSearchClick = () => {
-		setShowSearch((curr) => !curr);
-	};
-
-	const onSearchChange = (value: string) => {
-		if (waiterHeaderOnSearch) {
-			waiterHeaderOnSearch(value);
-		}
-	};
-
-	const resetSearch = () => {
-		if (inputRef.current) {
-			inputRef.current.value = "";
-
-			if (waiterHeaderOnSearch) {
-				waiterHeaderOnSearch("");
-			}
-
-			setShowSearch(false);
-		}
-	};
+	const { breakpoint } = useBreakpoint();
 
 	return (
 		<div className="w-app-header-wrapper">
 			<header className={`w-app-header w-app-header-${breakpoint}`}>
 				<div className="flex-1 w-app-header-action">
-					{waiterHeaderGoBack && (
-						<button
-							className="w-app-header-button"
-							onClick={waiterHeaderOnBack}
-						>
+					{showGoBack && (
+						<button className="w-app-header-button" onClick={onGoBack}>
 							<ArrowLeft size={28} strokeWidth={1.5} />
 						</button>
 					)}
 				</div>
 				<div className="w-app-header-brand">
-					<Brands.SocialSipsBrand size={120} />
+					<Brands.EBarBrand />
 				</div>
 				<div className="flex-1 w-app-header-action">
-					{waiterHeaderSearch && (
-						<button className="w-app-header-button" onClick={onSearchClick}>
+					{showSearch && (
+						<button className="w-app-header-button" onClick={onSearch}>
 							<Search size={24} strokeWidth={1.5} />
+						</button>
+					)}
+					{showMenu && (
+						<button className="w-app-header-button" onClick={onMenu}>
+							<Menu size={24} strokeWidth={1.5} />
 						</button>
 					)}
 				</div>
 			</header>
-			{showSearch && (
-				<div className="input-search-wrapper">
-					<input
-						type="text"
-						className="input-search"
-						placeholder={waiterHeaderSearchPlaceholder}
-						onChange={({ target: { value } }) => onSearchChange(value)}
-						ref={inputRef}
-					/>
-
-					<div className="input-search-close" onClick={resetSearch}>
-						<X size={22} strokeWidth={1.5} />
-					</div>
-				</div>
-			)}
 		</div>
 	);
 };

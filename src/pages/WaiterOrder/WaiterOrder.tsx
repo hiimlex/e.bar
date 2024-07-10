@@ -52,8 +52,8 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
-			waiterHeaderGoBack
-			waiterHeaderOnBack={goBack}
+			showGoBack
+			onGoBack={goBack}
 		>
 			<div className="w-on-order">
 				<main className="w-on-order-content">
@@ -70,7 +70,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 								className="link link-secondary"
 								onClick={seeAllOrder}
 							>
-								ver todos
+								ver produtos
 							</span>
 						</div>
 					</header>

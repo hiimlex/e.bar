@@ -58,7 +58,7 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 	}, [loadOrders]);
 
 	return (
-		<MainContainer waiterHeaderGoBack waiterHeaderOnBack={goBack}>
+		<MainContainer showGoBack onGoBack={goBack}>
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>

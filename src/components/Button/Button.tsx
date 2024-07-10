@@ -49,7 +49,7 @@ const Button: React.FC<ButtonProps> = ({
 			className={classNames}
 			{...rest}
 		>
-			{loading ? <Spinner size={24} theme="secondary" /> : children}
+			{loading ? <Spinner size={24} theme="white" /> : children}
 		</button>
 	);
 };

@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -109,7 +110,13 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 								ver todos
 							</span>
 						</div>
-						{!loading_orders ? (
+						{!loading_orders && orders.length === 0 && (
+							<div className="w-home-empty">
+								<FileMinus strokeWidth={2} size={32} />
+								<div>Nenhum pedido encontrado.</div>
+							</div>
+						)}
+						{!loading_orders && (
 							<div className="w-home-grid">
 								{orders.map((order, index) => (
 									<WaiterOrdersCard
@@ -118,12 +125,15 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 										key={index}
 									/>
 								))}
+
+								{orders.length === 0}
 							</div>
-						) : (
+						)}
+						{loading_orders && (
 							<div className="w-home-loading">
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">
-									Carregando pedidos...
+									<span>Carregando pedidos...</span>
 								</span>
 							</div>
 						)}
@@ -168,13 +178,20 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 								</Chip>
 							))}
 						</div>
-						{!isLoadingProducts ? (
+						{!isLoadingProducts && products.length === 0 && (
+							<div className="w-home-empty">
+								<FileMinus strokeWidth={2} size={32} />
+								<div>Nenhum produto encontrado.</div>
+							</div>
+						)}
+						{!isLoadingProducts && (
 							<div className="w-home-grid">
 								{products.map((product, index) => (
 									<WaiterProductCard product={product} key={index} />
 								))}
 							</div>
-						) : (
+						)}
+						{isLoadingProducts && (
 							<div className="w-home-loading">
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">
