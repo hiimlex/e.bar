@@ -111,7 +111,7 @@ const Tables: React.FC<TablesProps> = () => {
 								</div>
 							</div>
 							<span className="table-info-bartender">
-								{table.waiter_id || "---"}
+								{table.waiter_name ? `Garçom ${table.waiter_name}` : "---"}
 							</span>
 							{table.is_active ? (
 								<Button

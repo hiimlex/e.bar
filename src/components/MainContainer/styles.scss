@@ -6,18 +6,15 @@
 	justify-content: flex-start;
 	align-items: center;
 
-	overflow: hidden;
-
 	width: 100%;
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
+	height: 100%;
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
 
 	&-content {
 		padding: $unit-4;
-		width: 100%;
-		min-height: 100%;
+		width: var(--width);
+		height: var(--height);
 		overflow-x: hidden;
 		overflow-y: hidden;
 
@@ -26,11 +23,8 @@
 		position: relative;
 
 		&-sm {
-			max-width: 100%;
 			overflow-x: hidden;
-			min-height: 480px;
 			overflow-y: auto;
-			height: 100%;
 			padding-bottom: $unit-6;
 		}
 
@@ -45,9 +39,21 @@
 		&-xl {
 			max-width: 1400px;
 		}
+
+		&-md,
+		&-lg,
+		&-xl {
+			height: 100% !important;
+		}
 	}
 
 	&-sm {
-		height: 100%;
+		width: var(--width);
+		height: var(--height);
+		overflow: hidden;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 }

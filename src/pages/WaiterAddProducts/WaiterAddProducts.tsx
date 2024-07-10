@@ -10,14 +10,22 @@ import {
 import { Button, Chip, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
+	OnOrderActions,
 	ProductsActions,
 	RootState,
 	fetchProducts,
 } from "../../store";
 import { ProductsRowCard } from "../WaiterProducts/components";
 import "./styles.scss";
+import { ConfirmAddProducts } from "./components";
+import { OrdersService } from "../../api";
 
 interface WaiterAddProductsPageProps {}
+
+export type AddProduct = Record<
+	string,
+	{ product: IProduct; quantity: number }
+>;
 
 const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	const { orderId } = useParams();
@@ -26,14 +34,14 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 		(state: RootState) => state.products
 	);
 
-	const [toAddProducts, setToAddProducts] = useState<
-		Record<string, { product: IProduct; quantity: number }>
-	>({});
+	const [toAddProducts, setToAddProducts] = useState<AddProduct>({});
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
+
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
 
 	const goBack = () => {
 		const to = Pages.WaiterOrderProducts.replace(":orderId", orderId || "");
@@ -77,12 +85,16 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	const onAddProduct = (product: IProduct, quantity: number) => {
 		const newToAddProducts = { ...toAddProducts };
 
-		if (newToAddProducts[product.id]) {
-			newToAddProducts[product.id].quantity = quantity;
-		}
-
 		if (!newToAddProducts[product.id]) {
 			newToAddProducts[product.id] = { product, quantity };
+		}
+
+		if (newToAddProducts[product.id]) {
+			newToAddProducts[product.id].quantity = quantity;
+
+			if (quantity === 0) {
+				delete newToAddProducts[product.id];
+			}
 		}
 
 		setToAddProducts(newToAddProducts);
@@ -100,13 +112,34 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 		loadProducts();
 	}, [loadProducts]);
 
+	const getOrder = useCallback(async () => {
+		try {
+			if (!orderId) {
+				return;
+			}
+
+			const { data } = await OrdersService.fetchAll({ order_id: +orderId });
+
+			if (data) {
+				dispatch(OnOrderActions.setOrder(data[0]));
+			} else {
+				navigate(Pages.WaiterHome);
+			}
+		} catch (error) {
+			navigate(Pages.WaiterHome);
+		}
+	}, []);
+
+	useEffect(() => {
+		getOrder();
+	}, []);
+
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
 			showGoBack
 			onGoBack={goBack}
 			showSearch
-			
 		>
 			<div className="w-a-products">
 				<main className="w-a-products-content">
@@ -150,14 +183,18 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 					</header>
 
 					{!isLoadingProducts ? (
-						<div className={`w-a-products-list no-scroll ${canAddProducts ? 'margin-bottom' : ''}`}>
+						<div
+							className={`w-a-products-list no-scroll ${
+								canAddProducts ? "margin-bottom" : ""
+							}`}
+						>
 							{products.map((product, index) => (
 								<ProductsRowCard
 									product={product}
 									key={index}
-									showAdd={true}
-									onAdd={onAddProduct}
-									selected={toAddProducts[product.id]?.quantity ?? 0}
+									showChangeButtons={true}
+									onChange={onAddProduct}
+									quantity={toAddProducts[product.id]?.quantity ?? 0}
 								/>
 							))}
 						</div>
@@ -172,11 +209,29 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 
 					{canAddProducts && (
 						<footer className="w-a-products-footer">
-							<Button className="fill-row">Adicionar</Button>
+							<Button
+								theme="secondary"
+								className="fill-row"
+								onClick={() => setShowConfirmModal(true)}
+							>
+								Adicionar
+							</Button>
 						</footer>
 					)}
 				</main>
 			</div>
+			{showConfirmModal && orderId && (
+				<ConfirmAddProducts
+					orderId={+orderId}
+					productList={toAddProducts}
+					cancel={() => setShowConfirmModal(false)}
+					onChange={(newToAddProducts) => setToAddProducts(newToAddProducts)}
+					onConfirm={() => {
+						setShowConfirmModal(false);
+						goBack();
+					}}
+				/>
+			)}
 		</MainContainer>
 	);
 };

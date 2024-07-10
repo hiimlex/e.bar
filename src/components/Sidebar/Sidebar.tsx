@@ -1,15 +1,20 @@
-import { Home, LogOut, Settings, X } from "react-feather";
-import { NavLink, Pages, SafeAny } from "../../@types";
-import "./styles.scss";
+import { FileText, Home, LogOut, Settings, X } from "react-feather";
 import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Pages, SafeAny } from "../../@types";
 import { UserActions } from "../../store";
-import { useNavigate } from "react-router-dom";
+import "./styles.scss";
 
 const WAITER_LINKS: NavLink[] = [
 	{
 		to: Pages.WaiterHome,
 		label: "Home",
 		icon: <Home size={28} />,
+	},
+	{
+		to: Pages.WaiterOrders,
+		label: "Pedidos",
+		icon: <FileText size={28} />,
 	},
 	{
 		to: Pages.WaiterSettings,
@@ -30,11 +35,16 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const logout = () => {
 		dispatch(UserActions.logout());
 
 		navigate(Pages.Login);
+	};
+
+	const goTo = (to: string) => {
+		navigate(to);
 	};
 
 	return (
@@ -46,7 +56,13 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 					</span>
 				</button>
 				{WAITER_LINKS.map((link, index) => (
-					<span key={index} className="sidebar-nav-button">
+					<span
+						key={index}
+						className={`sidebar-nav-button ${
+							location.pathname === link.to ? "active" : ""
+						}`}
+						onClick={() => goTo(link.to)}
+					>
 						<span className="sidebar-nav-button-icon">{link.icon}</span>
 						<span>{link.label}</span>
 					</span>

@@ -5,15 +5,12 @@
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
-	flex: 1;
-
 
 	&-content {
 		display: flex;
 		flex-direction: column;
 		gap: $unit-4;
 		height: 100%;
-		justify-content: space-between;
 	}
 
 	&-header {
@@ -54,16 +51,19 @@
 	&-list {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		gap: $unit-3;
-		height: 100%;
-
+		flex: 1;
+		max-height: 100%;
 		overflow-y: auto;
 	}
 
 	&-total {
-		font-weight: 18px;
-		font-weight: 600;
-		color: $color-text-darker;
+		span {
+			font-size: 18px;
+			font-weight: 700;
+			color: $color-text-darker;
+		}
 		display: flex;
 		flex-direction: row;
 		align-items: center;

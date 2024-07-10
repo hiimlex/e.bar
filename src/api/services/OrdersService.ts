@@ -1,5 +1,10 @@
 import { AxiosResponse } from "axios";
-import { IOrder, OrdersFilter } from "../../@types";
+import {
+	CreateOrderProductPayload,
+	IOrder,
+	OrdersFilter,
+	ServeOrderProductPayload,
+} from "../../@types";
 import { queryBuilder } from "../../utils";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
@@ -31,12 +36,12 @@ const create = async (
 	}
 };
 
-const update_products = async (
+const add_order_products = async (
 	orderId: string,
-	products: { product_id: number; quantity: number }[]
+	products: CreateOrderProductPayload[]
 ): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const url = queryBuilder(Endpoints.UpdateOrderProducts, {}, { orderId });
+		const url = queryBuilder(Endpoints.AddOrderProducts, {}, { orderId });
 
 		const res = await api.put(url, {
 			products,
@@ -48,8 +53,26 @@ const update_products = async (
 	}
 };
 
+const serve_order_products = async (
+	orderId: string,
+	order_products: ServeOrderProductPayload[]
+): Promise<AxiosResponse<IOrder>> => {
+	try {
+		const url = queryBuilder(Endpoints.ServeOrderProducts, {}, { orderId });
+
+		const res = await api.post(url, {
+			order_products,
+		});
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export default {
 	fetchAll,
 	create,
-	update_products,
+	add_order_products,
+	serve_order_products,
 };

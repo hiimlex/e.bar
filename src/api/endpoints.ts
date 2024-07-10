@@ -26,5 +26,9 @@ export enum Endpoints {
 	CreateOrder = "/orders",
 	UpdateOrder = "/orders/:orderId",
 	DeleteOrder = "/orders/:orderId",
-	UpdateOrderProducts = "/orders/:orderId/products",
+	AddOrderProducts = "/order-products/:orderId/add",
+	ServeOrderProducts = "/order-products/:orderId/deliver",
+
+
+	SocketGetOrders = "/socket/orders",
 }

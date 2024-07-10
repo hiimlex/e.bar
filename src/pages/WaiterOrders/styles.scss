@@ -7,7 +7,6 @@
 	height: 100%;
 	flex: 1;
 
-
 	&-content {
 		display: flex;
 		flex-direction: column;
@@ -48,7 +47,6 @@
 		padding: $unit-1;
 	}
 
-	
 	&-loading {
 		width: 100%;
 		display: flex;
@@ -57,5 +55,21 @@
 		gap: $unit-2;
 		justify-content: center;
 		align-items: center;
+	}
+
+	&-empty {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+		justify-content: center;
+		align-items: center;
+		padding: $unit-2;
+		border-radius: $unit-2;
+		background: $color-gray-1;
+
+		font-size: 16px;
+		font-weight: 500;
+		color: $color-text-placeholder;
 	}
 }

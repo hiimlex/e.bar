@@ -312,3 +312,37 @@ input {
 	justify-content: center;
 	padding: 32px;
 }
+
+.custom-checkbox {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	width: 24px;
+	height: 24px;
+	border-radius: 6px;
+	background-color: $color-gray-1;
+	border: 1px solid $color-gray-2;
+	transition: $transition-all;
+
+	&::after {
+		content: "";
+		display: block;
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		border-radius: 4px;
+		transition: $transition-all;
+	}
+
+	&-active {
+		&::after {
+			background: $color-secondary !important;
+			animation: $animation-fade-in 0.3s ease-in-out;
+		}
+	}
+
+	&:hover {
+		scale: $scale-1;
+	}
+}

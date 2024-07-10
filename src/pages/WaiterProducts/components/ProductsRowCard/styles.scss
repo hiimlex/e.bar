@@ -5,6 +5,7 @@
 	flex-direction: row;
 	align-items: flex-start;
 	gap: $unit-2;
+	width: 100%;
 
 	&-image {
 		display: flex;
@@ -31,6 +32,7 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
+		gap: $unit-1;
 		width: 100%;
 
 		&-name {
@@ -82,7 +84,7 @@
 		align-items: center;
 		gap: $unit-2;
 
-		font-size: 14px;
+		font-size: 16px;
 		font-weight: 600;
 		color: $color-text-dark;
 		padding: $unit-1 0;

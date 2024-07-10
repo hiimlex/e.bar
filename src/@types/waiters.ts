@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import { OrderByType } from "../components";
 
 export interface IWaiter {
@@ -14,6 +15,7 @@ export interface UserState {
 	isAdmin: boolean;
 	isAuthenticated: boolean;
 	loading: boolean;
+	socket?: Socket;
 }
 export interface WaitersFilters {
 	direcao?: OrderByType;

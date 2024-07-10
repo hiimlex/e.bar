@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useBreakpoint } from "../../hooks";
 import { RootState } from "../../store";
@@ -7,6 +7,8 @@ import { ScrollToTop } from "../ScrollToTop";
 import { Sidebar } from "../Sidebar";
 import { WaiterHeader, WaiterHeaderProps } from "../WaiterHeader";
 import "./styles.scss";
+import { useWindowSize } from "usehooks-ts";
+import { SafeAny } from "../../@types";
 interface MainContainerProps extends PropsWithChildren, WaiterHeaderProps {
 	showAdminHeader?: boolean;
 	wrapperRef?: React.RefObject<HTMLDivElement>;
@@ -20,14 +22,22 @@ const MainContainer: React.FC<MainContainerProps> = ({
 	...waiterHeaderProps
 }) => {
 	const { breakpoint } = useBreakpoint();
+	const { height, width } = useWindowSize();
 
 	const { isAdmin, isAuthenticated } = useSelector(
 		(state: RootState) => state.user
 	);
 	const [showSidebar, setShowSidebar] = useState(false);
 
+	const style: SafeAny = useMemo(() => {
+		return {
+			"--width": width + 'px',
+			"--height": height + 'px',
+		};
+	}, [height]);
+
 	return (
-		<div className={`wrapper wrapper-${breakpoint}`}>
+		<div className={`wrapper wrapper-${breakpoint}`} style={style}>
 			{isAdmin && isAuthenticated && (
 				<>
 					{showAdminHeader && <Header />}
@@ -52,10 +62,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
 					>
 						{children}
 					</main>
-					<Sidebar
-						show={showSidebar}
-						onClose={() => setShowSidebar(false)}
-					/>
+					<Sidebar show={showSidebar} onClose={() => setShowSidebar(false)} />
 				</>
 			)}
 			<ScrollToTop />

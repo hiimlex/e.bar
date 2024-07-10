@@ -40,8 +40,8 @@ const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
 			className={`order-by ${isActive ? "order-by-active" : ""}`}
 		>
 			<span className="order-by-label">{label}</span>
-			{order === "asc" && <ArrowUp strokeWidth={2} size={20} />}
-			{order === "desc" && <ArrowDown strokeWidth={2} size={20} />}
+			{order === "asc" && <ArrowUp className="icon" strokeWidth={2} size={20} />}
+			{order === "desc" && <ArrowDown className="icon" strokeWidth={2} size={20} />}
 		</div>
 	);
 };

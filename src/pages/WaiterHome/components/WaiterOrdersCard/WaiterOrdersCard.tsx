@@ -21,7 +21,7 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 			</div>
 
 			<div className="w-order-row">
-				<span className="w-order-id">Comanda N° {order.id}</span>
+				<span className="w-order-id">Pedido N° {order.id}</span>
 
 				<div className="w-order-total text-currency">
 					<span>R$</span>
@@ -30,11 +30,11 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 			</div>
 			<div className="flex-center">
 				<button
-					className="link link-secondary"
+					className="link link-primary"
 					onClick={() => onClick && onClick(order)}
 					role="button"
 				>
-					ver mais
+					ver pedido
 				</button>
 			</div>
 		</div>

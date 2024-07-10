@@ -78,11 +78,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	}, []);
 
 	return (
-		<MainContainer
-			wrapperRef={wrapperRef}
-			showGoBack
-			onGoBack={goBack}
-		>
+		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
 			<div className="new-order">
 				<main className="new-order-content">
 					<header className={`w-products-header`}>
@@ -127,7 +123,11 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 														{table.in_use ? "OCUPADA" : "Livre"}
 													</div>
 												</div>
-												<span className="table-info-bartender">---</span>
+												<span className="table-info-bartender">
+													{table.waiter_name
+														? `Garçom ${table.waiter_name}`
+														: "---"}
+												</span>
 											</div>
 										);
 									})}
@@ -141,6 +141,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 								placeholder="0"
 								mode="controlled"
 								type="number"
+								inputMode="decimal"
 								onChangeValue={(value) => {
 									setCustomers(+value);
 								}}

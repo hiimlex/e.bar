@@ -5,6 +5,7 @@ export interface ITable {
 	in_use: boolean;
 	is_active: boolean;
 	waiter_id?: number;
+	waiter_name?: string;
 }
 
 export interface TableFilters {

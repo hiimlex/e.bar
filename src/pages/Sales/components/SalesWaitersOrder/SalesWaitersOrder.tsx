@@ -18,7 +18,12 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 					{StatusToLabel[order.status]}
 				</span>
 			</div>
-			<span className="sl-order-id">Comanda N° {order.id}</span>
+			<div className="flex flex-row justify-between">
+				<span className="sl-order-id">Pedido N° {order.id}</span>
+				<div className="sl-order-total">
+					<span>R$ {order.total}</span>
+				</div>
+			</div>
 
 			{expand && (
 				<>
@@ -38,28 +43,28 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 							</div>
 						))}
 					</div>
+
+					<div className="dashline" />
+					
+					<div className="sl-order-group">
+						<div className="sl-order-row sl-order-total">
+							<span>Total</span>
+							<span>R$ {order.total}</span>
+						</div>
+
+						{expand && order.payment_method && (
+							<div className="sl-order-grid sl-order-payment-method">
+								<span className="sl-order-payment-method-label">
+									Forma de pagamento
+								</span>
+								<span className="sl-order-payment-method-value">PIX</span>
+							</div>
+						)}
+					</div>
 				</>
 			)}
 
-			{expand && <div className="dashline" />}
-
-			<div className="sl-order-group">
-				<div className="sl-order-row sl-order-total">
-					<span>Total</span>
-					<span>R$ {order.total}</span>
-				</div>
-
-				{expand && order.payment_method && (
-					<div className="sl-order-grid sl-order-payment-method">
-						<span className="sl-order-payment-method-label">
-							Forma de pagamento
-						</span>
-						<span className="sl-order-payment-method-value">PIX</span>
-					</div>
-				)}
-			</div>
-
-			<span className="sl-order-expand">
+			<span className="link link-primary">
 				<button onClick={() => setExpand((curr) => !curr)}>
 					{expand ? "reduzir" : "expandir"}
 				</button>

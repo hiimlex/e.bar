@@ -10,9 +10,9 @@ export default defineConfig({
 			registerType: "prompt",
 			// includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
 			manifest: {
-				name: "Social sips",
-				short_name: "Social sips",
-				description: "JOBUC Club Social sips.",
+				name: "e.bar",
+				short_name: "e.bar",
+				description: "Drink or Restaurant E-commerce",
 				icons: [
 					// {
 					// 	src: "/coffee.balance/android-chrome-192x192.png",
@@ -38,8 +38,8 @@ export default defineConfig({
 					// },
 				],
 				scope: "/",
-				background_color: "#fcfcfc",
 				theme_color: "#fcfcfc",
+				background_color: "#fcfcfc",
 				display: "standalone",
 				orientation: "portrait",
 				start_url: "/",

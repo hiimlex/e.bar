@@ -29,10 +29,10 @@ const getCurrentUser = createAsyncThunk<
 const UserSlice = createSlice<
 	UserState,
 	SliceCaseReducers<UserState>,
-	"Orders",
+	"User",
 	SliceSelectors<UserState>
 >({
-	name: "Orders",
+	name: "User",
 	initialState: {
 		isAdmin: false,
 		isAuthenticated: false,
@@ -48,6 +48,7 @@ const UserSlice = createSlice<
 		setLoadingUser: (state, action: GenericAction<boolean>) => {
 			state.loading = action.payload;
 		},
+
 		logout: (state) => {
 			state.waiter = undefined;
 			state.isAdmin = false;

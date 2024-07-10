@@ -15,6 +15,7 @@ import {
 	WaiterProductsPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { WaiterOrderServePage } from "../pages/WaiterOrderServe";
 
 const router = createBrowserRouter([
 	{
@@ -106,10 +107,19 @@ const router = createBrowserRouter([
 		),
 	},
 	{
+		
 		path: Pages.WaiterAddProducts,
 		element: (
 			<ProtectedRoute>
 				<WaiterAddProductsPage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterOrderServe,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrderServePage />
 			</ProtectedRoute>
 		),
 	},

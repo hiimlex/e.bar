@@ -11,6 +11,7 @@ import {
 } from "../../store";
 import { ProductsRowCard } from "./components";
 import "./styles.scss";
+import { FileMinus } from "react-feather";
 
 interface WaiterProductsPageProps {}
 
@@ -115,17 +116,23 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 							</div>
 						</div>
 					</header>
-
-					{!isLoadingProducts ? (
+					{!isLoadingProducts && products.length === 0 && (
+						<div className="w-products-empty">
+							<FileMinus strokeWidth={2} size={32} />
+							<div>Nenhum produto encontrado.</div>
+						</div>
+					)}
+					{!isLoadingProducts && (
 						<div className="w-products-list no-scroll">
 							{products.map((product, index) => (
 								<ProductsRowCard product={product} key={index} />
 							))}
 						</div>
-					) : (
-						<div className="w-home-loading">
+					)}
+					{isLoadingProducts && (
+						<div className="w-products-loading">
 							<Spinner size={32} theme="primary" />
-							<span className="w-home-loading-message">
+							<span className="w-products-loading-message">
 								Carregando produtos...
 							</span>
 						</div>

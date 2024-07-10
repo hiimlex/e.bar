@@ -79,7 +79,8 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 				<Brands.EBarBrand />
 			</div>
 			<div className="login-content">
-				<h2 className="page-title">Fazer Login</h2>
+				<h2 className="login-title">Login</h2>
+
 				<form className="login-form">
 					<Input
 						onChangeValue={(value) =>

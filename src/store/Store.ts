@@ -4,6 +4,7 @@ import {
 	OnOrderReducer,
 	OrdersReducer,
 	ProductsReducer,
+	SocketReducer,
 	UserReducer,
 	WaiterReducer,
 } from "./slicers";
@@ -15,6 +16,7 @@ export const store = configureStore({
 		onOrder: OnOrderReducer,
 		user: UserReducer,
 		waiter: WaiterReducer,
+		socket: SocketReducer
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

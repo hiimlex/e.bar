@@ -1,27 +1,14 @@
 import { SafeAny } from "./generic";
 import { ProductCategory } from "./products";
 
-export enum OrdersViewFilters {
-	"Todos" = 0,
-	"Pagos" = 1,
-	"Entregues" = 2,
-}
 
-export const OrdersViewFiltersArray: { key: string; value: number | string }[] =
-	[
-		{ key: "Todos", value: OrdersViewFilters.Todos },
-		{ key: "Pagos", value: OrdersViewFilters.Pagos },
-		{ key: "Entregues", value: OrdersViewFilters.Entregues },
-	];
-export type OrdersViewType = keyof typeof OrdersViewFilters;
 
 export interface CreateOrderPayload {
 	table_id: number;
-	customers:number;
+	customers: number;
 }
 
 export interface OrdersFilter {
-	view?: OrdersViewFilters;
 	search?: string;
 	tableNumber?: number;
 	status?: OrderStatus;
@@ -47,6 +34,7 @@ export interface IOrder {
 	updated_at: string;
 	finished_at: string;
 	payment_method: OrderPaymentMethod | null;
+	customers: number;
 	total: number;
 }
 
@@ -57,13 +45,26 @@ export interface IGetOrderProduct {
 	price: number;
 	product_id: number;
 	quantity: number;
+	delivered: number;
 	stock: number;
 	status: "ordered" | "delivered";
+	order_product_id: number;
+}
+
+export interface CreateOrderProductPayload {
+	product_id: number;
+	quantity: number;
+	order_product_id?: number;
+}
+
+export interface ServeOrderProductPayload {
+	order_product_id?: number;
 }
 
 export interface OrdersState {
 	orders: SafeAny[];
 	filters: OrdersFilter;
+	is_loading_orders: boolean;
 }
 
 export interface OnOrderState {
