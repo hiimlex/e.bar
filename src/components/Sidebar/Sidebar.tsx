@@ -12,7 +12,7 @@ const WAITER_LINKS: NavLink[] = [
 		icon: <Home size={28} />,
 	},
 	{
-		to: Pages.WaiterOrders,
+		to: Pages.WaiterMyOrders,
 		label: "Pedidos",
 		icon: <FileText size={28} />,
 	},

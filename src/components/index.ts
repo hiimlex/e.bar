@@ -9,3 +9,5 @@ export * from "./MainContainer";
 export * from "./OrderBy";
 export * from "./Spinner";
 export * from "./WaiterHeader";
+export * from "./UploadBox";
+export * from "./Select";

@@ -19,10 +19,18 @@ const fetchAll = async (
 };
 
 const create = async (
-	product: CreateProductPayload
+	product: CreateProductPayload,
+	file: File
 ): Promise<AxiosResponse<IProduct>> => {
 	try {
-		const res = await api.post(Endpoints.CreateProduct, product);
+		const formData = new FormData();
+
+		formData.append("image", file);
+		Object.entries(product).forEach(([key, value]) => {
+			formData.append(key, value);
+		})
+
+		const res = await api.post(Endpoints.CreateProduct, formData);
 
 		return res;
 	} catch (error) {

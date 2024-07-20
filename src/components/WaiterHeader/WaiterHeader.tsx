@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, Search } from "react-feather";
+import { ArrowLeft, Filter, Menu, Search } from "react-feather";
 import { useBreakpoint } from "../../hooks";
 import { Brands } from "../Brands";
 import "./styles.scss";
@@ -10,6 +10,8 @@ export interface WaiterHeaderProps {
 	onSearch?: () => void;
 	showMenu?: boolean;
 	onMenu?: () => void;
+	showFilter?: boolean;
+	onFilter?: () => void;
 }
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
@@ -19,6 +21,8 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	showGoBack,
 	showSearch,
 	showMenu,
+	showFilter,
+	onFilter,
 }) => {
 	const { breakpoint } = useBreakpoint();
 
@@ -35,10 +39,15 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 				<div className="w-app-header-brand">
 					<Brands.EBarBrand />
 				</div>
-				<div className="flex-1 w-app-header-action">
+				<div className="flex-1 w-app-header-actions">
 					{showSearch && (
 						<button className="w-app-header-button" onClick={onSearch}>
 							<Search size={24} strokeWidth={1.5} />
+						</button>
+					)}
+					{showFilter && (
+						<button className="w-app-header-button" onClick={onFilter}>
+							<Filter size={24} strokeWidth={1.5} />
 						</button>
 					)}
 					{showMenu && (

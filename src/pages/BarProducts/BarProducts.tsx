@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { Plus } from "react-feather";
+import { FileMinus, Plus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
 import {
@@ -25,10 +25,12 @@ import {
 } from "../../store";
 import { ProductCard, ProductModal } from "./components";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
 
-interface ProductsPageProps {}
+interface BarProductsPageProps {}
 
-const ProductsPage: React.FC<ProductsPageProps> = () => {
+const BarProductsPage: React.FC<BarProductsPageProps> = () => {
+	const { t } = useTranslation();
 	const { filters, products, isLoadingProducts } = useSelector(
 		(state: RootState) => state.products
 	);
@@ -108,24 +110,23 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 	};
 
 	const openEditProductModal = (product: IProduct) => {
-		openModal({
-			id: ModalIds.EditProduct,
-			component: (
-				<ProductModal
-					mode="edit"
-					id={ModalIds.EditProduct}
-					beforeClose={getAllProducts}
-					productId={product.id.toString()}
-					initialProduct={{
-						name: product.name,
-						category: product.category,
-						price: product.price,
-						stock: product.stock,
-						image_url: product.image_url,
-					}}
-				/>
-			),
-		});
+		// openModal({
+		// 	id: ModalIds.EditProduct,
+		// 	component: (
+		// 		<ProductModal
+		// 			mode="edit"
+		// 			id={ModalIds.EditProduct}
+		// 			beforeClose={getAllProducts}
+		// 			productId={product.id.toString()}
+		// 			initialProduct={{
+		// 				name: product.name,
+		// 				category: product.category,
+		// 				price: product.price,
+		// 				stock: product.stock,
+		// 			}}
+		// 		/>
+		// 	),
+		// });
 	};
 
 	useEffect(() => {
@@ -140,9 +141,9 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 		<MainContainer showAdminHeader>
 			<div className="products">
 				<header className="products-header">
-					<h2 className="page-title">Meus produtos</h2>
+					<h2 className="page-title">{t('BarProducts.Title')}</h2>
 					<Button onClick={openAddProductModal}>
-						<Plus size={14} /> Adicionar
+						<Plus size={14} /> {t('BarProducts.Buttons.Add')}
 					</Button>
 				</header>
 
@@ -186,6 +187,13 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 					</div>
 				</div>
 
+				{!isLoadingProducts && products.length === 0 && (
+					<div className="empty-box">
+						<FileMinus size={32} />
+						<span>Nenhum produto encontrado...</span>
+					</div>
+				)}
+
 				{!isLoadingProducts && (
 					<div className="products-grid">
 						{products.map((product, index) => (
@@ -209,4 +217,4 @@ const ProductsPage: React.FC<ProductsPageProps> = () => {
 	);
 };
 
-export default ProductsPage;
+export default BarProductsPage;

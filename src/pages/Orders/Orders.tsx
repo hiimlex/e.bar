@@ -121,7 +121,7 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 				</div>
 
 				{!is_loading_orders && orders.length === 0 && (
-					<div className="orders-empty">
+					<div className="empty-box">
 						<FileMinus size={32} />
 						<span>Nenhum pedido encontrado...</span>
 					</div>

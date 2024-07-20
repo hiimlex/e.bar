@@ -37,6 +37,7 @@ export interface IProduct {
 	price: number;
 	stock: number;
 	image_url: string;
+	file_id?: number;
 }
 
 export interface CreateProductPayload {
@@ -44,5 +45,4 @@ export interface CreateProductPayload {
 	category: string;
 	price: number;
 	stock: number;
-	image_url: string;
 }

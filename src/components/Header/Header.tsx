@@ -8,10 +8,10 @@ import { useDispatch } from "react-redux";
 import { UserActions } from "../../store";
 
 export const NAV_LINKS: NavLink[] = [
-	{ to: Pages.Orders, label: "Pedidos" },
-	{ to: Pages.Sales, label: "Vendas" },
-	{ to: Pages.Products, label: "Produtos" },
-	{ to: Pages.Attendance, label: "Atendimento" },
+	{ to: Pages.BarAttendances, label: "Atendimento" },
+	{ to: Pages.BarProducts, label: "Produtos" },
+	// { to: Pages.Orders, label: "Pedidos" },
+	// { to: Pages.Sales, label: "Vendas" },
 ];
 
 const Header: React.FC = () => {

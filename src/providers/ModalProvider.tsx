@@ -1,7 +1,7 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useState } from "react";
 import { X } from "react-feather";
-import { IconButton } from "../components";
 import { ModalContextType, ModalProps } from "../@types";
+import { IconButton } from "../components";
 
 export const ModalContext = createContext<ModalContextType>({
 	modals: [],

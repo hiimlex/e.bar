@@ -32,13 +32,15 @@
 		flex-direction: row;
 		align-items: flex-start;
 		gap: $unit-2;
+		width: 100%;
 
 		&-chips {
 			display: flex;
 			align-items: center;
 			flex-direction: row;
 			gap: $unit-2;
-			overflow: hidden;
+			overflow-x: auto;
+			max-width: 100%;
 		}
 	}
 

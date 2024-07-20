@@ -117,7 +117,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 						</div>
 					</header>
 					{!isLoadingProducts && products.length === 0 && (
-						<div className="w-products-empty">
+						<div className="empty-box">
 							<FileMinus strokeWidth={2} size={32} />
 							<div>Nenhum produto encontrado.</div>
 						</div>

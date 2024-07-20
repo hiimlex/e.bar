@@ -6,7 +6,7 @@ import { IWaiter } from "../../@types";
 const login = async (
 	email: string,
 	password: string
-): Promise<AxiosResponse<{ access_token: string }>> => {
+): Promise<AxiosResponse<{ access_token: string; is_bar: boolean }>> => {
 	try {
 		const res = await api.post(
 			Endpoints.Login,
@@ -20,7 +20,7 @@ const login = async (
 	}
 };
 
-const getCurrentUser = async (): Promise<AxiosResponse<IWaiter>> => {
+const getCurrentUser = async (): Promise<AxiosResponse<IWaiter & {is_bar: boolean}>> => {
 	try {
 		const res = await api.get(Endpoints.Me);
 

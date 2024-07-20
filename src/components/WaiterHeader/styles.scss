@@ -34,16 +34,17 @@
 		&:hover {
 			cursor: pointer;
 			scale: $scale-1;
+			color: $color-primary;
 		}
 	}
 
-	&-action {
+	&-actions {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		width: fit-content;
-		gap: 6px;
+		gap: 12px;
 
 		&:first-child {
 			justify-content: flex-start;

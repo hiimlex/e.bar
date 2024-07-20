@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 import { SafeAny } from "../../@types";
 import "./styles.scss";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	mode?: "controlled" | "uncontrolled";
+
+	label?: string;
 
 	fieldKey?: string;
 	onChangeValue?: (value: string) => void;
@@ -23,15 +25,18 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	prefixContent?: React.ReactNode;
 	hasSuffix?: boolean;
 	suffixContent?: React.ReactNode;
+
+	useOptions?: boolean;
+	options?: { value: string; label: string }[];
 }
 
-const Input: React.FC<InputProps> = ({
+const Select: React.FC<SelectProps> = ({
 	onChangeValue,
 	className,
 	styles,
 	fieldKey,
 	value,
-	placeholder,
+	label,
 	hideLabel = false,
 	wrapperClassName,
 	mode = "uncontrolled",
@@ -42,10 +47,13 @@ const Input: React.FC<InputProps> = ({
 	hasSuffix,
 	prefixContent,
 	suffixContent,
+	children,
+	useOptions = false,
+	options,
 	...rest
 }) => {
 	const { t } = useTranslation();
-	const inputRef = useRef<HTMLInputElement>(null);
+	const selectRef = useRef<HTMLSelectElement>(null);
 
 	const [isFocused, setIsFocused] = useState(false);
 
@@ -53,16 +61,16 @@ const Input: React.FC<InputProps> = ({
 	const suffixRef = useRef<HTMLDivElement>(null);
 
 	const prefixWidth = useMemo(() => {
-		return prefixRef?.current?.offsetWidth ?? 24;
+		return prefixRef?.current?.offsetWidth ?? 0;
 	}, []);
 
 	const suffixWidth = useMemo(() => {
-		return suffixRef?.current?.offsetWidth ?? 24;
+		return suffixRef?.current?.offsetWidth ?? 0;
 	}, []);
 
 	const prefixStyles = useMemo(() => {
-		const paddingLeft = hasPrefix ? prefixWidth + 18 : 12;
-		const paddingRight = hasSuffix ? suffixWidth + 18 : 12;
+		const paddingLeft = hasPrefix ? prefixWidth + 16 : 10;
+		const paddingRight = hasSuffix ? suffixWidth + 16 : 10;
 
 		return {
 			paddingLeft,
@@ -71,7 +79,8 @@ const Input: React.FC<InputProps> = ({
 	}, [hasSuffix, hasPrefix, prefixWidth, suffixWidth]);
 
 	const hasValue = useMemo(() => !!value, [value]);
-	const placeholder_t = useMemo(() => t(placeholder ?? ""), [placeholder, t]);
+	const valueIsLabel = useMemo(() => !value || value === "", [value]);
+	const placeholder_t = useMemo(() => t(label ?? ""), [label, t]);
 
 	const hasError = useMemo(
 		() => showError && errorMessage && isFocused,
@@ -79,10 +88,15 @@ const Input: React.FC<InputProps> = ({
 	);
 	const classNames = useMemo(
 		() =>
-			["input", className, `${hasError ? "input-error" : ""}`]
+			[
+				"select",
+				className,
+				`${hasError ? "select-error" : ""}`,
+				`${valueIsLabel ? "select-empty" : ""}`,
+			]
 				.filter((el) => el !== "")
 				.join(" "),
-		[className, hasError]
+		[className, hasError, valueIsLabel]
 	);
 
 	const shouldShowLabel = useMemo(() => {
@@ -90,14 +104,14 @@ const Input: React.FC<InputProps> = ({
 			return false;
 		}
 
-		if (!placeholder) {
+		if (!label) {
 			return false;
 		}
 
 		return (isFocused && hasValue) || hasValue;
-	}, [hasValue, isFocused, placeholder, hideLabel]);
+	}, [hasValue, isFocused, label, hideLabel]);
 
-	const inputProps = useMemo(() => {
+	const selectProps = useMemo(() => {
 		if (mode === "controlled") {
 			return {
 				value,
@@ -106,36 +120,35 @@ const Input: React.FC<InputProps> = ({
 	}, [mode, value]);
 
 	return (
-		<div className={`input-wrapper ${wrapperClassName}`}>
+		<div className={`select-wrapper ${wrapperClassName}`}>
 			{shouldShowLabel && (
-				<label className="input-label" htmlFor={fieldKey}>
+				<label className={`select-label`} htmlFor={fieldKey}>
 					{placeholder_t}
 				</label>
 			)}
 
-			<div className="input-field">
+			<div className="select-field">
 				{hasPrefix && (
-					<div ref={prefixRef} className="input-prefix">
+					<div ref={prefixRef} className="select-prefix">
 						{prefixContent}
 					</div>
 				)}
 				{hasSuffix && (
-					<div ref={suffixRef} className="input-suffix">
+					<div ref={suffixRef} className="select-suffix">
 						{suffixContent}
 					</div>
 				)}
-				<input
+				<select
 					id={fieldKey}
 					name={fieldKey}
-					ref={inputRef}
+					ref={selectRef}
 					onChange={(event) => {
 						onChangeValue && onChangeValue(event.target.value);
 						rest.onChange && rest.onChange(event);
 					}}
 					className={classNames}
-					placeholder={placeholder_t}
 					style={{ ...styles, ...prefixStyles }}
-					{...inputProps}
+					{...selectProps}
 					{...rest}
 					onBlur={(event) => {
 						setIsFocused(false);
@@ -145,7 +158,16 @@ const Input: React.FC<InputProps> = ({
 						setIsFocused(true);
 						rest.onFocus && rest.onFocus(event);
 					}}
-				/>
+				>
+					{useOptions &&
+						options &&
+						options.map((option) => (
+							<option key={option.value} value={option.value}>
+								{t(option.label)}
+							</option>
+						))}
+					{!useOptions && children}
+				</select>
 			</div>
 
 			{showError && isFocused && errorMessage && (
@@ -155,4 +177,4 @@ const Input: React.FC<InputProps> = ({
 	);
 };
 
-export { Input };
+export { Select };

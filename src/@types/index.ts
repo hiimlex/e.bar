@@ -6,3 +6,5 @@ export * from "./products";
 export * from "./tables";
 export * from "./waiters";
 export * from "./modals";
+export * from "./auth";
+export * from "./errors";

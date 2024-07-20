@@ -12,7 +12,7 @@ import { AUTH_TOKEN_KEY, AuthService } from "../../../api";
 import { GenericAction } from "../../Store";
 
 const getCurrentUser = createAsyncThunk<
-	IWaiter,
+	IWaiter & {is_bar: boolean},
 	void,
 	{ rejectValue: AxiosError }
 >("User/getCurrentUser", async (_, { dispatch, rejectWithValue }) => {
@@ -41,9 +41,11 @@ const UserSlice = createSlice<
 	reducers: {
 		setUser: (state, action: GenericAction<IWaiter>) => {
 			state.waiter = action.payload;
-			state.isAdmin = action.payload.is_admin;
 			state.isAuthenticated = true;
 			state.loading = false;
+		},
+		setIsAdmin: (state, action: GenericAction<boolean>) => {
+			state.isAdmin = action.payload;
 		},
 		setLoadingUser: (state, action: GenericAction<boolean>) => {
 			state.loading = action.payload;
@@ -59,10 +61,14 @@ const UserSlice = createSlice<
 	extraReducers: (builder) => {
 		builder.addCase(getCurrentUser.fulfilled, (state, action) => {
 			state.waiter = action.payload;
-			state.isAdmin = action.payload.is_admin;
+			state.isAdmin = action.payload.is_bar;
 			state.isAuthenticated = true;
 			state.loading = false;
 		});
+
+		builder.addCase(getCurrentUser.rejected, () => {
+			localStorage.removeItem(AUTH_TOKEN_KEY);
+		})
 	},
 });
 
@@ -70,6 +76,7 @@ export const UserActions = UserSlice.actions as {
 	setUser: ActionCreatorWithPayload<IWaiter>;
 	setLoadingUser: ActionCreatorWithPayload<boolean>;
 	logout: ActionCreatorWithoutPayload;
+	setIsAdmin: ActionCreatorWithPayload<boolean>;
 };
 
 const UserReducer = UserSlice.reducer;

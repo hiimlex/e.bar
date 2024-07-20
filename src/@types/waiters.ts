@@ -5,7 +5,7 @@ export interface IWaiter {
 	id: number;
 	name: string;
 	email: string;
-	is_admin: boolean;
+	is_admin?: boolean;
 	active: boolean;
 	phone: string;
 }

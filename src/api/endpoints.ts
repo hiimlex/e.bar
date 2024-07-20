@@ -6,8 +6,8 @@ export enum Endpoints {
 	UpdateProduct = "/products/:productId",
 	DeleteProduct = "/products/:productId",
 
-	Login = "/login",
-	Me = "/me",
+	Login = "/auth/login",
+	Me = "/auth/me",
 
 	GetTables = "/tables",
 	GetTable = "/tables/:id",

@@ -1,12 +1,16 @@
 export enum Pages {
 	Login = "/login",
-	Products = "/admin/products",
-	Attendance = "/admin/attendance",
-	Orders = "/admin/orders",
-	Sales = "/admin/sales",
 
-	WaiterHome = "/waiter",
-	WaiterOrders = "/waiter/orders",
+	BarProducts = "/bar/products",
+	BarAttendances = "/bar/attendances",
+	BarAttendanceGeneral = "/bar/attendance/:attendanceId/general",
+	BarAttendanceOrders = "/bar/attendance/:attendanceId/orders",
+	BarAttendanceSales = "/bar/attendance/:attendanceId/sales",
+	BarSales = "/bar/sales",
+	BarProfile = "/bar/profile",
+
+	WaiterHome = "/waiter/home",
+	WaiterMyOrders = "/waiter/my-orders",
 	WaiterNewOrder = "/waiter/new-order",
 	WaiterOrder = "/waiter/order/:orderId",
 	WaiterOrderServe = "/waiter/order/:orderId/serve",

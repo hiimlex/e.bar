@@ -1,19 +1,18 @@
-$color-primary: #9A36FD;
+$color-primary: #9a36fd;
 $color-secondary: #201f20;
-$color-background: #FCFCFC;
+$color-background: #fcfcfc;
 $color-white: #fff;
 
 $color-gray-1: #f0f0f0;
 $color-gray-2: #d8d8d8;
-$color-gray-3: #AFAFAF;
+$color-gray-3: #afafaf;
 
-$color-success: #39C87B;
-$color-danger: #FF4A4A;
-
+$color-success: #39c87b;
+$color-danger: #ff4a4a;
 
 $color-text-placeholder: #505050;
 $color-text-dark: #414141;
-$color-text-darker:#212121;
+$color-text-darker: #212121;
 
 $shadow-soft: 0 2px 3px 1px rgba(#313131, 0.1);
 $shadow-normal: 0 2px 5px 1px rgba(#313131, 0.15);
@@ -31,7 +30,7 @@ $scale-1: 1.05;
 $scale-2: 1.1;
 
 $waiter-header-height: 60px;
-$bottom-nav-height:72px;
+$bottom-nav-height: 72px;
 
 @keyframes flip {
 	0% {
@@ -59,7 +58,6 @@ $bottom-nav-height:72px;
 		opacity: 1;
 	}
 }
-
 
 $animation-flip: flip;
 $animation-flip-reverse: flip-reverse;

@@ -1,18 +1,22 @@
+import { AxiosError } from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Pages } from "../../@types";
-import { Brands, Button, Input } from "../../components";
-import "./styles.scss";
-import { AUTH_TOKEN_KEY, AuthService } from "../../api";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { FieldErrorsType, LoginPayload, Pages } from "../../@types";
+import { AUTH_TOKEN_KEY, AuthService } from "../../api";
+import { Brands, Button, Input } from "../../components";
 import { AppDispatch, RootState, UserActions } from "../../store";
+import "./styles.scss";
 
 interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
-	const [loginData, setLoginData] = useState({
-		email: "",
-		password: "",
+	const { t } = useTranslation();
+
+	const { control, handleSubmit, formState } = useForm<LoginPayload>({
+		mode: "all",
 	});
 
 	const [loading, setLoading] = useState(false);
@@ -20,40 +24,34 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const canLogin = useMemo(
-		() => loginData && loginData.email && loginData.password,
-		[loginData]
-	);
+	const canLogin = useMemo(() => formState.isValid, [formState]);
 
-	const onLogin = async () => {
+	const onLogin = async (formData: LoginPayload) => {
 		try {
+			const { email, password } = formData;
+
 			setLoading(true);
 
-			const { data } = await AuthService.login(
-				loginData.email,
-				loginData.password
-			);
+			const { data } = await AuthService.login(email, password);
 
-			if (data.access_token) {
-				localStorage.setItem(AUTH_TOKEN_KEY, data.access_token);
+			const { is_bar, access_token } = data;
 
-				const user = await AuthService.getCurrentUser();
+			if (access_token) {
+				localStorage.setItem(AUTH_TOKEN_KEY, access_token);
 
-				dispatch(UserActions.setUser(user.data));
+				const { data: user } = await AuthService.getCurrentUser();
 
-				if (user.data.is_admin) {
-					navigate(Pages.Orders);
-				}
-
-				if (!user.data.is_admin) {
-					navigate(Pages.WaiterHome);
-				}
+				dispatch(UserActions.setUser(user));
+				dispatch(UserActions.setIsAdmin(is_bar));
 			}
 
 			setLoading(false);
 		} catch (error) {
+			if (error instanceof AxiosError) {
+				console.log(error.response?.data);
+			}
+
 			setLoading(false);
-			alert("Email ou senha inválidos!");
 		}
 	};
 
@@ -68,41 +66,87 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 			}
 
 			if (isAdmin && waiter) {
-				navigate(Pages.Orders);
+				navigate(Pages.BarProducts);
 			}
 		}
 	}, [isAuthenticated, isAdmin, waiter]);
 
 	return (
 		<div className="login">
-			<div className="login-brands">
-				<Brands.EBarBrand />
-			</div>
 			<div className="login-content">
-				<h2 className="login-title">Login</h2>
+				<Brands.EBarBrand />
 
-				<form className="login-form">
-					<Input
-						onChangeValue={(value) =>
-							setLoginData((curr) => ({ ...curr, email: value }))
-						}
-						value={loginData.email}
-						fieldKey="email"
-						placeholder="E-mail"
+				<h2
+					className="login-subtitle"
+					dangerouslySetInnerHTML={{ __html: t("Login.Subtitle") }}
+				/>
+
+				<form className="login-form" onSubmit={handleSubmit(onLogin)}>
+					<Controller
+						name="email"
+						rules={{
+							required: {
+								value: true,
+								message: FieldErrorsType.Required,
+							},
+							pattern: {
+								value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+								message: FieldErrorsType.InvalidEmail,
+							},
+						}}
+						control={control}
+						render={({
+							field: { name, onChange, onBlur, value },
+							fieldState: { error },
+						}) => (
+							<Input
+								onChangeValue={(value) => onChange(value)}
+								value={value}
+								fieldKey={name}
+								placeholder="Login.Email"
+								onBlur={onBlur}
+								errorMessage={error?.message}
+								showError={!!error}
+							/>
+						)}
 					/>
-					<Input
-						fieldKey="password"
-						placeholder="Senha"
-						onChangeValue={(value) =>
-							setLoginData((curr) => ({ ...curr, password: value }))
-						}
-						value={loginData.password}
-						type="password"
+
+					<Controller
+						name="password"
+						rules={{
+							required: {
+								value: true,
+								message: FieldErrorsType.Required,
+							},
+
+							minLength: {
+								value: 6,
+								message: FieldErrorsType.MinLength,
+							},
+						}}
+						control={control}
+						render={({
+							field: { name, onChange, onBlur, value },
+							fieldState: { error },
+						}) => (
+							<Input
+								onChangeValue={(value) => onChange(value)}
+								value={value}
+								fieldKey={name}
+								placeholder="Login.Password"
+								onBlur={onBlur}
+								type="password"
+								errorMessage={error?.message}
+								errorValue={{ minLength: 6 }}
+								showError={!!error}
+							/>
+						)}
 					/>
+
+					<Button disabled={!canLogin} loading={loading} type="submit">
+						{t("Generics.Buttons.Continue")}
+					</Button>
 				</form>
-				<Button disabled={!canLogin} loading={loading} onClick={onLogin}>
-					Continuar
-				</Button>
 			</div>
 		</div>
 	);

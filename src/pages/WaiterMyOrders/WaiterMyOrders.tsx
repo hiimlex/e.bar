@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -20,15 +20,16 @@ import { SalesWaitersOrder } from "../Sales";
 import { WaiterOrdersCard } from "../WaiterHome";
 import "./styles.scss";
 
-interface WaiterOrdersPageProps {}
+interface WaiterMyOrdersPageProps {}
 
-const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
+const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { orders, loading_orders, filters } = useSelector(
 		(state: RootState) => state.waiter
 	);
+	const [showFilter, setShowFilter] = useState(false);
 	const { waiter } = useSelector((state: RootState) => state.user);
 
 	const goBack = () => {
@@ -74,7 +75,12 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 	}, [loadOrders]);
 
 	return (
-		<MainContainer showGoBack onGoBack={goBack}>
+		<MainContainer
+			showGoBack
+			onGoBack={goBack}
+			showFilter
+			onFilter={() => setShowFilter((curr) => !curr)}
+		>
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>
@@ -83,38 +89,42 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 							<br />
 							Pedidos
 						</span>
-						<div className="w-orders-filters">
-							<Chip
-								clickable
-								active={filters?.status === undefined}
-								theme="secondary"
-								onClick={() => onChangeStatusFilter(undefined)}
-							>
-								Todos
-							</Chip>
-							<Chip
-								clickable
-								active={filters?.status === "finished"}
-								theme="secondary"
-								onClick={() => onChangeStatusFilter("finished")}
-							>
-								Finalizados
-							</Chip>
-						</div>
-						<div className="w-orders-filters">
-							<OrderBy
-								label="Total"
-								onOrderChange={(order) => onChangeSort("total", order)}
-							/>
-							<OrderBy
-								label="N Mesa"
-								onOrderChange={(order) => onChangeSort("table_id", order)}
-							/>
-							<OrderBy
-								label="Criado Em"
-								onOrderChange={(order) => onChangeSort("created_at", order)}
-							/>
-						</div>
+						{showFilter && (
+							<>
+								<div className="w-orders-filters">
+									<Chip
+										clickable
+										active={filters?.status === undefined}
+										theme="secondary"
+										onClick={() => onChangeStatusFilter(undefined)}
+									>
+										Todos
+									</Chip>
+									<Chip
+										clickable
+										active={filters?.status === "finished"}
+										theme="secondary"
+										onClick={() => onChangeStatusFilter("finished")}
+									>
+										Finalizados
+									</Chip>
+								</div>
+								<div className="w-orders-filters">
+									<OrderBy
+										label="Total"
+										onOrderChange={(order) => onChangeSort("total", order)}
+									/>
+									<OrderBy
+										label="N Mesa"
+										onOrderChange={(order) => onChangeSort("table_id", order)}
+									/>
+									<OrderBy
+										label="Criado Em"
+										onOrderChange={(order) => onChangeSort("created_at", order)}
+									/>
+								</div>
+							</>
+						)}
 					</header>
 
 					{!loading_orders ? (
@@ -135,7 +145,7 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 								</>
 							))}
 							{orders.length === 0 && (
-								<div className="w-orders-empty">
+								<div className="empty-box">
 									<FileMinus size={32} />
 									<span>Nenhum pedido encontrado</span>
 								</div>
@@ -155,4 +165,4 @@ const WaiterOrdersPage: React.FC<WaiterOrdersPageProps> = () => {
 	);
 };
 
-export default WaiterOrdersPage;
+export default WaiterMyOrdersPage;

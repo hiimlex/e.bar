@@ -145,7 +145,6 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 					<Input
 						placeholder="Telefone"
 						wrapperClassName="fill-row"
-						className="filled-input"
 						disabled={disabled}
 						value={value}
 						fieldKey={name}
@@ -165,7 +164,6 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 							placeholder="Senha"
 							type="password"
 							wrapperClassName="fill-row"
-							className="filled-input"
 							disabled={disabled}
 							value={value}
 							fieldKey={name}
@@ -184,7 +182,6 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 					<div className="checkbox">
 						<Input
 							type="checkbox"
-							className="filled-input"
 							disabled={disabled}
 							defaultChecked={value}
 							name={name}

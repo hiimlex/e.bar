@@ -1,21 +1,53 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 import { Pages } from "../@types";
 import {
-	AttendancePage,
+	BarProductsPage,
 	LoginPage,
-	OrdersPage,
-	ProductsPage,
-	SalesPage,
 	WaiterAddProductsPage,
 	WaiterHomePage,
+	WaiterMyOrdersPage,
 	WaiterNewOrderPage,
 	WaiterOrderPage,
 	WaiterOrderProductsPage,
-	WaiterOrdersPage,
 	WaiterProductsPage,
 } from "../pages";
-import { ProtectedRoute } from "./ProtectedRoute";
 import { WaiterOrderServePage } from "../pages/WaiterOrderServe";
+import { ProtectedRoute } from "./ProtectedRoute";
+
+const ADMIN_ROUTES: RouteObject[] = [
+	{
+		path: Pages.BarProducts,
+		element: (
+			<ProtectedRoute>
+				<BarProductsPage />
+			</ProtectedRoute>
+		),
+	},
+	// {
+	// 	path: Pages.Sales,
+	// 	element: (
+	// 		<ProtectedRoute>
+	// 			<SalesPage />
+	// 		</ProtectedRoute>
+	// 	),
+	// },
+	// {
+	// 	path: Pages.Attendance,
+	// 	element: (
+	// 		<ProtectedRoute>
+	// 			<AttendancePage />
+	// 		</ProtectedRoute>
+	// 	),
+	// },
+	// {
+	// 	path: Pages.Orders,
+	// 	element: (
+	// 		<ProtectedRoute>
+	// 			<OrdersPage />
+	// 		</ProtectedRoute>
+	// 	),
+	// },
+];
 
 const router = createBrowserRouter([
 	{
@@ -26,38 +58,8 @@ const router = createBrowserRouter([
 		path: Pages.Login,
 		element: <LoginPage />,
 	},
-	{
-		path: Pages.Products,
-		element: (
-			<ProtectedRoute>
-				<ProductsPage />
-			</ProtectedRoute>
-		),
-	},
-	{
-		path: Pages.Sales,
-		element: (
-			<ProtectedRoute>
-				<SalesPage />
-			</ProtectedRoute>
-		),
-	},
-	{
-		path: Pages.Attendance,
-		element: (
-			<ProtectedRoute>
-				<AttendancePage />
-			</ProtectedRoute>
-		),
-	},
-	{
-		path: Pages.Orders,
-		element: (
-			<ProtectedRoute>
-				<OrdersPage />
-			</ProtectedRoute>
-		),
-	},
+	...ADMIN_ROUTES,
+
 	{
 		path: Pages.WaiterHome,
 		element: (
@@ -67,10 +69,10 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		path: Pages.WaiterOrders,
+		path: Pages.WaiterMyOrders,
 		element: (
 			<ProtectedRoute>
-				<WaiterOrdersPage />
+				<WaiterMyOrdersPage />
 			</ProtectedRoute>
 		),
 	},
@@ -107,7 +109,6 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		
 		path: Pages.WaiterAddProducts,
 		element: (
 			<ProtectedRoute>

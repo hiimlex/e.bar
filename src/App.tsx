@@ -4,6 +4,7 @@ import "./global.scss";
 import { ModalProvider, UserProvider } from "./providers";
 import router from "./router/Router";
 import { store } from "./store";
+import "./i18n/index";
 
 function App() {
 	return (

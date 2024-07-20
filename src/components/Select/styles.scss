@@ -1,6 +1,6 @@
 @import "../../base.scss";
 
-.input {
+.select {
 	outline: none;
 	border: none;
 	border-bottom: 1px solid $color-gray-3;
@@ -12,18 +12,11 @@
 	transition: $transition-all;
 
 	&-wrapper {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
 		position: relative;
-	}
-
-	&-label {
-		font-size: 13px;
-		font-weight: 500;
-		font-weight: 600;
-		color: $color-text-placeholder;
-		animation: $animation-fade-in 0.1s ease-in-out;
 	}
 
 	&-field {
@@ -32,6 +25,15 @@
 		width: 100%;
 		flex: 1;
 		position: relative;
+	}
+
+	&-label {
+		font-size: 13px;
+		font-weight: 500;
+		font-weight: 600;
+		color: $color-text-placeholder;
+		transition: $transition-all;
+		animation: $animation-fade-in 0.1s ease-in-out;
 	}
 
 	&:disabled {
@@ -52,5 +54,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	&-empty {
+		color: $color-gray-3;
 	}
 }

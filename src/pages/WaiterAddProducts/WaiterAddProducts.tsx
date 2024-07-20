@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDebounceValue } from "usehooks-ts";
 import {
 	IProduct,
 	Pages,
 	ProductCategoriesArray,
 	ProductCategory,
 } from "../../@types";
-import { Button, Chip, MainContainer, Spinner } from "../../components";
+import { OrdersService } from "../../api";
+import { Button, Chip, Input, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
 	OnOrderActions,
@@ -16,9 +19,8 @@ import {
 	fetchProducts,
 } from "../../store";
 import { ProductsRowCard } from "../WaiterProducts/components";
-import "./styles.scss";
 import { ConfirmAddProducts } from "./components";
-import { OrdersService } from "../../api";
+import "./styles.scss";
 
 interface WaiterAddProductsPageProps {}
 
@@ -42,6 +44,8 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
+	const [showSearch, setShowSearch] = useState(false);
+	const [search, setSearch] = useDebounceValue("", 300);
 
 	const goBack = () => {
 		const to = Pages.WaiterOrderProducts.replace(":orderId", orderId || "");
@@ -134,55 +138,73 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 		getOrder();
 	}, []);
 
+	useEffect(() => {
+		const value = search !== "" ? search : undefined;
+
+		dispatch(ProductsActions.setFilters({ nome: value }));
+	}, [search]);
+
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
 			showGoBack
 			onGoBack={goBack}
 			showSearch
+			onSearch={() => setShowSearch((curr) => !curr)}
 		>
 			<div className="w-a-products">
 				<main className="w-a-products-content">
 					<header className={`w-a-products-header`}>
 						<span className="page-title">
-							Produtos na
+							Adicionar items ao
 							<br />
-							Comanda
+							Pedido
 						</span>
-						<div className="w-a-products-filters">
-							<div className="w-a-products-filters-chips scrollable-x no-scroll">
+						{showSearch && (
+							<Input
+								placeholder="Buscar produto..."
+								onChangeValue={(value) => setSearch(value)}
+							/>
+						)}
+						<div className="w-a-products-filters-chips scrollable-x no-scroll">
+							<Chip
+								active={!filters.categoria && !filters.sem_estoque}
+								clickable
+								theme="secondary"
+								onClick={clearFilters}
+							>
+								Todos
+							</Chip>
+							<Chip
+								active={filters.sem_estoque}
+								clickable
+								theme="secondary"
+								onClick={onStockFilter}
+							>
+								S/ Estoque
+							</Chip>
+							{ProductCategoriesArray.map((category, index) => (
 								<Chip
-									active={!filters.categoria && !filters.sem_estoque}
+									key={index}
+									active={category.value === filters.categoria}
 									clickable
 									theme="secondary"
-									onClick={clearFilters}
+									onClick={() => onSelectCategory(category.value)}
 								>
-									Todos
+									{category.key}
 								</Chip>
-								<Chip
-									active={filters.sem_estoque}
-									clickable
-									theme="secondary"
-									onClick={onStockFilter}
-								>
-									S/ Estoque
-								</Chip>
-								{ProductCategoriesArray.map((category, index) => (
-									<Chip
-										key={index}
-										active={category.value === filters.categoria}
-										clickable
-										theme="secondary"
-										onClick={() => onSelectCategory(category.value)}
-									>
-										{category.key}
-									</Chip>
-								))}
-							</div>
+							))}
 						</div>
 					</header>
 
-					{!isLoadingProducts ? (
+					{!isLoadingProducts && products.length === 0 && (
+						<div className="empty-box">
+							<FileMinus size={32} />
+							<span>Nenhum produto encontrado...</span>
+						</div>
+					)}
+
+					{!isLoadingProducts && (
 						<div
 							className={`w-a-products-list no-scroll ${
 								canAddProducts ? "margin-bottom" : ""
@@ -198,7 +220,8 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 								/>
 							))}
 						</div>
-					) : (
+					)}
+					{isLoadingProducts && (
 						<div className="w-a-products-loading">
 							<Spinner size={32} theme="primary" />
 							<span className="w-a-products-loading-message">
