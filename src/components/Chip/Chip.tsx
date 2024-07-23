@@ -19,12 +19,11 @@ interface ChipProps extends PropsWithChildren {
 const Chip: React.FC<ChipProps> = ({
 	active,
 	children,
-	clickable,
 	onClick,
 	theme = "primary",
 }) => {
 	const handleOnClick = () => {
-		if (clickable && onClick) {
+		if (onClick) {
 			onClick();
 		}
 	};

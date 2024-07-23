@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ArrowDown, ArrowUp } from "react-feather";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
 
 interface OrderByProps {
 	label: string;
@@ -10,6 +11,7 @@ interface OrderByProps {
 export type OrderByType = "asc" | "desc" | "";
 
 const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
+	const { t } = useTranslation();
 	const [order, setOrder] = useState<OrderByType>("");
 
 	const handleOrderChange = () => {
@@ -39,9 +41,13 @@ const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
 			onClick={handleOrderChange}
 			className={`order-by ${isActive ? "order-by-active" : ""}`}
 		>
-			<span className="order-by-label">{label}</span>
-			{order === "asc" && <ArrowUp className="icon" strokeWidth={2} size={20} />}
-			{order === "desc" && <ArrowDown className="icon" strokeWidth={2} size={20} />}
+			<span className="order-by-label">{t(label)}</span>
+			{order === "asc" && (
+				<ArrowUp className="icon" strokeWidth={2} size={20} />
+			)}
+			{order === "desc" && (
+				<ArrowDown className="icon" strokeWidth={2} size={20} />
+			)}
 		</div>
 	);
 };

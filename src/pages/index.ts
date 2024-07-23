@@ -10,3 +10,4 @@ export * from "./WaiterOrder";
 export * from "./WaiterOrderProducts";
 export * from "./WaiterMyOrders";
 export * from "./WaiterProducts";
+export * from "./BarAttendances";

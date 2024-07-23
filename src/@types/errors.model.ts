@@ -3,4 +3,5 @@ export enum FieldErrorsType {
 	InvalidEmail = "Generics.FieldErrors.InvalidEmail",
 	MinLength = "Generics.FieldErrors.MinLength",
 	MaxLength = "Generics.FieldErrors.MaxLength",
+	Min = "Generics.FieldErrors.Min",
 }

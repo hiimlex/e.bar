@@ -1,6 +1,9 @@
 export interface ModalProps {
 	id: string;
-	component: React.ReactNode;
+	title?: string;
+	children: React.ReactNode;
+	bodyClassName?: string;
+	headerClassName?: string;
 }
 
 export interface ModalContextType {
@@ -15,4 +18,6 @@ export enum ModalIds {
 
 	AddWaiter = "add-waiter",
 	EditWaiter = "edit-waiter",
+
+	StartAttendance = "start-attendance",
 }

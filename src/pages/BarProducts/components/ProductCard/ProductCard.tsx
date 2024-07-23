@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit }) => {
 			<div className="product-info">
 				<div className="product-info-col">
 					<h5 className="product-info-name">{product.name}</h5>
-					<span className="product-info-category">{product.category}</span>
+					<span className="product-info-category link link-primary">{product.category}</span>
 				</div>
 
 				<div className="product-info-row">

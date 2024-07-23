@@ -3,7 +3,7 @@ import {
 	IconButtonSizes,
 	IconButtonThemes,
 	IconButtonVariants,
-} from "../../@types/button";
+} from "../../@types/button.model";
 import "./styles.scss";
 
 interface IconButtonProps extends PropsWithChildren {
@@ -37,7 +37,12 @@ const IconButton: React.FC<IconButtonProps> = ({
 	);
 
 	return (
-		<button onClick={onClick} className={classNames} disabled={disabled}>
+		<button
+			type="button"
+			onClick={onClick}
+			className={classNames}
+			disabled={disabled}
+		>
 			{children}
 		</button>
 	);

@@ -12,6 +12,28 @@ export const ptBr = {
 			Add: "Adicionar",
 		},
 	},
+	BarAttendances: {
+		Title: "Atendimentos",
+		Buttons: {
+			Add: "Iniciar Atendimento",
+		},
+		Filters: {
+			All: "Todos",
+			Finished: "Finalizados",
+			Interval: "Data de início",
+		},
+		Table: {
+			Headers: {
+				Id: "#ID",
+				Status: "Status",
+				Start: "Início",
+				End: "Fim",
+				TablesCount: "Mesas",
+				Code: "Código",
+				Actions: "",
+			},
+		},
+	},
 	Modals: {
 		Product: {
 			create: {
@@ -30,6 +52,21 @@ export const ptBr = {
 				ChangeImage: "Alterar a imagem do produto.",
 			},
 		},
+		StartAttendance: {
+			Title: "Iniciar Atendimento",
+			Fields: {
+				Code: "Código",
+				General: "Geral",
+				FinishActiveAttendances: "Finalizar atendimento ativo",
+				SelectWaiters: "Selecione os garçons",
+				SelectTables: "Selecione as mesas",
+				Quantity: "Quantidade",
+			},
+			Buttons: {
+				Start: "Iniciar",
+				GoBack: "Voltar",
+			},
+		},
 	},
 	Generics: {
 		Buttons: {
@@ -41,6 +78,21 @@ export const ptBr = {
 			Required: "Campo obrigatório",
 			InvalidEmail: "E-mail inválido",
 			MinLength: "Mínimo de {{minLength}} caracteres",
+			MaxLength: "Máximo de {{maxLength}} caracteres",
+			Min: "Mínimo de {{min}}",
+		},
+		Dates: {
+			Short: {
+				Format: "dd/MM/yyyy",
+			},
+			Long: {
+				Format: "dd/MM/yyyy HH:mm",
+			},
+		},
+		EmptySign: "---",
+		Status: {
+			on: "Ativo",
+			off: "Inativo",
 		},
 	},
 };

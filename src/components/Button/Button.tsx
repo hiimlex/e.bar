@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, PropsWithChildren, useMemo } from "react";
 import "./styles.scss";
-import { ButtonSizes, ButtonThemes, ButtonVariants } from "../../@types/button";
+import { ButtonSizes, ButtonThemes, ButtonVariants } from "../../@types/button.model";
 import { Spinner } from "../Spinner";
 
 interface ButtonProps

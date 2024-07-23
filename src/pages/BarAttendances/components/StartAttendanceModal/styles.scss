@@ -1,0 +1,55 @@
+@import "../../../../base.scss";
+
+.start-attendance {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-4;
+
+	&-group {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-3;
+	}
+
+	&-list {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+	}
+
+	&-subtitle {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	&-quantity {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		gap: $unit-2;
+	}
+
+	&-footer {
+		display: flex;
+		flex-direction: row;
+		gap: $unit-3;
+	}
+
+	&-checkbox {
+		&:hover {
+			cursor: pointer;
+			opacity: 0.8;
+		}
+
+		label {
+			font-size: 16px !important;
+			font-weight: 500;
+			color: $color-text-dark;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}

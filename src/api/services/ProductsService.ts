@@ -28,7 +28,7 @@ const create = async (
 		formData.append("image", file);
 		Object.entries(product).forEach(([key, value]) => {
 			formData.append(key, value);
-		})
+		});
 
 		const res = await api.post(Endpoints.CreateProduct, formData);
 
@@ -40,11 +40,22 @@ const create = async (
 
 const update = async (
 	productId: string,
-	product: Partial<CreateProductPayload>
+	product: Partial<CreateProductPayload>,
+	file?: File | null
 ): Promise<AxiosResponse<IProduct>> => {
 	try {
+		const formData = new FormData();
+
+		if (file) {
+			formData.append("image", file);
+		}
+
+		Object.entries(product).forEach(([key, value]) => {
+			formData.append(key, value.toString());
+		});
+
 		const url = queryBuilder(Endpoints.UpdateProduct, {}, { productId });
-		const res = await api.put(url, product);
+		const res = await api.put(url, formData);
 
 		return res;
 	} catch (error) {

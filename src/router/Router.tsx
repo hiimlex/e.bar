@@ -1,6 +1,7 @@
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 import { Pages } from "../@types";
 import {
+	BarAttendancesPage,
 	BarProductsPage,
 	LoginPage,
 	WaiterAddProductsPage,
@@ -23,6 +24,14 @@ const ADMIN_ROUTES: RouteObject[] = [
 			</ProtectedRoute>
 		),
 	},
+	{
+		path: Pages.BarAttendances,
+		element: (
+			<ProtectedRoute>
+				<BarAttendancesPage />
+			</ProtectedRoute>
+		),
+	}
 	// {
 	// 	path: Pages.Sales,
 	// 	element: (

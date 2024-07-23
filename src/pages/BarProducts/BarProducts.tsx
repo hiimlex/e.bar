@@ -99,7 +99,8 @@ const BarProductsPage: React.FC<BarProductsPageProps> = () => {
 	const openAddProductModal = () => {
 		openModal({
 			id: ModalIds.AddProduct,
-			component: (
+			title: "Modals.Product.create.Title",
+			children: (
 				<ProductModal
 					mode="create"
 					id={ModalIds.AddProduct}
@@ -110,23 +111,25 @@ const BarProductsPage: React.FC<BarProductsPageProps> = () => {
 	};
 
 	const openEditProductModal = (product: IProduct) => {
-		// openModal({
-		// 	id: ModalIds.EditProduct,
-		// 	component: (
-		// 		<ProductModal
-		// 			mode="edit"
-		// 			id={ModalIds.EditProduct}
-		// 			beforeClose={getAllProducts}
-		// 			productId={product.id.toString()}
-		// 			initialProduct={{
-		// 				name: product.name,
-		// 				category: product.category,
-		// 				price: product.price,
-		// 				stock: product.stock,
-		// 			}}
-		// 		/>
-		// 	),
-		// });
+		openModal({
+			id: ModalIds.EditProduct,
+			title: "Modals.Product.edit.Title",
+			children: (
+				<ProductModal
+					mode="edit"
+					id={ModalIds.EditProduct}
+					beforeClose={getAllProducts}
+					productId={product.id.toString()}
+					initialProduct={{
+						name: product.name,
+						category: product.category,
+						price: product.price,
+						stock: product.stock,
+					}}
+					imagePreview={product.image_url}
+				/>
+			),
+		});
 	};
 
 	useEffect(() => {
@@ -134,16 +137,18 @@ const BarProductsPage: React.FC<BarProductsPageProps> = () => {
 	}, [getAllProducts]);
 
 	useEffect(() => {
-		onSearch(search);
+		if (search !== filters.nome) {
+			onSearch(search);
+		}
 	}, [search]);
 
 	return (
 		<MainContainer showAdminHeader>
 			<div className="products">
 				<header className="products-header">
-					<h2 className="page-title">{t('BarProducts.Title')}</h2>
+					<h2 className="page-title">{t("BarProducts.Title")}</h2>
 					<Button onClick={openAddProductModal}>
-						<Plus size={14} /> {t('BarProducts.Buttons.Add')}
+						<Plus size={14} /> {t("BarProducts.Buttons.Add")}
 					</Button>
 				</header>
 

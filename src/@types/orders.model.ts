@@ -1,5 +1,5 @@
-import { SafeAny } from "./generic";
-import { ProductCategory } from "./products";
+import { SafeAny } from "./generic.model";
+import { ProductCategory } from "./products.model";
 
 
 

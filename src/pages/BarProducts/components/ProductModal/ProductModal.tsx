@@ -31,12 +31,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
 	const { t } = useTranslation();
 	const { closeModal } = useModal();
 	const [loading, setLoading] = useState(false);
-	const { control, handleSubmit, formState } = useForm<CreateProductPayload>({
-		mode: "all",
-		defaultValues: initialProduct,
-	});
+	const { control, handleSubmit, formState, watch } =
+		useForm<CreateProductPayload>({
+			mode: "all",
+			defaultValues: initialProduct,
+		});
 	const [file, setFile] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | undefined>(imagePreview);
+	const values = watch();
 
 	const canAdd = useMemo(() => formState.isValid && !!file, [formState, file]);
 
@@ -99,12 +101,16 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
 			const { name, category, price, stock } = data;
 
-			await ProductsService.update(productId, {
-				name,
-				category,
-				price: +price,
-				stock: +stock,
-			});
+			await ProductsService.update(
+				productId,
+				{
+					name,
+					category,
+					price: +price,
+					stock: +stock,
+				},
+				file
+			);
 
 			setLoading(false);
 
@@ -120,12 +126,28 @@ const ProductModal: React.FC<ProductModalProps> = ({
 		}
 	};
 
+	const hasChangedImage = useMemo(
+		() => imagePreview !== preview,
+		[imagePreview, preview]
+	);
+	const hasChangedData = useMemo(() => {
+		if (!initialProduct) {
+			return true;
+		}
+
+		type ProductKeys = keyof CreateProductPayload;
+
+		const hasChanged = Object.keys(initialProduct).some(
+			(key) =>
+				values[key as ProductKeys].toString() !==
+				initialProduct[key as ProductKeys].toString()
+		);
+
+		return hasChanged;
+	}, [initialProduct, values]);
+
 	return (
 		<form className="product-modal" onSubmit={handleSubmit(onSubmit)}>
-			<span className="product-modal-title">
-				{t(`Modals.Product.${mode}.Title`)}
-			</span>
-
 			{preview && (
 				<div className="image-preview">
 					<img src={preview} alt={t("Modals.Product.Fields.ImagePreview")} />
@@ -153,6 +175,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 					fieldState: { error },
 				}) => (
 					<Input
+						mode="controlled"
 						fieldKey={name}
 						placeholder="Modals.Product.Fields.Name"
 						wrapperClassName="fill-row"
@@ -181,6 +204,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				}) => (
 					<Input
 						fieldKey={name}
+						mode="controlled"
 						placeholder="Modals.Product.Fields.Price"
 						wrapperClassName="fill-row"
 						className="filled-input"
@@ -210,6 +234,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				}) => (
 					<Input
 						fieldKey={name}
+						mode="controlled"
 						placeholder="Modals.Product.Fields.Stock"
 						wrapperClassName="fill-row"
 						className="filled-input"
@@ -253,7 +278,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
 			)}
 
 			{mode === "edit" && (
-				<Button loading={loading} className="fill-row">
+				<Button
+					loading={loading}
+					disabled={!hasChangedData && !hasChangedImage}
+					className="fill-row"
+				>
 					Salvar
 				</Button>
 			)}
