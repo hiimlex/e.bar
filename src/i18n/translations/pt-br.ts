@@ -1,3 +1,5 @@
+import { getOverlappingDaysInIntervals } from "date-fns";
+
 export const ptBr = {
 	Login: {
 		Subtitle: "Insira suas credenciais para <br/> fazer login",
@@ -31,6 +33,21 @@ export const ptBr = {
 				TablesCount: "Mesas",
 				Code: "Código",
 				Actions: "",
+			},
+		},
+	},
+	BarOnAttendance: {
+		GoBack: "Voltar",
+		Title: "Atendimento #{{attendanceId}} - {{code}}",
+		Tabs: {
+			Orders: "Pedidos",
+			General: "Geral",
+			Sales: "Vendas",
+		},
+		General: {
+			Tabs: {
+				Tables: "Mesas",
+				Waiters: "Garçons",
 			},
 		},
 	},

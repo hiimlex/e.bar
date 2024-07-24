@@ -135,6 +135,10 @@
 	font-weight: 700;
 	width: fit-content;
 
+	display: flex;
+	align-items: center;
+	gap: 6px;
+
 	transition: $transition-all;
 
 	&:hover,
@@ -154,11 +158,12 @@
 }
 
 .chip-status {
-	padding: 4px 8px;
-	border-radius: 8px;
+	padding: 4px 12px;
+	border-radius: 12px;
 	font-weight: 600;
 	font-size: 14px;
 	width: fit-content;
+	height: fit-content;
 
 	&-primary {
 		background: $color-primary;
@@ -183,6 +188,11 @@
 	&-success-outlined {
 		background: rgba($color-success, 0.2);
 		color: $color-success;
+	}
+
+	&-default {
+		background: $color-gray-1;
+		color: $color-text-dark;
 	}
 }
 

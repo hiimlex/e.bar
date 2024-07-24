@@ -22,3 +22,8 @@ export interface StartAttendancePayload {
 	finish_active_attendances: boolean;
 	tables_count: number;
 }
+
+export interface OnAttendanceState {
+	attendance: IAttendance | null;
+	attendanceId: number | null;
+}

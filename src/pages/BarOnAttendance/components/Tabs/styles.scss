@@ -1,0 +1,31 @@
+@import "../../../../base.scss";
+
+.tabs {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(var(--itemsLength), 1fr);
+	align-items: flex-end;
+
+	border-bottom: 1px solid $color-gray-2;
+
+	&-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: $unit-1;
+		font-weight: 500;
+		color: $color-gray-3;
+		border-bottom: 2px solid transparent;
+		transition: $transition-all;
+
+		&:hover {
+			color: rgba($color-primary, 0.8);
+		}
+
+		&-active {
+			color: $color-primary;
+			font-weight: 600;
+			border-color: $color-primary;
+		}
+	}
+}

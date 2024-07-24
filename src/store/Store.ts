@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { SafeAny } from "../@types";
 import {
+	OnAttendanceReducer,
 	OnOrderReducer,
 	OrdersReducer,
 	ProductsReducer,
@@ -16,7 +17,8 @@ export const store = configureStore({
 		onOrder: OnOrderReducer,
 		user: UserReducer,
 		waiter: WaiterReducer,
-		socket: SocketReducer
+		socket: SocketReducer,
+		onAttendance: OnAttendanceReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

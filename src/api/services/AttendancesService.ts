@@ -18,6 +18,19 @@ const fetchAll = async (
 	}
 };
 
+const getById = async (
+	attendanceId: string
+): Promise<AxiosResponse<IAttendance>> => {
+	try {
+		const url = queryBuilder(Endpoints.GetAttendance, {}, { attendanceId });
+		const res = await api.get(url);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 const startAttendance = async (
 	payload: StartAttendancePayload
 ): Promise<AxiosResponse<IAttendance>> => {
@@ -30,4 +43,4 @@ const startAttendance = async (
 	}
 };
 
-export default { fetchAll, startAttendance };
+export default { fetchAll, startAttendance, getById };

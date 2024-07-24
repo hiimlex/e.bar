@@ -88,7 +88,6 @@ const Tables: React.FC<TablesProps> = () => {
 
 	return (
 		<div className="tables">
-			<h4 className="tables-title">Mesas</h4>
 			<div className="tables-actions">
 				<div className="tables-filters">
 					<OrderBy

@@ -82,3 +82,11 @@
 		}
 	}
 }
+
+.dropdown-item {
+	display: grid;
+	grid-template-columns: 16px 1fr;
+	align-items: center;
+	gap: 6px;
+	text-align: left;
+}

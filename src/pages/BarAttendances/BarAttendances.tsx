@@ -1,8 +1,12 @@
 import { format } from "date-fns";
 import React, { useCallback, useEffect, useState } from "react";
-import { MoreVertical } from "react-feather";
 import { useTranslation } from "react-i18next";
-import { GetAttendanceFilters, IAttendance, ModalIds } from "../../@types";
+import {
+	GetAttendanceFilters,
+	IAttendance,
+	ModalIds,
+	Pages,
+} from "../../@types";
 import { AttendancesService } from "../../api";
 import {
 	Button,
@@ -13,8 +17,11 @@ import {
 	OrderByType,
 } from "../../components";
 import { useModal } from "../../hooks";
+import { StartAttendanceModal } from "./components";
 import "./styles.scss";
-import { StartAttendanceModal } from "./components/StartAttendanceModal";
+import { Dropdown, DropdownItem, DropdownSeparator } from "leux";
+import { Eye, MoreVertical, X } from "react-feather";
+import { useNavigate } from "react-router-dom";
 
 interface BarAttendancesPageProps {}
 
@@ -24,6 +31,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 
 	const [attendances, setAttendances] = useState<IAttendance[]>([]);
 	const [filters, setFilters] = useState<GetAttendanceFilters>({});
+	const navigate = useNavigate();
 
 	const loadAttendances = useCallback(async () => {
 		try {
@@ -59,6 +67,15 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 			title: "Modals.StartAttendance.Title",
 			children: <StartAttendanceModal onClose={loadAttendances} />,
 		});
+	};
+
+	const seeAttendance = (attendanceId: number) => {
+		const to = Pages.BarAttendanceGeneral.replace(
+			":attendanceId",
+			attendanceId.toString()
+		);
+
+		navigate(to);
 	};
 
 	useEffect(() => {
@@ -112,7 +129,9 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 						{attendances.map((attendance, index) => (
 							<div key={index} className="attendances-table-item">
 								<span>{attendance.id}</span>
-								<span className={attendance.status}>{t(`Generics.Status.${attendance.status}`)}</span>
+								<span className={attendance.status}>
+									{t(`Generics.Status.${attendance.status}`)}
+								</span>
 								<span>
 									{format(
 										new Date(attendance.start_date),
@@ -131,9 +150,24 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 								<span>{attendance.code}</span>
 								<span
 									role="button"
-									className="table-action flex align-center justify-center link link-secondary"
+									className="table-action flex align-center justify-center"
 								>
-									<MoreVertical size={24} />
+									<Dropdown
+										position="bottomRight"
+										anchor={<MoreVertical className="link link-primary" />}
+									>
+										<DropdownItem
+											customClass="dropdown-item"
+											onClick={() => seeAttendance(attendance.id)}
+										>
+											<Eye size={16} /> Ver
+										</DropdownItem>
+										<DropdownSeparator />
+										<DropdownSeparator />
+										<DropdownItem customClass="dropdown-item">
+											<X size={16} /> Finalizar
+										</DropdownItem>
+									</Dropdown>
 								</span>
 							</div>
 						))}

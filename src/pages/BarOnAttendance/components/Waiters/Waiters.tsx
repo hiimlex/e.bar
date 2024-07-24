@@ -63,52 +63,40 @@ const Waiters: React.FC<WaitersProps> = () => {
 		setFilters((curr) => ({ ...curr, ordem: order, direcao: direction }));
 	};
 
-	const setActiveFilter = () => {
-		const ativos = filters.ativos ? undefined : !filters.ativos;
-
-		setFilters((curr) => ({ ...curr, ativos }));
-	};
-
-	const setIsAdminFilter = () => {
-		const is_admin = filters.is_admin ? undefined : !filters.is_admin;
-
-		setFilters((curr) => ({ ...curr, is_admin }));
-	};
-
 	const onAddWaiter = () => {
-		openModal({
-			id: ModalIds.AddWaiter,
-			component: (
-				<WaiterModal
-					modalId={ModalIds.AddWaiter}
-					mode="create"
-					beforeClose={() => fetchWaiters(false)}
-				/>
-			),
-		});
+		// openModal({
+		// 	id: ModalIds.AddWaiter,
+		// 	component: (
+		// 		<WaiterModal
+		// 			modalId={ModalIds.AddWaiter}
+		// 			mode="create"
+		// 			beforeClose={() => fetchWaiters(false)}
+		// 		/>
+		// 	),
+		// });
 	};
 
 	const onEditWaiter = (waiter: IWaiter) => {
 		const { id, name, email, phone, is_admin } = waiter;
 
-		openModal({
-			id: ModalIds.EditWaiter,
-			component: (
-				<WaiterModal
-					modalId={ModalIds.EditWaiter}
-					mode="edit"
-					beforeClose={() => fetchWaiters(false)}
-					waiterId={id}
-					initialWaiter={{
-						name,
-						email,
-						phone,
-						password: "",
-						is_admin,
-					}}
-				/>
-			),
-		});
+		// openModal({
+		// 	id: ModalIds.EditWaiter,
+		// 	component: (
+		// 		<WaiterModal
+		// 			modalId={ModalIds.EditWaiter}
+		// 			mode="edit"
+		// 			beforeClose={() => fetchWaiters(false)}
+		// 			waiterId={id}
+		// 			initialWaiter={{
+		// 				name,
+		// 				email,
+		// 				phone,
+		// 				password: "",
+		// 				is_admin,
+		// 			}}
+		// 		/>
+		// 	),
+		// });
 	};
 
 	const onActive = async (waiter: IWaiter, active: boolean) => {
@@ -135,31 +123,8 @@ const Waiters: React.FC<WaitersProps> = () => {
 
 	return (
 		<div className="waiters">
-			<div className="flex-row-text">
-				<h4 className="waiters-title">Garçons</h4>
-				<Button onClick={onAddWaiter}>
-					<Plus size={14} /> Adicionar
-				</Button>
-			</div>
+			<div className="flex-row-text"></div>
 			<div className="waiters-actions">
-				<div className="waiters-filters">
-					<Chip
-						theme="secondary"
-						active={filters.ativos}
-						clickable
-						onClick={setActiveFilter}
-					>
-						Ativos
-					</Chip>
-					<Chip
-						theme="secondary"
-						clickable
-						active={filters.is_admin}
-						onClick={setIsAdminFilter}
-					>
-						Admin
-					</Chip>
-				</div>
 				<div className="waiters-filters">
 					<OrderBy
 						label="Nome"
@@ -171,6 +136,9 @@ const Waiters: React.FC<WaitersProps> = () => {
 						onChangeValue={(value) => onSearch(value)}
 					/>
 				</div>
+				<Button onClick={onAddWaiter}>
+					<Plus size={14} /> Adicionar
+				</Button>
 			</div>
 			{!loading && (
 				<div className="waiters-grid">

@@ -3,6 +3,7 @@ export enum Pages {
 
 	BarProducts = "/bar/products",
 	BarAttendances = "/bar/attendances",
+	BarAttendanceView = '/bar/attendance/:attendanceId',
 	BarAttendanceGeneral = "/bar/attendance/:attendanceId/general",
 	BarAttendanceOrders = "/bar/attendance/:attendanceId/orders",
 	BarAttendanceSales = "/bar/attendance/:attendanceId/sales",

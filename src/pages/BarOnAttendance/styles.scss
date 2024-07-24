@@ -1,0 +1,41 @@
+@import "../../base.scss";
+
+.b-o-attendance {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-4;
+	width: 100%;
+	height: 100%;
+
+	&-header {
+		display: flex;
+		flex-direction: column;
+		gap: $unit-2;
+	}
+
+	&-status {
+		display: flex;
+		flex-direction: row;
+		gap: $unit-3;
+		
+		.group {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: $unit-1;
+
+			&-label {
+				font-size: 14px;
+				font-weight: 600;
+				color: $color-gray-3;
+			}
+			&-value {
+			}
+		}
+	}
+
+	.tabs-content {
+		display: flex;
+		flex-direction: column;
+	}
+}

@@ -4,3 +4,4 @@ export * from "./OnOrder";
 export * from "./UserSlice";
 export * from "./WaiterSlice";
 export * from "./SocketSlice";
+export * from "./OnAttendance";
