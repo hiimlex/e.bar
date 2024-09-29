@@ -102,7 +102,7 @@ const Tables: React.FC<TablesProps> = () => {
 			{!loading && (
 				<div className="tables-grid">
 					{tables.map((table) => (
-						<div className="card card-gray" key={table.id}>
+						<div className={`card card-gray ${table.is_active ? 'table-card': 'table-not-active'}`} key={table.id}>
 							<div className="flex-row-text">
 								<span className="tables-info-number">Mesa {table.id}</span>
 								<div className="chip-status chip-status-primary">
@@ -124,7 +124,7 @@ const Tables: React.FC<TablesProps> = () => {
 							) : (
 								<Button
 									className="fill-row"
-									theme="primary"
+									theme="secondary"
 									loading={updating === table.id}
 									onClick={() => activate(table.id)}
 								>

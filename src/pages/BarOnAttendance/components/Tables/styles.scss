@@ -52,4 +52,13 @@
 			color: $color-text-dark;
 		}
 	}
+
+	.table-card {
+		border: 1px dashed $color-gray-3;
+		background: $color-gray-1;
+	}
+
+	.table-not-active {
+		background: $color-gray-2;
+	}
 }

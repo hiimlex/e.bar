@@ -133,3 +133,9 @@ input {
 		display: none;
 	}
 }
+
+.le-dropdown {
+	background: $color-background;
+	border-radius: 12px;
+	box-shadow: 0 4px 5px 1px rgba(#333, 0.1);
+}

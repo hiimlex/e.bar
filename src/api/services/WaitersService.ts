@@ -19,7 +19,7 @@ const fetchAll = async (
 };
 
 const create = async (
-	data: CreateWaiterPayload
+	data: CreateWaiterPayload,
 ): Promise<AxiosResponse<IWaiter>> => {
 	try {
 		const res = await api.post(Endpoints.CreateWaiter, data);

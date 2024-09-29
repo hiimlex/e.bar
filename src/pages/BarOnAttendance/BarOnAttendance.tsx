@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { MainContainer } from "../../components";
 import { ArrowLeft } from "react-feather";
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { AttendancesService } from "../../api";
 import { IAttendance, Pages } from "../../@types";
 import "./styles.scss";
@@ -71,7 +71,7 @@ const BarOnAttendance: React.FC = () => {
 
 	const handleTabSelect = (value: string) => {
 		setSelectedTab(value);
-	}
+	};
 
 	if ((!attendance || !attendanceId) && !loading) {
 		return null;
@@ -83,10 +83,10 @@ const BarOnAttendance: React.FC = () => {
 			{!loading && (
 				<div className="b-o-attendance">
 					<header className="b-o-attendance-header">
-						<span className="link link-primary">
+						<Link to={Pages.BarAttendances} className="link link-primary">
 							<ArrowLeft size={16} />
 							{t("BarOnAttendance.GoBack")}
-						</span>
+						</Link>
 
 						<div className="flex flex-row gap-4 items-end">
 							<h4 className="page-title">
@@ -126,7 +126,11 @@ const BarOnAttendance: React.FC = () => {
 						</div>
 					</div>
 
-					<Tabs tabs={tabs} selected={selectedTab} onSelect={(tab) => handleTabSelect(tab)} />
+					<Tabs
+						tabs={tabs}
+						selected={selectedTab}
+						onSelect={(tab) => handleTabSelect(tab)}
+					/>
 
 					<div className="tabs-content">
 						<Outlet />

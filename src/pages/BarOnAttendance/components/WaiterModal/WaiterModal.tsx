@@ -5,6 +5,8 @@ import { WaitersService } from "../../../../api";
 import { Button, Input } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import "./styles.scss";
+import { Checkbox } from "leux";
+import { useTranslation } from "react-i18next";
 
 interface WaiterModalProps {
 	modalId?: string;
@@ -21,12 +23,13 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 	mode,
 	waiterId,
 }) => {
+	const { t } = useTranslation();
 	const { closeModal } = useModal();
 	const [loading, setLoading] = useState(false);
 	const {
 		handleSubmit,
 		control,
-		formState: { isValid},
+		formState: { isValid },
 		reset,
 	} = useForm<CreateWaiterPayload>({
 		mode: "all",
@@ -96,17 +99,13 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 
 	return (
 		<form className="waiter-modal" onSubmit={handleSubmit(onSubmit)}>
-			<span className="waiter-modal-title">
-				{mode === "create" ? "Adicionar garçon" : "Editar garçon"}
-			</span>
-
 			<Controller
 				control={control}
 				name="name"
 				rules={{ required: true }}
 				render={({ field: { name, onBlur, onChange, value, disabled } }) => (
 					<Input
-						placeholder="Nome"
+						placeholder="Modals.Waiter.Fields.Name"
 						wrapperClassName="fill-row"
 						className="filled-input"
 						disabled={disabled}
@@ -125,7 +124,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 				defaultValue={control._defaultValues.email}
 				render={({ field: { name, onBlur, onChange, value, disabled } }) => (
 					<Input
-						placeholder="Email"
+						placeholder="Modals.Waiter.Fields.Email"
 						wrapperClassName="fill-row"
 						className="filled-input"
 						disabled={disabled}
@@ -143,7 +142,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 				rules={{ required: true }}
 				render={({ field: { name, onBlur, onChange, value, disabled } }) => (
 					<Input
-						placeholder="Telefone"
+						placeholder="Modals.Waiter.Fields.Phone"
 						wrapperClassName="fill-row"
 						disabled={disabled}
 						value={value}
@@ -161,7 +160,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 					rules={{ required: true, minLength: 5 }}
 					render={({ field: { name, onBlur, onChange, value, disabled } }) => (
 						<Input
-							placeholder="Senha"
+							placeholder="Modals.Waiter.Fields.Password"
 							type="password"
 							wrapperClassName="fill-row"
 							disabled={disabled}
@@ -178,21 +177,16 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 			<Controller
 				control={control}
 				name="is_admin"
-				render={({ field: { name, onBlur, onChange, value, disabled } }) => (
-					<div className="checkbox">
-						<Input
-							type="checkbox"
-							disabled={disabled}
-							defaultChecked={value}
-							name={name}
-							id={name}
-							onChange={onChange}
-							onBlur={onBlur}
-						/>
-						<label htmlFor="name" className="checkbox-label">
-							Administrador ?
-						</label>
-					</div>
+				render={({ field }) => (
+					<Checkbox
+						fieldKey={field.name}
+						customClass="start-attendance-checkbox"
+						onChange={() => field.onChange(field.value)}
+						label={t("Modals.Waiter.Fields.IsAdmin")}
+						checkBoxProps={{
+							onBlur: field.onBlur,
+						}}
+					/>
 				)}
 			/>
 
@@ -202,7 +196,9 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 				loading={loading}
 				disabled={!isValid}
 			>
-				{mode === "create" ? "Adicionar" : "Salvar"}
+				{mode === "create"
+					? t("Modals.Waiter.Buttons.Add")
+					: t("Modals.Waiter.Buttons.Save")}
 			</Button>
 		</form>
 	);

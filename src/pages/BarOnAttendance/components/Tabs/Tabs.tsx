@@ -21,14 +21,16 @@ const Tabs: React.FC<TabsProps> = ({ selected, tabs, onSelect }) => {
 	return (
 		<div className="tabs" style={tabsLengthStyle}>
 			{tabs.map((tab) => (
-				<div
-					className={`tabs-item ${selected === tab.value ? " tabs-item-active" : ""}`}
+				<span
+					className={`tabs-item ${
+						selected === tab.value ? " tabs-item-active" : ""
+					}`}
 					role="button"
 					key={tab.label}
 					onClick={() => onSelect(tab.value)}
 				>
 					{t(tab.label)}
-				</div>
+				</span>
 			))}
 		</div>
 	);

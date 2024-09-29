@@ -64,39 +64,41 @@ const Waiters: React.FC<WaitersProps> = () => {
 	};
 
 	const onAddWaiter = () => {
-		// openModal({
-		// 	id: ModalIds.AddWaiter,
-		// 	component: (
-		// 		<WaiterModal
-		// 			modalId={ModalIds.AddWaiter}
-		// 			mode="create"
-		// 			beforeClose={() => fetchWaiters(false)}
-		// 		/>
-		// 	),
-		// });
+		openModal({
+			id: ModalIds.AddWaiter,
+			title: "Modals.Waiter.create.Title",
+			children: (
+				<WaiterModal
+					modalId={ModalIds.AddWaiter}
+					mode="create"
+					beforeClose={() => fetchWaiters(false)}
+				/>
+			),
+		});
 	};
 
 	const onEditWaiter = (waiter: IWaiter) => {
 		const { id, name, email, phone, is_admin } = waiter;
 
-		// openModal({
-		// 	id: ModalIds.EditWaiter,
-		// 	component: (
-		// 		<WaiterModal
-		// 			modalId={ModalIds.EditWaiter}
-		// 			mode="edit"
-		// 			beforeClose={() => fetchWaiters(false)}
-		// 			waiterId={id}
-		// 			initialWaiter={{
-		// 				name,
-		// 				email,
-		// 				phone,
-		// 				password: "",
-		// 				is_admin,
-		// 			}}
-		// 		/>
-		// 	),
-		// });
+		openModal({
+			id: ModalIds.EditWaiter,
+			title: "Modals.Waiter.edit.Title",
+			children: (
+				<WaiterModal
+					modalId={ModalIds.EditWaiter}
+					mode="edit"
+					beforeClose={() => fetchWaiters(false)}
+					waiterId={id}
+					initialWaiter={{
+						name,
+						email,
+						phone,
+						password: "",
+						is_admin,
+					}}
+				/>
+			),
+		});
 	};
 
 	const onActive = async (waiter: IWaiter, active: boolean) => {
@@ -123,17 +125,16 @@ const Waiters: React.FC<WaitersProps> = () => {
 
 	return (
 		<div className="waiters">
-			<div className="flex-row-text"></div>
 			<div className="waiters-actions">
 				<div className="waiters-filters">
-					<OrderBy
-						label="Nome"
-						onOrderChange={(direction) => onOrderBy("nome", direction)}
-					/>
 					<Input
 						className="waiters-search"
 						placeholder="Buscar..."
 						onChangeValue={(value) => onSearch(value)}
+					/>
+					<OrderBy
+						label="Nome"
+						onOrderChange={(direction) => onOrderBy("nome", direction)}
 					/>
 				</div>
 				<Button onClick={onAddWaiter}>
@@ -157,14 +158,6 @@ const Waiters: React.FC<WaitersProps> = () => {
 								<span className="waiters-info-email">{waiter.email}</span>
 							</div>
 							<div className="card-footer">
-								<Button
-									className="fill-row"
-									theme={waiter.active ? "danger" : "primary"}
-									onClick={() => onActive(waiter, waiter.active)}
-									disabled={activatingWaiterId === waiter.id.toString()}
-								>
-									{waiter.active ? "Desativar" : "Ativar"}
-								</Button>
 								<IconButton
 									theme="secondary"
 									className="edit-button"
@@ -173,6 +166,14 @@ const Waiters: React.FC<WaitersProps> = () => {
 								>
 									<Edit2 strokeWidth={2} size={16} />
 								</IconButton>
+								<Button
+									className="fill-row"
+									theme={waiter.active ? "danger" : "primary"}
+									onClick={() => onActive(waiter, waiter.active)}
+									disabled={activatingWaiterId === waiter.id.toString()}
+								>
+									{waiter.active ? "Desativar" : "Ativar"}
+								</Button>
 							</div>
 						</div>
 					))}

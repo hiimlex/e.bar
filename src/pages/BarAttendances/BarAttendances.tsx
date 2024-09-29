@@ -154,6 +154,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 								>
 									<Dropdown
 										position="bottomRight"
+										size="large"
 										anchor={<MoreVertical className="link link-primary" />}
 									>
 										<DropdownItem

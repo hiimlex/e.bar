@@ -84,6 +84,25 @@ export const ptBr = {
 				GoBack: "Voltar",
 			},
 		},
+		Waiter: {
+			create: {
+				Title: "Adicionar garçom",
+			},
+			edit: {
+				Title: "Editar garçom",
+			},
+			Fields: {
+				Name: "Nome",
+				Phone: "Telefone",
+				Email: "E-mail",
+				Password: "Senha",
+				IsAdmin: "Administrador",
+			},
+			Buttons: {
+				Add: "Adicionar",
+				Save: "Salvar",
+			},
+		},
 	},
 	Generics: {
 		Buttons: {
