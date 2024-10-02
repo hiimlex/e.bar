@@ -1,7 +1,7 @@
 export enum Pages {
 	Login = "/login",
 
-	BarProducts = "/bar/products",
+	StoreProducts = "/store/products",
 	BarAttendances = "/bar/attendances",
 	BarAttendanceView = '/bar/attendance/:attendanceId',
 	BarAttendanceGeneral = "/bar/attendance/:attendanceId/general",

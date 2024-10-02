@@ -1,6 +1,6 @@
 export * from "./BarAttendances";
 export * from "./BarOnAttendance";
-export * from "./BarProducts";
+export * from "./StoreProducts";
 export * from "./Login";
 export * from "./Orders";
 export * from "./Sales";

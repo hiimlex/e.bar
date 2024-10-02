@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AUTH_TOKEN_KEY } from "../api";
-import { AppDispatch, getCurrentUser, SocketActions } from "../store";
+import { AppDispatch, thunkGetCurrentUser, SocketActions } from "../store";
 import { socket } from "../socket/socket";
 
 const UserProvider: React.FC = () => {
@@ -11,7 +11,7 @@ const UserProvider: React.FC = () => {
 		const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
 		if (token) {
-			dispatch(getCurrentUser());
+			dispatch(thunkGetCurrentUser());
 		}
 	};
 
@@ -28,14 +28,13 @@ const UserProvider: React.FC = () => {
 		socket.on("disconnect", () => {
 			dispatch(SocketActions.setConnected(false));
 			console.log("Disconnected to server");
-
 		});
 
-		socket.connect();
+		// socket.connect();
 
-		socket.on('login', (data) => {
+		socket.on("login", (data) => {
 			console.log(data);
-		})
+		});
 	}, []);
 
 	return <></>;

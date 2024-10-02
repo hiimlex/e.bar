@@ -34,15 +34,24 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 			const { data } = await AuthService.login(email, password);
 
-			const { is_bar, access_token } = data;
+			const { access_token } = data;
 
 			if (access_token) {
 				localStorage.setItem(AUTH_TOKEN_KEY, access_token);
 
-				const { data: user } = await AuthService.getCurrentUser();
+				const {
+					data: { waiter, store, is_store },
+				} = await AuthService.getCurrentUser();
 
-				dispatch(UserActions.setUser(user));
-				dispatch(UserActions.setIsAdmin(is_bar));
+				if (is_store && store) {
+					dispatch(UserActions.setStore(store));
+				}
+
+				if (!is_store && waiter) {
+					dispatch(UserActions.setUser(waiter));
+				}
+
+				dispatch(UserActions.setIsAdmin(is_store));
 			}
 
 			setLoading(false);
@@ -55,7 +64,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 		}
 	};
 
-	const { isAuthenticated, waiter, isAdmin } = useSelector(
+	const { isAuthenticated, waiter, isAdmin, store } = useSelector(
 		(state: RootState) => state.user
 	);
 
@@ -65,11 +74,12 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 				navigate(Pages.WaiterHome);
 			}
 
-			if (isAdmin && waiter) {
-				navigate(Pages.BarProducts);
+			if (isAdmin && store) {
+				navigate(Pages.StoreProducts);
 			}
 		}
-	}, [isAuthenticated, isAdmin, waiter]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isAuthenticated, isAdmin, waiter, store]);
 
 	return (
 		<div className="login">

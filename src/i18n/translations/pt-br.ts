@@ -8,10 +8,13 @@ export const ptBr = {
 		Login: "Continuar",
 		InvalidCredentials: "Email ou senha inválidos!",
 	},
-	BarProducts: {
+	StoreProducts: {
 		Title: "Meus produtos",
 		Buttons: {
 			Add: "Adicionar",
+		},
+		Filters: {
+			Category: "Categorias",
 		},
 	},
 	BarAttendances: {

@@ -9,7 +9,7 @@ import { UserActions } from "../../store";
 
 export const NAV_LINKS: NavLink[] = [
 	{ to: Pages.BarAttendances, label: "Atendimento" },
-	{ to: Pages.BarProducts, label: "Produtos" },
+	{ to: Pages.StoreProducts, label: "Produtos" },
 	// { to: Pages.Orders, label: "Pedidos" },
 	// { to: Pages.Sales, label: "Vendas" },
 ];

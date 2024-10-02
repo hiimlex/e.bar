@@ -6,12 +6,12 @@ import {
 	createSlice,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { IProduct, ProductsFilter, ProductsState } from "../../../@types";
+import { IPaginationResponse, IProduct, ProductsFilter, ProductsState } from "../../../@types";
 import { ProductsService } from "../../../api";
 import { GenericAction, RootState } from "../../Store";
 
 const fetchProducts = createAsyncThunk<
-	IProduct[],
+	IPaginationResponse<IProduct>,
 	boolean | undefined,
 	{ rejectValue: AxiosError }
 >(
@@ -52,7 +52,7 @@ const ProductsSlicer = createSlice<
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchProducts.fulfilled, (state, action) => {
-			state.products = action.payload;
+			state.products = action.payload.content;
 			state.isLoadingProducts = false;
 		});
 

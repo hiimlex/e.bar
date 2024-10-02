@@ -7,12 +7,12 @@ import {
 	createSlice,
 } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { IWaiter, UserState } from "../../../@types";
+import { IMeResponse, IStore, IWaiter, UserState } from "../../../@types";
 import { AUTH_TOKEN_KEY, AuthService } from "../../../api";
 import { GenericAction } from "../../Store";
 
-const getCurrentUser = createAsyncThunk<
-	IWaiter & {is_bar: boolean},
+const thunkGetCurrentUser = createAsyncThunk<
+	IMeResponse,
 	void,
 	{ rejectValue: AxiosError }
 >("User/getCurrentUser", async (_, { dispatch, rejectWithValue }) => {
@@ -39,8 +39,13 @@ const UserSlice = createSlice<
 		loading: true,
 	},
 	reducers: {
-		setUser: (state, action: GenericAction<IWaiter>) => {
+		setWaiter: (state, action: GenericAction<IWaiter>) => {
 			state.waiter = action.payload;
+			state.isAuthenticated = true;
+			state.loading = false;
+		},
+		setStore: (state, action: GenericAction<IStore>) => {
+			state.store = action.payload;
 			state.isAuthenticated = true;
 			state.loading = false;
 		},
@@ -59,21 +64,30 @@ const UserSlice = createSlice<
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getCurrentUser.fulfilled, (state, action) => {
-			state.waiter = action.payload;
-			state.isAdmin = action.payload.is_bar;
+		builder.addCase(thunkGetCurrentUser.fulfilled, (state, action) => {
+			if (action.payload.is_store && action.payload.store) {
+				state.store = action.payload.store;
+			}
+			if (!action.payload.is_store && action.payload.waiter) {
+				state.waiter = action.payload.waiter;
+			}
+
+			state.isAdmin = action.payload.is_store;
 			state.isAuthenticated = true;
 			state.loading = false;
 		});
 
-		builder.addCase(getCurrentUser.rejected, () => {
+		builder.addCase(thunkGetCurrentUser.rejected, (state) => {
 			localStorage.removeItem(AUTH_TOKEN_KEY);
-		})
+			state.isAuthenticated = false;
+			state.loading = false;
+		});
 	},
 });
 
 export const UserActions = UserSlice.actions as {
 	setUser: ActionCreatorWithPayload<IWaiter>;
+	setStore: ActionCreatorWithPayload<IStore>;
 	setLoadingUser: ActionCreatorWithPayload<boolean>;
 	logout: ActionCreatorWithoutPayload;
 	setIsAdmin: ActionCreatorWithPayload<boolean>;
@@ -81,4 +95,4 @@ export const UserActions = UserSlice.actions as {
 
 const UserReducer = UserSlice.reducer;
 
-export { UserReducer, UserSlice, getCurrentUser };
+export { UserReducer, UserSlice, thunkGetCurrentUser };

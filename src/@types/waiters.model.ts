@@ -1,5 +1,6 @@
 import { Socket } from "socket.io-client";
 import { OrderByType } from "../components";
+import { IStore } from "./store.model";
 
 export interface IWaiter {
 	id: number;
@@ -12,6 +13,7 @@ export interface IWaiter {
 
 export interface UserState {
 	waiter?: IWaiter;
+	store?: IStore;
 	isAdmin: boolean;
 	isAuthenticated: boolean;
 	loading: boolean;

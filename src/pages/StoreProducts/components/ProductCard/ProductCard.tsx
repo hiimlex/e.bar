@@ -12,7 +12,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit }) => {
 	return (
 		<div className="product-card">
 			<div className="product-image">
-				<img src={product.image_url} alt={product.name} />
+				<img src={product.picture?.url} alt={product.name} />
 
 				<div className="product-edit">
 					<IconButton theme="secondary" onClick={onEdit}>
@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit }) => {
 			<div className="product-info">
 				<div className="product-info-col">
 					<h5 className="product-info-name">{product.name}</h5>
-					<span className="product-info-category link link-primary">{product.category}</span>
+					<span className="product-info-category link link-primary">{product.category_name}</span>
 				</div>
 
 				<div className="product-info-row">

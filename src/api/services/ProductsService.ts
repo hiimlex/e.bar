@@ -1,14 +1,19 @@
 import { AxiosResponse } from "axios";
 import { api } from "../api";
-import { CreateProductPayload, IProduct, ProductsFilter } from "../../@types";
+import {
+	CreateProductPayload,
+	IPaginationResponse,
+	IProduct,
+	ProductsFilter,
+} from "../../@types";
 import { Endpoints } from "../endpoints";
 import { queryBuilder } from "../../utils";
 
 const fetchAll = async (
 	filters?: ProductsFilter
-): Promise<AxiosResponse<IProduct[]>> => {
+): Promise<AxiosResponse<IPaginationResponse<IProduct>>> => {
 	try {
-		const url = queryBuilder(Endpoints.GetProducts, filters);
+		const url = queryBuilder(Endpoints.ProductList, filters);
 
 		const res = await api.get(url);
 

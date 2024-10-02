@@ -1,15 +1,15 @@
 import { AxiosResponse } from "axios";
+import { IMeResponse, IStore } from "../../@types";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
-import { IWaiter } from "../../@types";
 
 const login = async (
 	email: string,
 	password: string
-): Promise<AxiosResponse<{ access_token: string; is_bar: boolean }>> => {
+): Promise<AxiosResponse<{ access_token: string; is_store: boolean }>> => {
 	try {
 		const res = await api.post(
-			Endpoints.Login,
+			Endpoints.AuthLogin,
 			{ email, password },
 			{ withCredentials: false }
 		);
@@ -20,9 +20,19 @@ const login = async (
 	}
 };
 
-const getCurrentUser = async (): Promise<AxiosResponse<IWaiter & {is_bar: boolean}>> => {
+const getCurrentUser = async (): Promise<AxiosResponse<IMeResponse>> => {
 	try {
-		const res = await api.get(Endpoints.Me);
+		const res = await api.get(Endpoints.AuthMe);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+const getStore = async (): Promise<AxiosResponse<IStore>> => {
+	try {
+		const res = await api.get(Endpoints.AuthGetStore);
 
 		return res;
 	} catch (error) {
@@ -33,4 +43,5 @@ const getCurrentUser = async (): Promise<AxiosResponse<IWaiter & {is_bar: boolea
 export default {
 	login,
 	getCurrentUser,
+	getStore,
 };

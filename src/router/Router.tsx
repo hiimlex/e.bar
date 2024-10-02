@@ -4,8 +4,8 @@ import {
 	BarAttendancesPage,
 	BarOnAttendanceGeneral,
 	BarOnAttendancePage,
-	BarProductsPage,
 	LoginPage,
+	StoreProductsPage,
 	WaiterAddProductsPage,
 	WaiterHomePage,
 	WaiterMyOrdersPage,
@@ -19,10 +19,10 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 const ADMIN_ROUTES: RouteObject[] = [
 	{
-		path: Pages.BarProducts,
+		path: Pages.StoreProducts,
 		element: (
 			<ProtectedRoute>
-				<BarProductsPage />
+				<StoreProductsPage />
 			</ProtectedRoute>
 		),
 	},

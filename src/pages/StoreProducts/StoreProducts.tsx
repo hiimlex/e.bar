@@ -1,21 +1,10 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { FileMinus, Plus } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
-import {
-	IProduct,
-	ModalIds,
-	ProductCategoriesArray,
-	ProductCategory,
-} from "../../@types";
-import {
-	Button,
-	Chip,
-	ChipWrapper,
-	Input,
-	MainContainer,
-	Spinner,
-} from "../../components";
+import { IProduct, ModalIds, ProductCategory } from "../../@types";
+import { Button, Input, MainContainer, Spinner } from "../../components";
 import { useBreakpoint, useModal } from "../../hooks";
 import {
 	AppDispatch,
@@ -25,11 +14,10 @@ import {
 } from "../../store";
 import { ProductCard, ProductModal } from "./components";
 import "./styles.scss";
-import { useTranslation } from "react-i18next";
 
-interface BarProductsPageProps {}
+interface StoreProductsPageProps {}
 
-const BarProductsPage: React.FC<BarProductsPageProps> = () => {
+const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	const { t } = useTranslation();
 	const { filters, products, isLoadingProducts } = useSelector(
 		(state: RootState) => state.products
@@ -111,25 +99,25 @@ const BarProductsPage: React.FC<BarProductsPageProps> = () => {
 	};
 
 	const openEditProductModal = (product: IProduct) => {
-		openModal({
-			id: ModalIds.EditProduct,
-			title: "Modals.Product.edit.Title",
-			children: (
-				<ProductModal
-					mode="edit"
-					id={ModalIds.EditProduct}
-					beforeClose={getAllProducts}
-					productId={product.id.toString()}
-					initialProduct={{
-						name: product.name,
-						category: product.category,
-						price: product.price,
-						stock: product.stock,
-					}}
-					imagePreview={product.image_url}
-				/>
-			),
-		});
+		// openModal({
+		// 	id: ModalIds.EditProduct,
+		// 	title: "Modals.Product.edit.Title",
+		// 	children: (
+		// 		<ProductModal
+		// 			mode="edit"
+		// 			id={ModalIds.EditProduct}
+		// 			beforeClose={getAllProducts}
+		// 			productId={product._id.toString()}
+		// 			initialProduct={{
+		// 				name: product.name,
+		// 				category: product.category,
+		// 				price: product.price,
+		// 				stock: product.stock,
+		// 			}}
+		// 			imagePreview={product.image_url}
+		// 		/>
+		// 	),
+		// });
 	};
 
 	useEffect(() => {
@@ -146,80 +134,55 @@ const BarProductsPage: React.FC<BarProductsPageProps> = () => {
 		<MainContainer showAdminHeader>
 			<div className="products">
 				<header className="products-header">
-					<h2 className="page-title">{t("BarProducts.Title")}</h2>
+					<h2 className="page-title">{t("StoreProducts.Title")}</h2>
 					<Button onClick={openAddProductModal}>
-						<Plus size={14} /> {t("BarProducts.Buttons.Add")}
+						<Plus size={14} /> {t("StoreProducts.Buttons.Add")}
 					</Button>
 				</header>
 
-				<div className="products-filters">
-					<ChipWrapper maxWidth={chipsMaxWidth}>
-						<Chip
-							active={!filters.categoria && !filters.sem_estoque}
-							clickable
-							theme="secondary"
-							onClick={clearFilters}
-						>
-							Todos
-						</Chip>
-						<Chip
-							active={filters.sem_estoque}
-							clickable
-							theme="secondary"
-							onClick={onStockFilter}
-						>
-							S/ Estoque
-						</Chip>
-						{ProductCategoriesArray.map((category, index) => (
-							<Chip
-								key={index}
-								active={category.value == filters.categoria}
-								clickable
-								theme="secondary"
-								onClick={() => onSelectCategory(category.value)}
-							>
-								{category.key}
-							</Chip>
-						))}
-					</ChipWrapper>
-					<div>
+				<div className="products-container">
+					<div className="products-filters">
 						<Input
 							placeholder="Buscar..."
 							className="search"
 							hideLabel
 							onChangeValue={(value) => setSearch(value)}
 						/>
+
+						<span className="products-filters-label">
+							{t("StoreProducts.Filters.Category")}
+						</span>
 					</div>
+
+					{!isLoadingProducts && products.length === 0 && (
+						<div className="empty-box">
+							<FileMinus size={32} />
+							<span>Nenhum produto encontrado...</span>
+						</div>
+					)}
+
+					{!isLoadingProducts && (
+						<div className="products-grid">
+							{products.map((product, index) => (
+								<ProductCard
+									onEdit={() => openEditProductModal(product)}
+									product={product}
+									key={index}
+								/>
+							))}
+						</div>
+					)}
+
+					{isLoadingProducts && (
+						<div className="products-loading">
+							<Spinner size={48} theme="primary" />
+							Carregando produtos
+						</div>
+					)}
 				</div>
-
-				{!isLoadingProducts && products.length === 0 && (
-					<div className="empty-box">
-						<FileMinus size={32} />
-						<span>Nenhum produto encontrado...</span>
-					</div>
-				)}
-
-				{!isLoadingProducts && (
-					<div className="products-grid">
-						{products.map((product, index) => (
-							<ProductCard
-								onEdit={() => openEditProductModal(product)}
-								product={product}
-								key={index}
-							/>
-						))}
-					</div>
-				)}
-
-				{isLoadingProducts && (
-					<div className="products-loading">
-						<Spinner size={48} theme="primary" />
-						Carregando produtos
-					</div>
-				)}
 			</div>
 		</MainContainer>
 	);
 };
 
-export default BarProductsPage;
+export { StoreProductsPage };

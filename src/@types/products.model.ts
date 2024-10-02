@@ -1,3 +1,5 @@
+import { IStore } from "./store.model";
+
 export enum ProductCategories {
 	"Cervejas" = "Cervejas",
 	"Comidas" = "Comidas",
@@ -30,14 +32,29 @@ export interface ProductsState {
 	isLoadingProducts?: boolean;
 }
 
-export interface IProduct {
-	id: number;
+export interface ICategory {
+	_id: string;
 	name: string;
-	category: ProductCategory;
-	price: number;
+	store: string | IStore;
+}
+
+export interface IPicture {
+	url: string;
+	original_name: string;
+}
+
+export interface IProduct {
+	_id: number;
+	name: string;
 	stock: number;
-	image_url: string;
-	file_id?: number;
+	category: string | ICategory;
+	store: string | IStore;
+	category_name: string;
+	enabled: boolean;
+	price: number;
+	picture?: IPicture;
+	created_at: string;
+	updated_at: string;
 }
 
 export interface CreateProductPayload {
