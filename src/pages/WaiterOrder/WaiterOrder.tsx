@@ -3,9 +3,8 @@ import { Check, User } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { OrdersFilter, Pages } from "../../@types";
-import { OrdersService } from "../../api";
 import { Button, Icons, MainContainer } from "../../components";
-import { OnOrderActions, RootState } from "../../store";
+import { RootState } from "../../store";
 import "./styles.scss";
 
 interface WaiterOrderPageProps {}
@@ -35,15 +34,13 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 
 	const getOrder = useCallback(async () => {
 		try {
-			const { data } = await OrdersService.fetchAll(filters);
-
-			if (data) {
-				dispatch(OnOrderActions.setOrder(data[0]));
-			}
-
-			if (!data) {
-				navigate(Pages.WaiterHome);
-			}
+			// const { data } = await WaiterOrdersService.fetchAll(filters);
+			// if (data) {
+			// 	dispatch(OnOrderActions.setOrder(data.content));
+			// }
+			// if (!data) {
+			// 	navigate(Pages.WaiterHome);
+			// }
 		} catch (error) {
 			navigate(Pages.WaiterHome);
 		}
@@ -66,7 +63,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 					<header className={`w-on-order-header`}>
 						<div className="flex flex-row gap-2">
 							<span className="w-on-order-table chip-status chip-status-primary">
-								Mesa {order?.table_id}
+								{/* Mesa {order?.table} */}
 							</span>
 
 							<span className="w-on-order-table chip-status chip-status-primary flex flex-row gap-2">
@@ -75,7 +72,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							</span>
 						</div>
 						<div className="flex-row-text w-on-order-header-title">
-							<span className="page-title">Pedido Nº {order?.id}</span>
+							{/* <span className="page-title">Pedido Nº {order?.id}</span> */}
 							<span
 								role="button"
 								className="link link-secondary"
@@ -91,7 +88,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							<span className="detailed-list-products-title">Status</span>
 							<span className="detailed-list-products-title">Preço</span>
 						</div>
-						{order?.products.map((op, index) => (
+						{/* {order?.products.map((op, index) => (
 							<div
 								key={index}
 								className={`detailed-list-products-item ${
@@ -109,7 +106,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 									<span>{op.price}</span>
 								</span>
 							</div>
-						))}
+						))} */}
 					</div>
 					<div className="dashline"></div>
 					<div className="flex-row-text detailed-list-total">
@@ -123,7 +120,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 						className="fill-row"
 						theme="secondary"
 						onClick={goToMarkAsServePage}
-						disabled={order?.products.length === 0}
+						// disabled={order?.products.length === 0}
 					>
 						<Check size={20} /> Marcar como servido
 					</Button>

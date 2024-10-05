@@ -10,3 +10,7 @@ export interface IMeResponse {
 	waiter?: IWaiter;
 	store?: IStore;
 }
+
+export interface ICodePayload {
+	code: string;
+}

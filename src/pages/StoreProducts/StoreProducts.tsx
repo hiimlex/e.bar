@@ -3,14 +3,14 @@ import { FileMinus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
-import { IProduct, ModalIds, ProductCategory } from "../../@types";
+import { ICategory, IProduct, ModalIds, ProductCategory } from "../../@types";
 import { Button, Input, MainContainer, Spinner } from "../../components";
 import { useBreakpoint, useModal } from "../../hooks";
 import {
 	AppDispatch,
 	ProductsActions,
+	ProductsThunks,
 	RootState,
-	fetchProducts,
 } from "../../store";
 import { ProductCard, ProductModal } from "./components";
 import "./styles.scss";
@@ -19,11 +19,11 @@ interface StoreProductsPageProps {}
 
 const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	const { t } = useTranslation();
-	const { filters, products, isLoadingProducts } = useSelector(
+	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
 	const dispatch = useDispatch<AppDispatch>();
-	const [search, setSearch] = useDebounceValue(filters.nome, 300);
+	const [search, setSearch] = useDebounceValue(filters.name, 300);
 
 	const { breakpoint } = useBreakpoint();
 	const chipsMaxWidth: number | undefined = useMemo(() => {
@@ -39,26 +39,24 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 
 	const { openModal } = useModal();
 
-	const onSelectCategory = (category: ProductCategory | undefined) => {
+	const onSelectCategory = (category_id: string | undefined) => {
 		dispatch(
 			ProductsActions.setFilters({
-				categoria: category,
-				sem_estoque: undefined,
+				category_id,
+				no_stock: undefined,
 			})
 		);
 	};
 
 	const onStockFilter = () => {
-		let newFilter: boolean | undefined = !filters.sem_estoque;
-
+		let newFilter: boolean | undefined = !filters.no_stock;
 		if (!newFilter) {
 			newFilter = undefined;
 		}
-
 		dispatch(
 			ProductsActions.setFilters({
-				sem_estoque: newFilter,
-				categoria: undefined,
+				no_stock: newFilter,
+				category_id: undefined,
 			})
 		);
 	};
@@ -66,23 +64,31 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	const clearFilters = () => {
 		dispatch(
 			ProductsActions.setFilters({
-				sem_estoque: undefined,
-				categoria: undefined,
+				no_stock: undefined,
+				category_id: undefined,
 			})
 		);
 	};
 
 	const onSearch = (search?: string) => {
-		dispatch(ProductsActions.setFilters({ nome: search }));
+		dispatch(ProductsActions.setFilters({ name: search }));
 	};
 
 	const getAllProducts = useCallback(async () => {
 		try {
-			await dispatch(fetchProducts());
+			await dispatch(ProductsThunks.fetchProducts());
 		} catch (error) {
 			console.error(error);
 		}
 	}, [filters]);
+
+	const getCategories = useCallback(async () => {
+		try {
+			await dispatch(ProductsThunks.fetchStoreCategories());
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
 
 	const openAddProductModal = () => {
 		openModal({
@@ -99,25 +105,30 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	};
 
 	const openEditProductModal = (product: IProduct) => {
-		// openModal({
-		// 	id: ModalIds.EditProduct,
-		// 	title: "Modals.Product.edit.Title",
-		// 	children: (
-		// 		<ProductModal
-		// 			mode="edit"
-		// 			id={ModalIds.EditProduct}
-		// 			beforeClose={getAllProducts}
-		// 			productId={product._id.toString()}
-		// 			initialProduct={{
-		// 				name: product.name,
-		// 				category: product.category,
-		// 				price: product.price,
-		// 				stock: product.stock,
-		// 			}}
-		// 			imagePreview={product.image_url}
-		// 		/>
-		// 	),
-		// });
+		const category_id =
+			typeof product.category === "string"
+				? product.category
+				: product.category._id;
+
+		openModal({
+			id: ModalIds.EditProduct,
+			title: "Modals.Product.edit.Title",
+			children: (
+				<ProductModal
+					mode="edit"
+					id={ModalIds.EditProduct}
+					beforeClose={getAllProducts}
+					productId={product._id.toString()}
+					initialProduct={{
+						name: product.name,
+						category: category_id,
+						price: product.price,
+						stock: product.stock,
+					}}
+					imagePreview={product.picture?.url}
+				/>
+			),
+		});
 	};
 
 	useEffect(() => {
@@ -125,7 +136,11 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	}, [getAllProducts]);
 
 	useEffect(() => {
-		if (search !== filters.nome) {
+		getCategories();
+	}, [getCategories]);
+
+	useEffect(() => {
+		if (search !== filters.name) {
 			onSearch(search);
 		}
 	}, [search]);
@@ -149,9 +164,43 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 							onChangeValue={(value) => setSearch(value)}
 						/>
 
-						<span className="products-filters-label">
-							{t("StoreProducts.Filters.Category")}
-						</span>
+						<div className="flex flex-col gap-4">
+							<span className="products-filters-label">
+								{t("StoreProducts.Filters.Category")}
+							</span>
+
+							<div className="products-categories">
+								<span
+									className={`products-categories-item ${
+										filters.category_id === undefined ? "active" : ""
+									}`}
+									onClick={clearFilters}
+								>
+									{t("StoreProducts.Filters.All")}
+								</span>
+
+								<span
+									className={`products-categories-item ${
+										filters.no_stock ? "active" : ""
+									}`}
+									onClick={onStockFilter}
+								>
+									{t("StoreProducts.Filters.NoStock")}
+								</span>
+
+								{categories.map((category) => (
+									<span
+										className={`products-categories-item ${
+											filters.category_id === category._id ? "active" : ""
+										}`}
+										key={category._id}
+										onClick={() => onSelectCategory(category._id)}
+									>
+										{category.name}
+									</span>
+								))}
+							</div>
+						</div>
 					</div>
 
 					{!isLoadingProducts && products.length === 0 && (

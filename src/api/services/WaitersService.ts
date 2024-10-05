@@ -1,14 +1,20 @@
 import { AxiosResponse } from "axios";
-import { CreateWaiterPayload, IWaiter, WaitersFilters } from "../../@types";
+import {
+	CreateWaiterPayload,
+	IPaginationResponse,
+	IWaiter,
+	UpdateWaiterPayload,
+	WaitersFilters,
+} from "../../@types";
 import { queryBuilder } from "../../utils";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
 
 const fetchAll = async (
 	filters?: WaitersFilters
-): Promise<AxiosResponse<IWaiter[]>> => {
+): Promise<AxiosResponse<IPaginationResponse<IWaiter>>> => {
 	try {
-		const url = queryBuilder(Endpoints.GetWaiters, filters);
+		const url = queryBuilder(Endpoints.WaiterList, filters);
 
 		const res = await api.get(url);
 
@@ -19,10 +25,10 @@ const fetchAll = async (
 };
 
 const create = async (
-	data: CreateWaiterPayload,
+	data: CreateWaiterPayload
 ): Promise<AxiosResponse<IWaiter>> => {
 	try {
-		const res = await api.post(Endpoints.CreateWaiter, data);
+		const res = await api.post(Endpoints.WaiterCreate, data);
 
 		return res;
 	} catch (error) {
@@ -32,27 +38,12 @@ const create = async (
 
 const update = async (
 	waiterId: string,
-	data: Partial<CreateWaiterPayload>
+	data: Partial<UpdateWaiterPayload>
 ): Promise<AxiosResponse<IWaiter>> => {
 	try {
-		const url = queryBuilder(Endpoints.UpdateWaiter, {}, { waiterId });
+		const url = queryBuilder(Endpoints.WaiterUpdate, {}, { id: waiterId });
 
 		const res = await api.put(url, data);
-
-		return res;
-	} catch (error) {
-		return Promise.reject(error);
-	}
-};
-
-const active = async (
-	waiterId: string,
-	active: boolean
-): Promise<AxiosResponse<IWaiter>> => {
-	try {
-		const url = queryBuilder(Endpoints.UpdateWaiter, {}, { waiterId });
-
-		const res = await api.put(url, { active });
 
 		return res;
 	} catch (error) {
@@ -64,5 +55,4 @@ export default {
 	fetchAll,
 	create,
 	update,
-	active,
 };

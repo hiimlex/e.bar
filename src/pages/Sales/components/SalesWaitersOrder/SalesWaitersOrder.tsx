@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IOrder, StatusToLabel } from "../../../../@types";
+import { IOrder } from "../../../../@types";
 import "./styles.scss";
 interface SalesWaitersOrder {
 	order: IOrder;
@@ -12,10 +12,10 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 		<div className="sl-order">
 			<div className="sl-order-status">
 				<span className="chip-status chip-status-primary">
-					Mesa {order.table_id}
+					{/* Mesa {order.table_id} */}
 				</span>
 				<span className="chip-status chip-status-success-outlined">
-					{StatusToLabel[order.status]}
+					{/* {StatusToLabel[order.status]} */}
 				</span>
 			</div>
 			<div className="flex flex-row justify-between">
@@ -28,7 +28,7 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 			{expand && (
 				<>
 					<div className="s-details">
-						{order.products.map((order_product, index) => (
+						{/* {order.products.map((order_product, index) => (
 							<div key={index} className="s-details-grid">
 								<span className="s-details-grid-stock">
 									{order_product.quantity}x
@@ -41,25 +41,25 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 									<span>{order_product.price}</span>
 								</span>
 							</div>
-						))}
+						))} */}
 					</div>
 
 					<div className="dashline" />
-					
+
 					<div className="sl-order-group">
 						<div className="sl-order-row sl-order-total">
 							<span>Total</span>
 							<span>R$ {order.total}</span>
 						</div>
 
-						{expand && order.payment_method && (
+						{/* {expand && order.payment_method && (
 							<div className="sl-order-grid sl-order-payment-method">
 								<span className="sl-order-payment-method-label">
 									Forma de pagamento
 								</span>
 								<span className="sl-order-payment-method-value">PIX</span>
 							</div>
-						)}
+						)} */}
 					</div>
 				</>
 			)}

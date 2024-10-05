@@ -33,7 +33,7 @@
 
 	&-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 		justify-content: space-between;
 		align-content: flex-start;
 		gap: $unit-4;
@@ -79,5 +79,10 @@
 		width: fit-content;
 		padding: 12px;
 		border-radius: 12px;
+	}
+
+	.card {
+		width: 100%;
+		max-width: 360px;
 	}
 }

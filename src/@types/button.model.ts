@@ -1,4 +1,4 @@
-export type ButtonVariants = "filled" | "outlined";
+export type ButtonVariants = "filled" | "outlined" | 'text';
 export type ButtonThemes = "primary" | "secondary" | "danger";
 export type ButtonSizes = "sm" | "md" | "lg";
 

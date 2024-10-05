@@ -1,15 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { FileMinus, RefreshCw } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { OrdersFilter, OrderStatus } from "../../@types";
-import { Endpoints, OrdersService } from "../../api";
-import {
-	Button,
-	Chip,
-	MainContainer,
-	OrderBy,
-	OrderByType,
-} from "../../components";
+import { OrdersFilter, OrderStatus, TOrderBy } from "../../@types";
+import { Endpoints, WaiterOrdersService } from "../../api";
+import { Button, Chip, MainContainer, OrderBy } from "../../components";
 import { AppDispatch, OrdersActions, RootState } from "../../store";
 import { OrderCard } from "./components";
 import "./styles.scss";
@@ -28,7 +22,7 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 			dispatch(OrdersActions.setLoadingOrders(loading));
 
 			try {
-				const { data } = await OrdersService.fetchAll(filters);
+				const { data } = await WaiterOrdersService.fetchAll(filters);
 
 				if (data) {
 					dispatch(OrdersActions.setOrders(data));
@@ -57,7 +51,7 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 
 	const onOrderChange = (
 		sort_by?: OrdersFilter["sort_by"],
-		sort_order?: OrderByType
+		sort_order?: TOrderBy
 	) => {
 		if (sort_order === "") {
 			sort_by = undefined;

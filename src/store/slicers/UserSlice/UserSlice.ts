@@ -3,28 +3,12 @@ import {
 	ActionCreatorWithoutPayload,
 	SliceCaseReducers,
 	SliceSelectors,
-	createAsyncThunk,
 	createSlice,
 } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-import { IMeResponse, IStore, IWaiter, UserState } from "../../../@types";
-import { AUTH_TOKEN_KEY, AuthService } from "../../../api";
+import { IAttendance, IStore, IWaiter, UserState } from "../../../@types";
+import { AUTH_TOKEN_KEY } from "../../../api";
 import { GenericAction } from "../../Store";
-
-const thunkGetCurrentUser = createAsyncThunk<
-	IMeResponse,
-	void,
-	{ rejectValue: AxiosError }
->("User/getCurrentUser", async (_, { dispatch, rejectWithValue }) => {
-	try {
-		dispatch(UserActions.setLoadingUser(true));
-
-		const response = await AuthService.getCurrentUser();
-		return response.data;
-	} catch (error) {
-		return rejectWithValue(error as AxiosError);
-	}
-});
+import UserThunks from "./UserThunks";
 
 const UserSlice = createSlice<
 	UserState,
@@ -62,9 +46,12 @@ const UserSlice = createSlice<
 			state.isAuthenticated;
 			localStorage.removeItem(AUTH_TOKEN_KEY);
 		},
+		setAttendance: (state, action: GenericAction<IAttendance>) => {
+			state.attendance = action.payload;
+		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(thunkGetCurrentUser.fulfilled, (state, action) => {
+		builder.addCase(UserThunks.getCurrentUser.fulfilled, (state, action) => {
 			if (action.payload.is_store && action.payload.store) {
 				state.store = action.payload.store;
 			}
@@ -77,22 +64,38 @@ const UserSlice = createSlice<
 			state.loading = false;
 		});
 
-		builder.addCase(thunkGetCurrentUser.rejected, (state) => {
+		builder.addCase(UserThunks.getCurrentUser.rejected, (state) => {
 			localStorage.removeItem(AUTH_TOKEN_KEY);
 			state.isAuthenticated = false;
 			state.loading = false;
 		});
+
+		builder.addCase(
+			UserThunks.validateWaiterAttendanceCode.fulfilled,
+			(state, action) => {
+				state.attendance = action.payload;
+				state.loading = false;
+			}
+		);
+
+		builder.addCase(
+			UserThunks.validateWaiterAttendanceCode.rejected,
+			(state) => {
+				state.loading = false;
+			}
+		);
 	},
 });
 
 export const UserActions = UserSlice.actions as {
-	setUser: ActionCreatorWithPayload<IWaiter>;
+	setWaiter: ActionCreatorWithPayload<IWaiter>;
 	setStore: ActionCreatorWithPayload<IStore>;
 	setLoadingUser: ActionCreatorWithPayload<boolean>;
 	logout: ActionCreatorWithoutPayload;
 	setIsAdmin: ActionCreatorWithPayload<boolean>;
+	setAttendance: ActionCreatorWithPayload<IAttendance>;
 };
 
 const UserReducer = UserSlice.reducer;
 
-export { UserReducer, UserSlice, thunkGetCurrentUser };
+export { UserReducer, UserSlice };

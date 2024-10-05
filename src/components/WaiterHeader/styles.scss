@@ -6,20 +6,16 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 $unit-4;
 	height: $waiter-header-height;
 	min-height: $waiter-header-height;
-	max-height: $waiter-header-height;	
-
-	&-sm {
-		padding-top: $unit-4;
-	}
+	max-height: $waiter-header-height;
 
 	&-wrapper {
 		display: flex;
 		flex-direction: column;
-		gap: $unit-3;
 		width: 100%;
+		padding: $unit-4;
+		padding-bottom: 0;
 	}
 
 	&-button {

@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Slash } from "react-feather";
-import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ITable, Pages } from "../../@types";
-import { OrdersService, TablesService } from "../../api";
+import { TablesService, WaiterOrdersService } from "../../api";
 import { Button, Input, MainContainer } from "../../components";
-import { OnOrderActions } from "../../store";
+import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
 
 interface WaiterNewOrderPageProps {}
@@ -13,8 +14,15 @@ interface WaiterNewOrderPageProps {}
 const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
+	const { t } = useTranslation();
+	const { waiter } = useSelector((state: RootState) => state.user);
+	const waiterStore = useMemo(
+		() =>
+			typeof waiter?.store === "string" ? waiter.store : waiter?.store?._id,
+		[waiter]
+	);
 	const [tables, setTables] = useState<ITable[]>([]);
-	const [selectedTable, setSelectedTable] = useState<number | null>(null);
+	const [selectedTable, setSelectedTable] = useState<string | null>(null);
 	const [customers, setCustomers] = useState<number | null>(null);
 
 	const [loading, setLoading] = useState(false);
@@ -26,7 +34,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 		navigate(Pages.WaiterHome);
 	};
 
-	const onSelectTable = (tableId: number) => {
+	const onSelectTable = (tableId: string) => {
 		setSelectedTable(tableId);
 	};
 
@@ -38,19 +46,17 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 			setLoading(true);
 
-			const {
-				data: { id: newOrderId },
-			} = await OrdersService.create(selectedTable, customers);
+			const { data } = await WaiterOrdersService.create(
+				selectedTable,
+				customers
+			);
 
-			const {
-				data: [order],
-			} = await OrdersService.fetchAll({
-				order_id: newOrderId,
-			});
-
-			if (order) {
-				dispatch(OnOrderActions.setOrder(order));
-				const to = Pages.WaiterOrder.replace(":orderId", order.id.toString());
+			if (data) {
+				dispatch(OnOrderActions.setOrder(data));
+				const to = Pages.WaiterOrder.replace(
+					":orderId",
+					data._id.toString()
+				);
 				navigate(to);
 			}
 
@@ -62,12 +68,13 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 	const loadAvailableTables = useCallback(async () => {
 		try {
-			const { data } = await TablesService.fetchAll({
-				is_active: true,
+			const { data } = await TablesService.fetchAvailable({
+				is_enabled: true,
 				in_use: false,
+				store_id: waiterStore,
 			});
 
-			setTables(data);
+			setTables(data.content);
 		} catch (error) {
 			console.log("Error loading tables", error);
 		}
@@ -101,11 +108,11 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 							{tables.length > 0 && (
 								<div className="new-order-list no-scroll">
 									{tables.map((table, index) => {
-										const isSelected = selectedTable === table.id;
+										const isSelected = selectedTable === table._id;
 										return (
 											<div
 												role="button"
-												onClick={() => onSelectTable(table.id)}
+												onClick={() => onSelectTable(table._id)}
 												className={`card card-gray ${
 													isSelected ? " card-selected" : ""
 												}`}
@@ -113,7 +120,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 											>
 												<div className="flex-row-text">
 													<span className="tables-info-number">
-														Mesa {table.id}
+														Mesa {table.number}
 													</span>
 													<div
 														className={`chip-status chip-status-${
@@ -124,9 +131,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 													</div>
 												</div>
 												<span className="table-info-bartender">
-													{table.waiter_name
-														? `Garçom ${table.waiter_name}`
-														: "---"}
+													{table.in_use ? `Garçom ${table.in_use}` : "---"}
 												</span>
 											</div>
 										);
@@ -145,6 +150,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 								onChangeValue={(value) => {
 									setCustomers(+value);
 								}}
+								value={customers?.toString() || ""}
 								hideLabel
 							/>
 						</div>

@@ -8,6 +8,13 @@ import { IAttendance, Pages } from "../../@types";
 import "./styles.scss";
 import { format } from "date-fns";
 import { TabItemType, Tabs } from "./components";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	AppDispatch,
+	OnAttendanceActions,
+	RootState,
+	onAttendancefetchAttendance,
+} from "../../store";
 
 export enum TabEnum {
 	General = "General",
@@ -17,44 +24,47 @@ export enum TabEnum {
 
 const tabs: TabItemType[] = [
 	{
-		label: `BarOnAttendance.Tabs.${TabEnum.General}`,
+		label: `StoreAttendanceView.Tabs.${TabEnum.General}`,
 		value: TabEnum.General,
 	},
 	{
-		label: `BarOnAttendance.Tabs.${TabEnum.Orders}`,
+		label: `StoreAttendanceView.Tabs.${TabEnum.Orders}`,
 		value: TabEnum.Orders,
 	},
 	{
-		label: `BarOnAttendance.Tabs.${TabEnum.Sales}`,
+		label: `StoreAttendanceView.Tabs.${TabEnum.Sales}`,
 		value: TabEnum.Sales,
 	},
 ];
 
-const BarOnAttendance: React.FC = () => {
+const StoreAttendanceView: React.FC = () => {
 	const { t } = useTranslation();
 
 	const { attendanceId } = useParams();
+	const dispatch = useDispatch<AppDispatch>();
 	const [loading, setLoading] = useState(true);
-	const [attendance, setAttendance] = useState<IAttendance | undefined>(
-		undefined
-	);
+	const { attendance } = useSelector((state: RootState) => state.onAttendance);
+
 	const navigate = useNavigate();
 
 	const getAttendance = async () => {
 		try {
 			if (!attendanceId) {
-				navigate(Pages.BarAttendances);
+				navigate(Pages.StoreAttendances);
 
 				return;
 			}
 
 			setLoading(true);
 
-			const { data } = await AttendancesService.getById(attendanceId);
+			dispatch(OnAttendanceActions.setAttendanceId(attendanceId));
 
-			if (data) {
-				setAttendance(data);
-			}
+			await dispatch(onAttendancefetchAttendance());
+
+			navigate(
+				Pages.StoreAttendanceGeneral.replace(":attendanceId", attendanceId),
+				{ replace: true }
+			);
 
 			setLoading(false);
 		} catch (error) {
@@ -83,20 +93,19 @@ const BarOnAttendance: React.FC = () => {
 			{!loading && (
 				<div className="b-o-attendance">
 					<header className="b-o-attendance-header">
-						<Link to={Pages.BarAttendances} className="link link-primary">
+						<Link to={Pages.StoreAttendances} className="link link-primary">
 							<ArrowLeft size={16} />
-							{t("BarOnAttendance.GoBack")}
+							{t("StoreAttendanceView.GoBack")}
 						</Link>
 
 						<div className="flex flex-row gap-4 items-end">
 							<h4 className="page-title">
-								{t("BarOnAttendance.Title", {
-									attendanceId,
+								{t("StoreAttendanceView.Title", {
 									code: attendance?.code || "",
 								})}
 							</h4>
 							<span className="chip-status chip-status-success-outlined">
-								{t(`Generics.Status.${attendance?.status}`)}
+								{t(`Generics.AttendanceStatus.${attendance?.status}`)}
 							</span>
 						</div>
 					</header>
@@ -105,9 +114,9 @@ const BarOnAttendance: React.FC = () => {
 						<div className="flex group">
 							<span className="group-label">Inicio</span>
 							<span className="group-value chip-status chip-status-default">
-								{attendance?.start_date &&
+								{attendance?.started_at &&
 									format(
-										new Date(attendance?.start_date),
+										new Date(attendance?.started_at),
 										t("Generics.Dates.Long.Format")
 									)}
 							</span>
@@ -141,4 +150,4 @@ const BarOnAttendance: React.FC = () => {
 	);
 };
 
-export default BarOnAttendance;
+export { StoreAttendanceView };

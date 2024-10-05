@@ -2,15 +2,15 @@ import { AxiosResponse } from "axios";
 import { api } from "../api";
 import {
 	CreateProductPayload,
+	IListProductsFilters,
 	IPaginationResponse,
 	IProduct,
-	ProductsFilter,
 } from "../../@types";
 import { Endpoints } from "../endpoints";
 import { queryBuilder } from "../../utils";
 
 const fetchAll = async (
-	filters?: ProductsFilter
+	filters?: IListProductsFilters
 ): Promise<AxiosResponse<IPaginationResponse<IProduct>>> => {
 	try {
 		const url = queryBuilder(Endpoints.ProductList, filters);
@@ -30,12 +30,12 @@ const create = async (
 	try {
 		const formData = new FormData();
 
-		formData.append("image", file);
+		formData.append("file", file);
 		Object.entries(product).forEach(([key, value]) => {
 			formData.append(key, value);
 		});
 
-		const res = await api.post(Endpoints.CreateProduct, formData);
+		const res = await api.post(Endpoints.ProductCreate, formData);
 
 		return res;
 	} catch (error) {
@@ -59,7 +59,7 @@ const update = async (
 			formData.append(key, value.toString());
 		});
 
-		const url = queryBuilder(Endpoints.UpdateProduct, {}, { productId });
+		const url = queryBuilder(Endpoints.ProductUpdate, {}, { id: productId });
 		const res = await api.put(url, formData);
 
 		return res;

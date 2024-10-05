@@ -1,5 +1,3 @@
-import { getOverlappingDaysInIntervals } from "date-fns";
-
 export const ptBr = {
 	Login: {
 		Subtitle: "Insira suas credenciais para <br/> fazer login",
@@ -8,6 +6,16 @@ export const ptBr = {
 		Login: "Continuar",
 		InvalidCredentials: "Email ou senha inválidos!",
 	},
+	WaiterCode: {
+		Subtitle:
+			"Seja bem vindo ao e.bar, para iniciar o atendimento informe código de serviço.",
+		Fields: {
+			Code: "Código",
+		},
+		Placeholder: {
+			Code: "Digite o código do atendimento",
+		},
+	},
 	StoreProducts: {
 		Title: "Meus produtos",
 		Buttons: {
@@ -15,9 +23,11 @@ export const ptBr = {
 		},
 		Filters: {
 			Category: "Categorias",
+			All: "Todos",
+			NoStock: "Sem estoque",
 		},
 	},
-	BarAttendances: {
+	StoreAttendances: {
 		Title: "Atendimentos",
 		Buttons: {
 			Add: "Iniciar Atendimento",
@@ -39,9 +49,9 @@ export const ptBr = {
 			},
 		},
 	},
-	BarOnAttendance: {
+	StoreAttendanceView: {
 		GoBack: "Voltar",
-		Title: "Atendimento #{{attendanceId}} - {{code}}",
+		Title: "Atendimento #{{code}}",
 		Tabs: {
 			Orders: "Pedidos",
 			General: "Geral",
@@ -52,8 +62,40 @@ export const ptBr = {
 				Tables: "Mesas",
 				Waiters: "Garçons",
 			},
+			Filters: {
+				Name: "Nome",
+				SearchByName: "Buscar por nome",
+				TableNumber: "N° mesa",
+			},
+			Buttons: {
+				Add: "Adicionar",
+				Enable: "Ativar",
+				Disable: "Desativar",
+			},
+			Labels: {
+				Waiter: "Garçom {{name}}",
+			},
 		},
 	},
+	WaiterHome: {
+		Subtitle: "Olá, {{name}}",
+		Labels: {
+			MyOrders: "Meus Pedidos",
+			SeeAll: "ver todos",
+			Products: "Produtos",
+			OrderNumber: "Pedido N° {{number}}",
+			TableNumber: "Mesa {{number}}",
+		},
+		Buttons: {
+			NewOrder: "Novo pedido",
+			SeeOrder: "ver pedido",
+		},
+		Filters: {
+			All: "Todos",
+			NoStock: "Sem estoque",
+		},
+	},
+	WaiterNewOrder: {},
 	Modals: {
 		Product: {
 			create: {
@@ -107,6 +149,16 @@ export const ptBr = {
 			},
 		},
 	},
+	Loaders: {
+		AttendanceWaiters: "Carregando garçons...",
+		AttendanceTables: "Carregando mesas...",
+		AttendanceOrders: "Carregando pedidos...",
+		Products: "Carregando produtos...",
+	},
+	Empty: {
+		Orders: "Nenhum pedido encontrado.",
+		Products: "Nenhum produto encontrado.",
+	},
 	Generics: {
 		Buttons: {
 			Continue: "Continuar",
@@ -132,6 +184,25 @@ export const ptBr = {
 		Status: {
 			on: "Ativo",
 			off: "Inativo",
+		},
+		TableStatus: {
+			InUse: "OCUPADA",
+			Free: "LIVRE",
+		},
+		WaiterStatus: {
+			In: "EM ATENDIMENTO",
+			Off: "FORA",
+		},
+		OrderStatus: {
+			PENDING: "Pendente",
+			DELIVERED: "Entregue",
+			FINISHED: "Finalizado",
+			CANCELED: "Cancelado",
+		},
+		AttendanceStatus: {
+			OPEN: "Aberto",
+			CLOSED: "Finalizado",
+			CANCELLED: "Cancelado",
 		},
 	},
 };

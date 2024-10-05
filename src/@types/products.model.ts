@@ -1,3 +1,5 @@
+import { ICategory } from "./categories.model";
+import { ISortFilter } from "./generic.model";
 import { IStore } from "./store.model";
 
 export enum ProductCategories {
@@ -18,24 +20,19 @@ export const ProductCategoriesArray: { key: string; value: ProductCategory }[] =
 	];
 export type ProductCategory = keyof typeof ProductCategories;
 
-export interface ProductsFilter {
-	categoria?: ProductCategory;
-	nome?: string;
-	sem_estoque?: boolean;
-	direcao?: "asc" | "desc";
-	ordem?: "nome" | "estoque" | "preco";
+export interface IListProductsFilters
+	extends ISortFilter<"name" | "created_at" | "stock" | "price"> {
+	store_id?: string;
+	category_id?: string;
+	name?: string;
+	no_stock?: boolean;
 }
 
 export interface ProductsState {
 	products: IProduct[];
-	filters: ProductsFilter;
+	filters: IListProductsFilters;
 	isLoadingProducts?: boolean;
-}
-
-export interface ICategory {
-	_id: string;
-	name: string;
-	store: string | IStore;
+	categories: ICategory[];
 }
 
 export interface IPicture {

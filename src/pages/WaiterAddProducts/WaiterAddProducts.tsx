@@ -1,26 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDebounceValue } from "usehooks-ts";
-import {
-	IProduct,
-	Pages,
-	ProductCategoriesArray,
-	ProductCategory,
-} from "../../@types";
-import { OrdersService } from "../../api";
-import { Button, Chip, Input, MainContainer, Spinner } from "../../components";
+import { IProduct, Pages, ProductCategory } from "../../@types";
+import { MainContainer } from "../../components";
 import {
 	AppDispatch,
 	OnOrderActions,
-	ProductsActions,
+	ProductsThunks,
 	RootState,
-	fetchProducts,
 } from "../../store";
-import { ProductsRowCard } from "../WaiterProducts/components";
 import { ConfirmAddProducts } from "./components";
 import "./styles.scss";
+import { WaiterOrdersService } from "../../api";
 
 interface WaiterAddProductsPageProps {}
 
@@ -59,54 +51,48 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	);
 
 	const onSelectCategory = (categoria?: ProductCategory) => {
-		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
+		// dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
 	};
 
 	const onStockFilter = () => {
-		let newFilter: boolean | undefined = !filters.sem_estoque;
-
-		if (!newFilter) {
-			newFilter = undefined;
-		}
-
-		dispatch(
-			ProductsActions.setFilters({
-				sem_estoque: newFilter,
-				categoria: undefined,
-			})
-		);
+		// let newFilter: boolean | undefined = !filters.sem_estoque;
+		// if (!newFilter) {
+		// 	newFilter = undefined;
+		// }
+		// dispatch(
+		// 	ProductsActions.setFilters({
+		// 		sem_estoque: newFilter,
+		// 		categoria: undefined,
+		// 	})
+		// );
 	};
 
 	const clearFilters = () => {
-		dispatch(
-			ProductsActions.setFilters({
-				sem_estoque: undefined,
-				categoria: undefined,
-			})
-		);
+		// dispatch(
+		// 	ProductsActions.setFilters({
+		// 		sem_estoque: undefined,
+		// 		categoria: undefined,
+		// 	})
+		// );
 	};
 
 	const onAddProduct = (product: IProduct, quantity: number) => {
-		const newToAddProducts = { ...toAddProducts };
-
-		if (!newToAddProducts[product.id]) {
-			newToAddProducts[product.id] = { product, quantity };
-		}
-
-		if (newToAddProducts[product.id]) {
-			newToAddProducts[product.id].quantity = quantity;
-
-			if (quantity === 0) {
-				delete newToAddProducts[product.id];
-			}
-		}
-
-		setToAddProducts(newToAddProducts);
+		// const newToAddProducts = { ...toAddProducts };
+		// if (!newToAddProducts[product._id]) {
+		// 	newToAddProducts[product._id] = { product, quantity };
+		// }
+		// if (newToAddProducts[product._id]) {
+		// 	newToAddProducts[product._id].quantity = quantity;
+		// 	if (quantity === 0) {
+		// 		delete newToAddProducts[product.id];
+		// 	}
+		// }
+		// setToAddProducts(newToAddProducts);
 	};
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			await dispatch(fetchProducts(enableLoader));
+			await dispatch(ProductsThunks.fetchProducts(enableLoader));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
@@ -122,7 +108,9 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 				return;
 			}
 
-			const { data } = await OrdersService.fetchAll({ order_id: +orderId });
+			const { data } = await WaiterOrdersService.fetchAll({
+				order_id: +orderId,
+			});
 
 			if (data) {
 				dispatch(OnOrderActions.setOrder(data[0]));
@@ -139,9 +127,8 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	}, []);
 
 	useEffect(() => {
-		const value = search !== "" ? search : undefined;
-
-		dispatch(ProductsActions.setFilters({ nome: value }));
+		// const value = search !== "" ? search : undefined;
+		// dispatch(ProductsActions.setFilters({ nome: value }));
 	}, [search]);
 
 	return (
@@ -153,7 +140,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 			onSearch={() => setShowSearch((curr) => !curr)}
 		>
 			<div className="w-a-products">
-				<main className="w-a-products-content">
+				{/* <main className="w-a-products-content">
 					<header className={`w-a-products-header`}>
 						<span className="page-title">
 							Adicionar items ao
@@ -241,7 +228,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 							</Button>
 						</footer>
 					)}
-				</main>
+				</main> */}
 			</div>
 			{showConfirmModal && orderId && (
 				<ConfirmAddProducts

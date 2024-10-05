@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { IProduct, OrdersFilter, Pages } from "../../@types";
-import { OrdersService } from "../../api";
+import { WaiterOrdersService } from "../../api";
 import { Button, Chip, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import { ProductsRowCard } from "../WaiterProducts/components";
@@ -46,7 +46,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 
 	const getOrder = useCallback(async () => {
 		try {
-			const { data } = await OrdersService.fetchAll(filters);
+			const { data } = await WaiterOrdersService.fetchAll(filters);
 
 			if (data) {
 				dispatch(OnOrderActions.setOrder(data[0]));
@@ -70,12 +70,12 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 
 		try {
 			const payload = {
-				product_id: product.id,
+				product_id: product._id,
 				quantity,
 				order_product_id,
 			};
 
-			await OrdersService.add_order_products(orderId || "", [payload]);
+			await WaiterOrdersService.add_order_products(orderId || "", [payload]);
 
 			await getOrder();
 		} catch (error) {
@@ -110,11 +110,11 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 						</Chip>
 					</div>
 
-					<div className="w-o-products-list no-scroll">
+					{/* <div className="w-o-products-list no-scroll">
 						{order?.products.map((op, index) => (
 							<ProductsRowCard
 								product={{
-									id: op.product_id,
+									_id: op.product_id,
 									...op,
 									stock: op.status === "ordered" ? op.stock : op.delivered,
 								}}
@@ -127,7 +127,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 								slashedText={op.status === "delivered"}
 							/>
 						))}
-					</div>
+					</div> */}
 
 					<div className="w-o-products-total">
 						<span>Total</span>

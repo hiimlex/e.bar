@@ -2,19 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { OrdersFilter, Pages } from "../../@types";
-import {
-	Chip,
-	MainContainer,
-	OrderBy,
-	OrderByType,
-	Spinner,
-} from "../../components";
+import { OrdersFilter, Pages, TOrderBy } from "../../@types";
+import { Chip, MainContainer, OrderBy, Spinner } from "../../components";
 import {
 	AppDispatch,
-	getMyOrders,
 	RootState,
 	WaiterActions,
+	WaiterThunks,
 } from "../../store";
 import { SalesWaitersOrder } from "../Sales";
 import { WaiterOrdersCard } from "../WaiterHome";
@@ -37,14 +31,14 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	};
 
 	useEffect(() => {
-		if (waiter) {
-			dispatch(WaiterActions.setFilters({ waiter_id: waiter.id }));
-		}
+		// if (waiter) {
+		// 	dispatch(WaiterActions.setFilters({ waiter_id: waiter._id }));
+		// }
 	}, [dispatch, waiter]);
 
 	const onChangeSort = (
 		sort_by?: OrdersFilter["sort_by"],
-		sort_order?: OrderByType
+		sort_order?: TOrderBy
 	) => {
 		if (sort_order === "") {
 			sort_order = undefined;
@@ -60,7 +54,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 
 	const loadOrders = useCallback(
 		async (loader = true) => {
-			await dispatch(getMyOrders(loader));
+			await dispatch(WaiterThunks.getMyOrders(loader));
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
 		[filters]

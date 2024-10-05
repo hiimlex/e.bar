@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAny } from "../../@types";
 import "./styles.scss";
@@ -30,11 +30,11 @@ const Input: React.FC<InputProps> = ({
 	className,
 	styles,
 	fieldKey,
-	value,
+	value = '',
 	placeholder,
 	hideLabel = false,
 	wrapperClassName,
-	mode = "uncontrolled",
+	mode = "controlled",
 	errorMessage,
 	errorValue,
 	showError,
@@ -132,10 +132,10 @@ const Input: React.FC<InputProps> = ({
 						onChangeValue && onChangeValue(event.target.value);
 						rest.onChange && rest.onChange(event);
 					}}
+					value={value}
 					className={classNames}
 					placeholder={placeholder_t}
 					style={{ ...styles, ...prefixStyles }}
-					{...inputProps}
 					{...rest}
 					onBlur={(event) => {
 						setIsFocused(false);

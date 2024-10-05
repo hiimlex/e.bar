@@ -1,20 +1,21 @@
 import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
 import { Pages } from "../@types";
 import {
-	BarAttendancesPage,
-	BarOnAttendanceGeneral,
-	BarOnAttendancePage,
 	LoginPage,
+	StoreAttendanceGeneral,
+	StoreAttendanceView,
+	StoreAttendancesPage,
 	StoreProductsPage,
 	WaiterAddProductsPage,
+	WaiterCodePage,
 	WaiterHomePage,
 	WaiterMyOrdersPage,
 	WaiterNewOrderPage,
 	WaiterOrderPage,
 	WaiterOrderProductsPage,
 	WaiterProductsPage,
+	WaiterOrderServePage,
 } from "../pages";
-import { WaiterOrderServePage } from "../pages/WaiterOrderServe";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 const ADMIN_ROUTES: RouteObject[] = [
@@ -27,27 +28,32 @@ const ADMIN_ROUTES: RouteObject[] = [
 		),
 	},
 	{
-		path: Pages.BarAttendances,
+		path: Pages.StoreAttendances,
 		element: (
 			<ProtectedRoute>
-				<BarAttendancesPage />
+				<StoreAttendancesPage />
 			</ProtectedRoute>
 		),
 	},
 	{
-		path: Pages.BarAttendanceView,
+		path: Pages.StoreAttendanceView,
 		element: (
 			<ProtectedRoute>
-				<BarOnAttendancePage />
+				<StoreAttendanceView />
 			</ProtectedRoute>
 		),
 		children: [
 			{
-				path: Pages.BarAttendanceGeneral,
-				element: <BarOnAttendanceGeneral />,
+				path: Pages.StoreAttendanceGeneral,
+				element: <StoreAttendanceGeneral />,
+			},
+			{
+				path: "*",
+				element: <Navigate to={Pages.StoreAttendances} />,
 			},
 		],
 	},
+
 	// {
 	// 	path: Pages.Sales,
 	// 	element: (
@@ -84,7 +90,14 @@ const router = createBrowserRouter([
 		element: <LoginPage />,
 	},
 	...ADMIN_ROUTES,
-
+	{
+		path: Pages.WaiterCode,
+		element: (
+			<ProtectedRoute>
+				<WaiterCodePage />
+			</ProtectedRoute>
+		),
+	},
 	{
 		path: Pages.WaiterHome,
 		element: (

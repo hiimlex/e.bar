@@ -10,12 +10,12 @@ import { GenericAction, RootState } from "../../Store";
 import { AxiosError } from "axios";
 import { AttendancesService } from "../../../api";
 
-export const fetchAttendance = createAsyncThunk<
+export const onAttendancefetchAttendance = createAsyncThunk<
 	IAttendance,
 	boolean | undefined,
 	{ rejectValue: AxiosError }
 >(
-	"Products/fetchProducts",
+	"OnAttendance/fetchAttendance",
 	async (loading, { getState, rejectWithValue, dispatch }) => {
 		try {
 			// dispatch(OnAttendanceActions.setIsLoadingProducts(loading));
@@ -49,12 +49,12 @@ const OnAttendanceSlicer = createSlice<
 		setAttendance: (state, action: GenericAction<IAttendance>) => {
 			state.attendance = action.payload;
 		},
-		setAttendanceId: (state, action: GenericAction<number>) => {
+		setAttendanceId: (state, action: GenericAction<string>) => {
 			state.attendanceId = action.payload;
 		},
 	},
 	extraReducers(builder) {
-		builder.addCase(fetchAttendance.fulfilled, (state, action) => {
+		builder.addCase(onAttendancefetchAttendance.fulfilled, (state, action) => {
 			state.attendance = action.payload;
 		});
 	},
@@ -62,7 +62,7 @@ const OnAttendanceSlicer = createSlice<
 
 const OnAttendanceActions = OnAttendanceSlicer.actions as {
 	setAttendance: ActionCreatorWithPayload<IAttendance>;
-	setAttendanceId: ActionCreatorWithPayload<number>;
+	setAttendanceId: ActionCreatorWithPayload<string>;
 };
 
 const OnAttendanceReducer = OnAttendanceSlicer.reducer;

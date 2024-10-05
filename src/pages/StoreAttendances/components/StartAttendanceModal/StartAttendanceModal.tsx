@@ -3,36 +3,35 @@ import { useMemo, useState } from "react";
 import { Minus, Plus } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ModalIds, StartAttendancePayload } from "../../../../@types";
+import { ModalIds, ICreateAttendancePayload } from "../../../../@types";
 import { AttendancesService } from "../../../../api";
 import { Button, IconButton, Input } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import "./styles.scss";
 
 interface StartAttendanceModalProps {
-	total_tables?: number;
+	tables_count?: number;
 	onClose?: () => void;
 }
 
 const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
-	total_tables,
+	tables_count,
 	onClose,
 }) => {
 	const { t } = useTranslation();
 	const { closeModal } = useModal();
 	const { control, setValue, handleSubmit, formState } =
-		useForm<StartAttendancePayload>({
+		useForm<ICreateAttendancePayload>({
 			mode: "all",
 			defaultValues: {
 				tables_count: 1,
-				finish_active_attendances: true,
 			},
 		});
 	const [loading, setLoading] = useState(false);
 
 	const onChangeTableCount = (value: number) => {
 		if (value !== 0) {
-			if (total_tables && value > total_tables) {
+			if (tables_count && value > tables_count) {
 				return;
 			}
 
@@ -42,11 +41,11 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 
 	const canStart = useMemo(() => formState.isValid, [formState]);
 
-	const startAttendance = async (data: StartAttendancePayload) => {
+	const startAttendance = async (data: ICreateAttendancePayload) => {
 		try {
 			setLoading(true);
 
-			await AttendancesService.startAttendance(data);
+			await AttendancesService.create(data);
 
 			closeModal(ModalIds.StartAttendance);
 
@@ -62,7 +61,7 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 	return (
 		<form className="start-attendance" onSubmit={handleSubmit(startAttendance)}>
 			<div className="start-attendance-group">
-				<Controller
+				{/* <Controller
 					name="code"
 					control={control}
 					render={({ field }) => (
@@ -75,8 +74,8 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 							onChangeValue={(value) => field.onChange(value)}
 						/>
 					)}
-				/>
-				<Controller
+				/> */}
+				{/* <Controller
 					name="finish_active_attendances"
 					control={control}
 					render={({ field }) => (
@@ -90,7 +89,7 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 							}}
 						/>
 					)}
-				/>
+				/> */}
 			</div>
 			<div className="start-attendance-group">
 				<span className="start-attendance-subtitle">

@@ -1,5 +1,7 @@
-import { IOrder, StatusToLabel } from "../../../../@types";
+import { useMemo } from "react";
+import { IOrder } from "../../../../@types";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
 interface WaiterOrdersCardProps {
 	onClick?: (order: IOrder) => void;
 	order: IOrder;
@@ -9,19 +11,27 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 	onClick,
 	order,
 }) => {
+	const { t } = useTranslation();
+	const tableNumber = useMemo(
+		() => typeof order.table !== "string" && order.table.number,
+		[order.table]
+	);
+
 	return (
 		<div className="w-order">
 			<div className="w-order-status">
 				<span className="chip-status chip-status-primary">
-					Mesa {order?.table_id}
+					{t("WaiterHome.Labels.TableNumber", { number: tableNumber || "" })}
 				</span>
 				<span className="chip-status chip-status-success-outlined">
-					{StatusToLabel[order.status]}
+					{t(`Generics.OrderStatus.${order.status}`)}
 				</span>
 			</div>
 
 			<div className="w-order-row">
-				<span className="w-order-id">Pedido N° {order.id}</span>
+				<span className="w-order-id">
+					{t("WaiterHome.Labels.OrderNumber", { number: order.number })}
+				</span>
 
 				<div className="w-order-total text-currency">
 					<span>R$</span>
@@ -34,7 +44,7 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 					onClick={() => onClick && onClick(order)}
 					role="button"
 				>
-					ver pedido
+					{t("WaiterHome.Buttons.SeeOrder")}
 				</button>
 			</div>
 		</div>

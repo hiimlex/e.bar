@@ -1,16 +1,21 @@
-import { OrderByType } from "../components";
+import { ISortFilter } from "./generic.model";
+import { IPaginationFilters } from "./pagination.model";
+import { IStore } from "./store.model";
+import { IWaiter } from "./waiters.model";
 
 export interface ITable {
-	id: number;
+	_id: string;
 	in_use: boolean;
-	is_active: boolean;
-	waiter_id?: number;
-	waiter_name?: string;
+	in_use_by: string | IWaiter;
+	enabled: boolean;
+	store: string | IStore;
+	number: number;
 }
 
-export interface TableFilters {
-	sort?: OrderByType;
-	sort_key?: "id";
-	is_active?: boolean;
+export interface ITableFilters
+	extends ISortFilter<"number">,
+		IPaginationFilters {
+	is_enabled?: boolean;
 	in_use?: boolean;
+	store_id?: string;
 }

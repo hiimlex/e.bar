@@ -1,54 +1,64 @@
-import { SafeAny } from "./generic.model";
-import { ProductCategory } from "./products.model";
-
-
+import { ISortFilter, SafeAny } from "./generic.model";
+import { IProduct, ProductCategory } from "./products.model";
+import { IStore } from "./store.model";
+import { ITable } from "./tables.model";
+import { IWaiter } from "./waiters.model";
 
 export interface CreateOrderPayload {
 	table_id: number;
 	customers: number;
 }
 
-export interface OrdersFilter {
+export interface OrdersFilter
+	extends ISortFilter<"table_id" | "total" | "created_at"> {
 	search?: string;
-	tableNumber?: number;
-	status?: OrderStatus;
-	product_status?: OrderProductStatus;
+	table_number?: number;
+	status?: TOrderStatusType;
+	product_status?: TOrderProductStatusType;
 	order_id?: number;
 	waiter_id?: number;
-	sort_by?: "table_id" | "total" | "created_at";
-	sort_order?: "asc" | "desc";
 }
 
-export type OrderStatus = "pending" | "on_demand" | "finished";
-export type OrderProductStatus = "ordered" | "delivered";
-export type OrderPaymentMethod = "cash" | "card" | "pix";
+export enum TOrderStatus {
+	PENDING = "PENDING",
+	DELIVERED = "DELIVERED",
+	FINISHED = "FINISHED",
+	CANCELED = "CANCELED",
+}
+
+export type TOrderStatusType = keyof typeof TOrderStatus;
+
+export enum TOrderProductStatus {
+	PENDING = "PENDING",
+	DELIVERED = "DELIVERED",
+}
+
+export type TOrderProductStatusType = keyof typeof TOrderProductStatus;
+
+export interface IOrderProduct {
+	_id: string;
+	product: string | IProduct;
+	quantity: number;
+	total: number;
+	status: TOrderProductStatusType;
+}
 
 export interface IOrder {
-	id: number;
-	table_id: number;
-	waiter_id: number;
-	waiter_name: string;
-	status: OrderStatus;
-	products: IGetOrderProduct[];
-	created_at: string;
-	updated_at: string;
-	finished_at: string;
-	payment_method: OrderPaymentMethod | null;
+	_id: string;
+	table: string | ITable;
+	store: string | IStore;
+	requested_by: string | IWaiter;
+
+	status: TOrderStatusType;
+	items: IOrderProduct[];
 	customers: number;
 	total: number;
-}
+	number: number;
 
-export interface IGetOrderProduct {
-	category: ProductCategory;
-	image_url: string;
-	name: string;
-	price: number;
-	product_id: number;
-	quantity: number;
-	delivered: number;
-	stock: number;
-	status: "ordered" | "delivered";
-	order_product_id: number;
+	created_at: string;
+	updated_at: string;
+	closed_at: string;
+	// payment_method: OrderPaymentMethod | null;
 }
 
 export interface CreateOrderProductPayload {
@@ -76,9 +86,3 @@ export interface WaiterState {
 	filters?: OrdersFilter;
 	loading_orders: boolean;
 }
-
-export const StatusToLabel: Record<OrderStatus, string> = {
-	finished: "Finalizado",
-	on_demand: "Em andamento",
-	pending: "Pendente",
-};

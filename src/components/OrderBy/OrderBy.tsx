@@ -2,20 +2,20 @@ import { useMemo, useState } from "react";
 import { ArrowDown, ArrowUp } from "react-feather";
 import "./styles.scss";
 import { useTranslation } from "react-i18next";
+import { TOrderBy } from "../../@types";
 
 interface OrderByProps {
 	label: string;
-	onOrderChange?: (order: OrderByType) => void;
+	onOrderChange?: (order: TOrderBy) => void;
 }
 
-export type OrderByType = "asc" | "desc" | "";
 
 const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
 	const { t } = useTranslation();
-	const [order, setOrder] = useState<OrderByType>("");
+	const [order, setOrder] = useState<TOrderBy>("");
 
 	const handleOrderChange = () => {
-		let newOrder: OrderByType = "";
+		let newOrder: TOrderBy = "";
 
 		if (order === "") {
 			newOrder = "asc";

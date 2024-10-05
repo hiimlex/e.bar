@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { IMeResponse, IStore } from "../../@types";
+import { IAttendance, IMeResponse, IStore } from "../../@types";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
 
@@ -40,8 +40,21 @@ const getStore = async (): Promise<AxiosResponse<IStore>> => {
 	}
 };
 
+const validateWaiterAttendanceCode = async (): Promise<
+	AxiosResponse<IAttendance>
+> => {
+	try {
+		const res = await api.get(Endpoints.AuthValidateAttendanceCode);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export default {
 	login,
 	getCurrentUser,
 	getStore,
+	validateWaiterAttendanceCode,
 };

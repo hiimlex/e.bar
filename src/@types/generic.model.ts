@@ -9,3 +9,10 @@ export interface SocketSliceState {
 	socket?: Socket;
 	connected: boolean;
 }
+
+export interface ISortFilter<T> {
+	sort?: "asc" | "desc";
+	sort_by?: T;
+}
+
+export type TOrderBy = "asc" | "desc" | "";

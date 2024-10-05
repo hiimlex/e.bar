@@ -2,6 +2,8 @@ import { ArrowLeft, Filter, Menu, Search } from "react-feather";
 import { useBreakpoint } from "../../hooks";
 import { Brands } from "../Brands";
 import "./styles.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export interface WaiterHeaderProps {
 	showGoBack?: boolean;
@@ -12,6 +14,7 @@ export interface WaiterHeaderProps {
 	onMenu?: () => void;
 	showFilter?: boolean;
 	onFilter?: () => void;
+	showCode?: boolean;
 }
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
@@ -23,11 +26,18 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	showMenu,
 	showFilter,
 	onFilter,
+	showCode,
 }) => {
 	const { breakpoint } = useBreakpoint();
+	const { attendance } = useSelector((state: RootState) => state.user);
 
 	return (
 		<div className="w-app-header-wrapper">
+			{showCode && !!attendance && (
+				<span className="chip-status chip-status-success-outlined text-center self-center">
+					#{attendance.code}
+				</span>
+			)}
 			<header className={`w-app-header w-app-header-${breakpoint}`}>
 				<div className="flex-1 w-app-header-action">
 					{showGoBack && (

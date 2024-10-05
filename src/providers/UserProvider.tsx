@@ -1,40 +1,47 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AUTH_TOKEN_KEY } from "../api";
-import { AppDispatch, thunkGetCurrentUser, SocketActions } from "../store";
-import { socket } from "../socket/socket";
+import { AppDispatch, RootState, UserThunks } from "../store";
 
 const UserProvider: React.FC = () => {
+	const { isAuthenticated } = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch<AppDispatch>();
 
-	const getPersistedUser = () => {
+	const getPersistedUser = useCallback(async () => {
 		const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
 		if (token) {
-			dispatch(thunkGetCurrentUser());
+			await dispatch(UserThunks.getCurrentUser());
 		}
+	}, []);
+
+	const validateWaiterAttendanceCookie = async () => {
+		await dispatch(UserThunks.validateWaiterAttendanceCode());
 	};
 
 	useEffect(() => {
 		getPersistedUser();
-	}, []);
+	}, [getPersistedUser]);
 
 	useEffect(() => {
-		socket.on("connect", () => {
-			dispatch(SocketActions.setConnected(true));
-			console.log("Connected to server");
-		});
+		if (isAuthenticated) {
+			validateWaiterAttendanceCookie();
+		}
+	}, [isAuthenticated]);
 
-		socket.on("disconnect", () => {
-			dispatch(SocketActions.setConnected(false));
-			console.log("Disconnected to server");
-		});
-
+	useEffect(() => {
+		// socket.on("connect", () => {
+		// 	dispatch(SocketActions.setConnected(true));
+		// 	console.log("Connected to server");
+		// });
+		// socket.on("disconnect", () => {
+		// 	dispatch(SocketActions.setConnected(false));
+		// 	console.log("Disconnected to server");
+		// });
 		// socket.connect();
-
-		socket.on("login", (data) => {
-			console.log(data);
-		});
+		// socket.on("login", (data) => {
+		// 	console.log(data);
+		// });
 	}, []);
 
 	return <></>;

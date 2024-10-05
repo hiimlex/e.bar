@@ -1,6 +1,7 @@
 export * from "./attendances.model";
 export * from "./auth.model";
 export * from "./button.model";
+export * from "./categories.model";
 export * from "./errors.model";
 export * from "./generic.model";
 export * from "./modals.model";

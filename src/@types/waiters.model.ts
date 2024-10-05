@@ -1,14 +1,17 @@
 import { Socket } from "socket.io-client";
-import { OrderByType } from "../components";
+import { ISortFilter } from "./generic.model";
+import { IPicture } from "./products.model";
 import { IStore } from "./store.model";
+import { IAttendance } from "./attendances.model";
 
 export interface IWaiter {
-	id: number;
+	_id: string;
 	name: string;
+	phone: number;
 	email: string;
-	is_admin?: boolean;
-	active: boolean;
-	phone: string;
+	store: string | IStore;
+	enabled: boolean;
+	avatar: IPicture;
 }
 
 export interface UserState {
@@ -18,13 +21,12 @@ export interface UserState {
 	isAuthenticated: boolean;
 	loading: boolean;
 	socket?: Socket;
+	attendance?: IAttendance;
 }
-export interface WaitersFilters {
-	direcao?: OrderByType;
-	ordem?: "nome";
-	nome?: string;
-	ativos?: boolean;
-	is_admin?: boolean;
+
+export interface WaitersFilters extends ISortFilter<"name"> {
+	name?: string;
+	is_enabled?: boolean;
 }
 
 export interface CreateWaiterPayload {
@@ -32,5 +34,11 @@ export interface CreateWaiterPayload {
 	email: string;
 	phone: string;
 	password: string;
-	is_admin?: boolean;
+}
+
+export interface UpdateWaiterPayload {
+	name?: string;
+	email?: string;
+	phone?: string;
+	enabled?: boolean;
 }

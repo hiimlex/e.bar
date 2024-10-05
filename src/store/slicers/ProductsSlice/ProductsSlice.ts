@@ -2,33 +2,11 @@ import {
 	ActionCreatorWithPayload,
 	SliceCaseReducers,
 	SliceSelectors,
-	createAsyncThunk,
 	createSlice,
 } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-import { IPaginationResponse, IProduct, ProductsFilter, ProductsState } from "../../../@types";
-import { ProductsService } from "../../../api";
-import { GenericAction, RootState } from "../../Store";
-
-const fetchProducts = createAsyncThunk<
-	IPaginationResponse<IProduct>,
-	boolean | undefined,
-	{ rejectValue: AxiosError }
->(
-	"Products/fetchProducts",
-	async (loading, { getState, rejectWithValue, dispatch }) => {
-		try {
-			dispatch(ProductsActions.setIsLoadingProducts(loading));
-			const filters = (getState() as RootState).products.filters;
-
-			const { data } = await ProductsService.fetchAll(filters);
-
-			return data;
-		} catch (error) {
-			return rejectWithValue(error as AxiosError);
-		}
-	}
-);
+import { IListProductsFilters, ProductsState } from "../../../@types";
+import { GenericAction } from "../../Store";
+import ProductsThunks from "./ProductsThunks";
 
 const ProductsSlicer = createSlice<
 	ProductsState,
@@ -41,33 +19,40 @@ const ProductsSlicer = createSlice<
 		filters: {},
 		products: [],
 		isLoadingProducts: false,
+		categories: [],
 	},
 	reducers: {
 		setIsLoadingProducts: (state, action: GenericAction<boolean>) => {
 			state.isLoadingProducts = action.payload;
 		},
-		setFilters: (state, action: GenericAction<ProductsFilter>) => {
+		setFilters: (state, action: GenericAction<IListProductsFilters>) => {
 			state.filters = { ...state.filters, ...action.payload };
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(fetchProducts.fulfilled, (state, action) => {
+		builder.addCase(ProductsThunks.fetchProducts.fulfilled, (state, action) => {
 			state.products = action.payload.content;
 			state.isLoadingProducts = false;
 		});
 
-		builder.addCase(fetchProducts.rejected, (state) => {
-			state.products = [];
+		builder.addCase(ProductsThunks.fetchProducts.rejected, (state) => {
 			state.isLoadingProducts = false;
 		});
+
+		builder.addCase(
+			ProductsThunks.fetchStoreCategories.fulfilled,
+			(state, action) => {
+				state.categories = action.payload.content;
+			}
+		);
 	},
 });
 
 export const ProductsActions = ProductsSlicer.actions as {
-	setFilters: ActionCreatorWithPayload<ProductsFilter>;
+	setFilters: ActionCreatorWithPayload<IListProductsFilters>;
 	setIsLoadingProducts: ActionCreatorWithPayload<boolean | undefined>;
 };
 
 const ProductsReducer = ProductsSlicer.reducer;
 
-export { ProductsReducer, ProductsSlicer, fetchProducts };
+export { ProductsReducer, ProductsSlicer };

@@ -10,6 +10,8 @@ import { ProductsService } from "../../../../api";
 import { Button, Input, Select, UploadBox } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import "./styles.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 interface ProductModalProps {
 	id?: string;
@@ -40,6 +42,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 	const [preview, setPreview] = useState<string | undefined>(imagePreview);
 	const values = watch();
 
+	const { categories } = useSelector((state: RootState) => state.products);
 	const canAdd = useMemo(() => formState.isValid && !!file, [formState, file]);
 
 	const onChangeFile = (file: File) => {
@@ -175,7 +178,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 					fieldState: { error },
 				}) => (
 					<Input
-						mode="controlled"
 						fieldKey={name}
 						placeholder="Modals.Product.Fields.Name"
 						wrapperClassName="fill-row"
@@ -185,6 +187,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 						onChangeValue={onChange}
 						errorMessage={error?.message}
 						showError={!!error}
+						defaultValue={initialProduct?.name || ""}
 					/>
 				)}
 			/>
@@ -204,7 +207,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				}) => (
 					<Input
 						fieldKey={name}
-						mode="controlled"
 						placeholder="Modals.Product.Fields.Price"
 						wrapperClassName="fill-row"
 						className="filled-input"
@@ -215,6 +217,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 						prefixContent={<span className="dollar-prefix">R$</span>}
 						errorMessage={error?.message}
 						showError={!!error}
+						defaultValue={initialProduct?.price || ""}
 					/>
 				)}
 			/>
@@ -234,7 +237,6 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				}) => (
 					<Input
 						fieldKey={name}
-						mode="controlled"
 						placeholder="Modals.Product.Fields.Stock"
 						wrapperClassName="fill-row"
 						className="filled-input"
@@ -243,6 +245,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 						onChangeValue={onChange}
 						errorMessage={error?.message}
 						showError={!!error}
+						defaultValue={initialProduct?.stock || ""}
 					/>
 				)}
 			/>
@@ -260,11 +263,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
 						label="Modals.Product.Fields.Category"
 					>
 						<option disabled value="">
-							Categoria
+							{t("Modals.Product.Fields.Category")}
 						</option>
-						{ProductCategoriesArray.map((value) => (
-							<option key={value.key} value={value.value}>
-								{value.key}
+						{categories.map((value) => (
+							<option key={value._id} value={value._id}>
+								{value.name}
 							</option>
 						))}
 					</Select>

@@ -6,6 +6,8 @@ import {
 	IAttendance,
 	ModalIds,
 	Pages,
+	TAttendanceStatus,
+	TOrderBy,
 } from "../../@types";
 import { AttendancesService } from "../../api";
 import {
@@ -14,7 +16,6 @@ import {
 	ChipWrapper,
 	MainContainer,
 	OrderBy,
-	OrderByType,
 } from "../../components";
 import { useModal } from "../../hooks";
 import { StartAttendanceModal } from "./components";
@@ -23,9 +24,9 @@ import { Dropdown, DropdownItem, DropdownSeparator } from "leux";
 import { Eye, MoreVertical, X } from "react-feather";
 import { useNavigate } from "react-router-dom";
 
-interface BarAttendancesPageProps {}
+interface StoreAttendancesPageProps {}
 
-const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
+const StoreAttendancesPage: React.FC<StoreAttendancesPageProps> = () => {
 	const { t } = useTranslation();
 	const { openModal } = useModal();
 
@@ -38,7 +39,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 			const { data } = await AttendancesService.fetchAll(filters);
 
 			if (data) {
-				setAttendances(data);
+				setAttendances(data.content);
 			}
 		} catch (error) {
 			console.error(error);
@@ -50,7 +51,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 	};
 
 	const onOrderChange = (
-		sort_order?: OrderByType,
+		sort_order?: TOrderBy,
 		sort_by?: GetAttendanceFilters["sort_by"]
 	) => {
 		if (sort_order === "" || !sort_order || !sort_by) {
@@ -58,7 +59,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 			sort_by = undefined;
 		}
 
-		setFilters((curr) => ({ ...curr, sort_order, sort_by }));
+		setFilters((curr) => ({ ...curr, sort: sort_order, sort_by }));
 	};
 
 	const openStartAttendanceModal = () => {
@@ -69,13 +70,22 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 		});
 	};
 
-	const seeAttendance = (attendanceId: number) => {
-		const to = Pages.BarAttendanceGeneral.replace(
+	const seeAttendance = (attendanceId: string) => {
+		const to = Pages.StoreAttendanceView.replace(
 			":attendanceId",
 			attendanceId.toString()
 		);
 
 		navigate(to);
+	};
+
+	const finishAttendance = async (attendanceId: string) => {
+		try {
+			await AttendancesService.finish(attendanceId);
+			loadAttendances();
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {
@@ -86,7 +96,7 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 		<MainContainer showAdminHeader>
 			<div className="attendances">
 				<header className="attendances-header">
-					<h2 className="page-title">{t("BarAttendances.Title")}</h2>
+					<h2 className="page-title">{t("StoreAttendances.Title")}</h2>
 				</header>
 
 				<section className="attendances-filters">
@@ -96,76 +106,84 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 							onClick={() => setFilter({ status: undefined })}
 							theme="secondary"
 						>
-							{t("BarAttendances.Filters.All")}
+							{t("StoreAttendances.Filters.All")}
 						</Chip>
 						<Chip
-							active={filters.status === "off"}
-							onClick={() => setFilter({ status: "off" })}
+							onClick={() => setFilter({ status: TAttendanceStatus.CLOSED })}
+							active={filters.status === TAttendanceStatus.CLOSED}
 							theme="secondary"
 						>
-							{t("BarAttendances.Filters.Finished")}
+							{t("StoreAttendances.Filters.Finished")}
 						</Chip>
 						<OrderBy
-							onOrderChange={(order) => onOrderChange(order, "start_date")}
-							label="BarAttendances.Filters.Interval"
+							label="StoreAttendances.Filters.Interval"
+							onOrderChange={(order) => onOrderChange(order, "started_at")}
 						/>
 					</ChipWrapper>
 					<Button onClick={openStartAttendanceModal}>
-						{t("BarAttendances.Buttons.Add")}
+						{t("StoreAttendances.Buttons.Add")}
 					</Button>
 				</section>
 
 				<main className="attendances-table">
 					<header className="attendances-table-header">
-						<span>{t("BarAttendances.Table.Headers.Id")}</span>
-						<span>{t("BarAttendances.Table.Headers.Status")}</span>
-						<span>{t("BarAttendances.Table.Headers.Start")}</span>
-						<span>{t("BarAttendances.Table.Headers.End")}</span>
-						<span>{t("BarAttendances.Table.Headers.TablesCount")}</span>
-						<span>{t("BarAttendances.Table.Headers.Code")}</span>
-						<span>{t("BarAttendances.Table.Headers.Actions")}</span>
+						{/* <span>{t("StoreAttendances.Table.Headers.Id")}</span> */}
+						<span>{t("StoreAttendances.Table.Headers.Code")}</span>
+						<span>{t("StoreAttendances.Table.Headers.Status")}</span>
+						<span>{t("StoreAttendances.Table.Headers.Start")}</span>
+						<span>{t("StoreAttendances.Table.Headers.End")}</span>
+						<span>{t("StoreAttendances.Table.Headers.TablesCount")}</span>
+						<span>{t("StoreAttendances.Table.Headers.Actions")}</span>
 					</header>
 					<div className="attendances-table-body">
 						{attendances.map((attendance, index) => (
 							<div key={index} className="attendances-table-item">
-								<span>{attendance.id}</span>
+								{/* <span>{attendance._id}</span> */}
+								<span>{attendance.code}</span>
 								<span className={attendance.status}>
-									{t(`Generics.Status.${attendance.status}`)}
+									{t(`Generics.AttendanceStatus.${attendance.status}`)}
 								</span>
 								<span>
 									{format(
-										new Date(attendance.start_date),
+										new Date(attendance.created_at),
 										t("Generics.Dates.Long.Format")
 									)}
 								</span>
 								<span>
-									{attendance.end_date &&
+									{attendance.closed_at &&
 										format(
-											new Date(attendance.end_date),
+											new Date(attendance.closed_at),
 											t("Generics.Dates.Long.Format")
 										)}
-									{!attendance.end_date && t("Generics.EmptySign")}
+									{!attendance.closed_at && t("Generics.EmptySign")}
 								</span>
 								<span>{attendance.tables_count}</span>
-								<span>{attendance.code}</span>
 								<span
 									role="button"
 									className="table-action flex align-center justify-center"
 								>
 									<Dropdown
-										position="bottomRight"
+										position={
+											index < attendances.length - 1
+												? "bottomRight"
+												: "topRight"
+										}
 										size="large"
 										anchor={<MoreVertical className="link link-primary" />}
 									>
 										<DropdownItem
 											customClass="dropdown-item"
-											onClick={() => seeAttendance(attendance.id)}
+											onClick={() => seeAttendance(attendance._id)}
 										>
 											<Eye size={16} /> Ver
 										</DropdownItem>
 										<DropdownSeparator />
 										<DropdownSeparator />
-										<DropdownItem customClass="dropdown-item">
+										<DropdownItem
+											onClick={() => finishAttendance(attendance._id)}
+											customClass="dropdown-item"
+											disabled={attendance.status === TAttendanceStatus.CLOSED}
+										>
 											<X size={16} /> Finalizar
 										</DropdownItem>
 									</Dropdown>
@@ -180,4 +198,4 @@ const BarAttendancesPage: React.FC<BarAttendancesPageProps> = () => {
 	);
 };
 
-export { BarAttendancesPage };
+export { StoreAttendancesPage };

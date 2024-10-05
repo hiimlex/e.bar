@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import {
 	CreateOrderProductPayload,
 	IOrder,
+	IPaginationResponse,
 	OrdersFilter,
 	ServeOrderProductPayload,
 } from "../../@types";
@@ -11,9 +12,9 @@ import { Endpoints } from "../endpoints";
 
 const fetchAll = async (
 	filters?: OrdersFilter
-): Promise<AxiosResponse<IOrder[]>> => {
+): Promise<AxiosResponse<IPaginationResponse<IOrder>>> => {
 	try {
-		const url = queryBuilder(Endpoints.GetOrders, filters);
+		const url = queryBuilder(Endpoints.WaiterOrderList, filters);
 
 		const res = await api.get(url);
 
@@ -24,11 +25,11 @@ const fetchAll = async (
 };
 
 const create = async (
-	table_id: number,
+	table_id: string,
 	customers: number
 ): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const res = await api.post(Endpoints.CreateOrder, { table_id, customers });
+		const res = await api.post(Endpoints.WaiterOrderCreate, { table_id, customers });
 
 		return res;
 	} catch (error) {

@@ -11,3 +11,9 @@ export interface IPaginationResponse<T = SafeAny> {
 	limit?: number;
 	next?: boolean;
 }
+
+export interface IPaginationFilters {
+	page?: number;
+	limit?: number;
+	offset?: number;
+}

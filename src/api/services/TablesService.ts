@@ -1,14 +1,28 @@
 import { AxiosResponse } from "axios";
-import { ITable, TableFilters } from "../../@types";
+import { IPaginationResponse, ITable, ITableFilters } from "../../@types";
 import { queryBuilder } from "../../utils";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
 
 const fetchAll = async (
-	filters?: TableFilters
-): Promise<AxiosResponse<ITable[]>> => {
+	filters?: ITableFilters
+): Promise<AxiosResponse<IPaginationResponse<ITable>>> => {
 	try {
-		const url = queryBuilder(Endpoints.GetTables, filters);
+		const url = queryBuilder(Endpoints.TableList, filters);
+
+		const res = await api.get(url);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+const fetchAvailable = async (
+	filters?: ITableFilters
+): Promise<AxiosResponse<IPaginationResponse<ITable>>> => {
+	try {
+		const url = queryBuilder(Endpoints.TableListAvailables, filters);
 
 		const res = await api.get(url);
 
@@ -33,7 +47,7 @@ const update = async (
 	data: Partial<ITable>
 ): Promise<AxiosResponse<ITable>> => {
 	try {
-		const url = queryBuilder(Endpoints.UpdateTable, {}, { tableId });
+		const url = queryBuilder(Endpoints.TableUpdate, {}, { id: tableId });
 
 		const res = await api.put(url, data);
 
@@ -45,6 +59,7 @@ const update = async (
 
 export default {
 	fetchAll,
+	fetchAvailable,
 	create,
 	update,
 };

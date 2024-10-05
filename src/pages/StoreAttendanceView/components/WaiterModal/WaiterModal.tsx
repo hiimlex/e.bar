@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { CreateWaiterPayload } from "../../../../@types";
 import { WaitersService } from "../../../../api";
 import { Button, Input } from "../../../../components";
 import { useModal } from "../../../../hooks";
+import { format } from "../../../../utils";
 import "./styles.scss";
-import { Checkbox } from "leux";
-import { useTranslation } from "react-i18next";
 
 interface WaiterModalProps {
 	modalId?: string;
-	waiterId?: number;
+	waiterId?: string;
 	initialWaiter?: CreateWaiterPayload;
 	beforeClose?: () => void;
 	mode?: "edit" | "create";
@@ -37,13 +37,20 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 	});
 
 	const onSubmit = async (data: CreateWaiterPayload) => {
-		const { email, name, password, phone, is_admin } = data;
+		const { email, name, password, phone } = data;
 		setLoading(true);
 
 		if (mode === "create") {
 			// create waiter
 			try {
-				await WaitersService.create({ email, name, password, phone, is_admin });
+				const unmaskPhone = phone.replace(/\D/g, "");
+
+				await WaitersService.create({
+					email,
+					name,
+					password,
+					phone: unmaskPhone,
+				});
 
 				setLoading(false);
 
@@ -68,11 +75,12 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 
 			// edit waiter
 			try {
+				const unmaskPhone = phone.replace(/\D/g, "");
+
 				await WaitersService.update(waiterId.toString(), {
 					email,
 					name,
-					phone,
-					is_admin,
+					phone: unmaskPhone,
 				});
 
 				setLoading(false);
@@ -144,10 +152,16 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 					<Input
 						placeholder="Modals.Waiter.Fields.Phone"
 						wrapperClassName="fill-row"
+						mode="controlled"
 						disabled={disabled}
 						value={value}
 						fieldKey={name}
-						onChange={onChange}
+						onChangeValue={(value) => {
+							const formattedPhone = format.phone(value);
+
+							console.log(formattedPhone);
+							onChange(formattedPhone);
+						}}
 						onBlur={onBlur}
 						defaultValue={value}
 					/>
@@ -173,22 +187,6 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 					)}
 				/>
 			)}
-
-			<Controller
-				control={control}
-				name="is_admin"
-				render={({ field }) => (
-					<Checkbox
-						fieldKey={field.name}
-						customClass="start-attendance-checkbox"
-						onChange={() => field.onChange(field.value)}
-						label={t("Modals.Waiter.Fields.IsAdmin")}
-						checkBoxProps={{
-							onBlur: field.onBlur,
-						}}
-					/>
-				)}
-			/>
 
 			<Button
 				type="submit"

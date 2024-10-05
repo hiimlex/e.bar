@@ -48,7 +48,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 				}
 
 				if (!is_store && waiter) {
-					dispatch(UserActions.setUser(waiter));
+					dispatch(UserActions.setWaiter(waiter));
 				}
 
 				dispatch(UserActions.setIsAdmin(is_store));
@@ -71,7 +71,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	useEffect(() => {
 		if (isAuthenticated) {
 			if (!isAdmin && waiter) {
-				navigate(Pages.WaiterHome);
+				navigate(Pages.WaiterCode);
 			}
 
 			if (isAdmin && store) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CreateOrderProductPayload, IProduct } from "../../../../@types";
-import { OrdersService } from "../../../../api";
+import { WaiterOrdersService } from "../../../../api";
 import { Button } from "../../../../components";
 import { ProductsRowCard } from "../../../WaiterProducts/components";
 import { AddProduct } from "../../WaiterAddProducts";
@@ -26,17 +26,17 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 	const onAddProduct = (product: IProduct, quantity: number) => {
 		const newToAddProducts = JSON.parse(JSON.stringify(productList));
 
-		if (!newToAddProducts[product.id]) {
-			newToAddProducts[product.id] = { product, quantity };
-		}
+		// if (!newToAddProducts[product._id]) {
+		// 	newToAddProducts[product._id] = { product, quantity };
+		// }
 
-		if (newToAddProducts[product.id]) {
-			newToAddProducts[product.id].quantity = quantity;
+		// if (newToAddProducts[product._id]) {
+		// 	newToAddProducts[product._id].quantity = quantity;
 
-			if (+newToAddProducts[product.id].quantity === 0) {
-				delete newToAddProducts[product.id];
-			}
-		}
+		// 	if (+newToAddProducts[product.id].quantity === 0) {
+		// 		delete newToAddProducts[product.id];
+		// 	}
+		// }
 
 		onChange && onChange(newToAddProducts);
 	};
@@ -47,12 +47,12 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 		try {
 			const arr: CreateOrderProductPayload[] = Object.values(productList).map(
 				({ product, quantity }) => ({
-					product_id: product.id,
+					product_id: product._id,
 					quantity,
 				})
 			);
 
-			await OrdersService.add_order_products(orderId.toString(), arr);
+			await WaiterOrdersService.add_order_products(orderId.toString(), arr);
 
 			setAdding(false);
 
@@ -73,7 +73,7 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 				<div className="c-a-p-list">
 					{Object.values(productList).map(({ product, quantity }) => (
 						<ProductsRowCard
-							key={product.id}
+							key={product._id}
 							product={product}
 							quantity={quantity}
 							showChangeButtons

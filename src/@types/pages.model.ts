@@ -2,11 +2,11 @@ export enum Pages {
 	Login = "/login",
 
 	StoreProducts = "/store/products",
-	BarAttendances = "/bar/attendances",
-	BarAttendanceView = '/bar/attendance/:attendanceId',
-	BarAttendanceGeneral = "/bar/attendance/:attendanceId/general",
-	BarAttendanceOrders = "/bar/attendance/:attendanceId/orders",
-	BarAttendanceSales = "/bar/attendance/:attendanceId/sales",
+	StoreAttendances = "/store/attendances",
+	StoreAttendanceView = '/store/attendance/:attendanceId',
+	StoreAttendanceGeneral = "/store/attendance/:attendanceId/general",
+	StoreAttendanceOrders = "/store/attendance/:attendanceId/orders",
+	StoreAttendanceSales = "/store/attendance/:attendanceId/sales",
 	BarSales = "/bar/sales",
 	BarProfile = "/bar/profile",
 
@@ -22,4 +22,5 @@ export enum Pages {
 	WaiterSettings = "/waiter/settings",
 	WaiterProfile = "/waiter/profile",
 	WaiterIntro = "/waiter/intro",
+	WaiterCode = "/waiter/code",
 }

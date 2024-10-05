@@ -1,0 +1,8 @@
+@import "src/base.scss";
+
+
+.sa-general {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-4;
+}

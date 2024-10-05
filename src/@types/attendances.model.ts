@@ -1,29 +1,43 @@
-export type AttendanceStatusType = "on" | "off";
+import { ISortFilter } from "./generic.model";
+import { IStore } from "./store.model";
+import { IWaiter } from "./waiters.model";
+
+export enum TAttendanceStatus {
+	OPEN = "OPEN",
+	CANCELLED = "CANCELLED",
+	CLOSED = "CLOSED",
+}
 
 export interface IAttendance {
-	id: number;
-	bar_id: number;
-	start_date: string;
+	_id: string;
+	store: string | IStore;
+
+	started_at: string;
+	closed_at?: string;
+	created_at: string;
 	updated_at: string;
-	end_date?: string;
+
 	code: string;
+	is_active: boolean;
 	tables_count: number;
-	status: AttendanceStatusType;
+	status: TAttendanceStatus;
+	working_at: string[] | IWaiter[];
 }
 
-export interface GetAttendanceFilters {
-	status?: AttendanceStatusType;
-	sort_by?: "start_date" | "end_date";
-	sort_order?: "asc" | "desc";
+export interface GetAttendanceFilters
+	extends ISortFilter<"created_at" | "started_at"> {
+	status?: TAttendanceStatus;
 }
 
-export interface StartAttendancePayload {
-	code: string;
-	finish_active_attendances: boolean;
+export interface ICreateAttendancePayload {
+	code?: string;
+	finish_active_attendances?: boolean;
 	tables_count: number;
 }
 
 export interface OnAttendanceState {
 	attendance: IAttendance | null;
-	attendanceId: number | null;
+	attendanceId: string | null;
 }
+
+export type TStoreAttendanceGeneralView = 'tables' | 'waiters'

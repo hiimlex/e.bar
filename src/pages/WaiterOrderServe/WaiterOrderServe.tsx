@@ -6,7 +6,7 @@ import {
 	Pages,
 	ServeOrderProductPayload,
 } from "../../@types";
-import { OrdersService } from "../../api";
+import { WaiterOrdersService } from "../../api";
 import { Button, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
@@ -59,7 +59,7 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 				arr.push({ order_product_id: id });
 			});
 
-			await OrdersService.serve_order_products(orderId, arr);
+			await WaiterOrdersService.serve_order_products(orderId, arr);
 
 			goBack();
 
@@ -75,7 +75,7 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 				return;
 			}
 
-			const { data } = await OrdersService.fetchAll({
+			const { data } = await WaiterOrdersService.fetchAll({
 				order_id: +orderId,
 				product_status: "ordered",
 			});
@@ -173,4 +173,4 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 	);
 };
 
-export default WaiterOrderServePage;
+export { WaiterOrderServePage };

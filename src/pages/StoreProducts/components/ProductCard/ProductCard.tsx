@@ -2,6 +2,7 @@ import { Edit2 } from "react-feather";
 import { IProduct } from "../../../../@types";
 import { IconButton } from "../../../../components";
 import "./styles.scss";
+import { useMemo } from "react";
 
 interface ProductCardProps {
 	product: IProduct;
@@ -9,6 +10,11 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit }) => {
+	const categoryName = useMemo(
+		() => typeof product.category !== "string" && product.category.name,
+		[product]
+	);
+
 	return (
 		<div className="product-card">
 			<div className="product-image">
@@ -23,7 +29,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit }) => {
 			<div className="product-info">
 				<div className="product-info-col">
 					<h5 className="product-info-name">{product.name}</h5>
-					<span className="product-info-category link link-primary">{product.category_name}</span>
+					<span className="product-info-category link link-primary">
+						{categoryName}
+					</span>
 				</div>
 
 				<div className="product-info-row">

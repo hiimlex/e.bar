@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { UserActions } from "../../store";
 
 export const NAV_LINKS: NavLink[] = [
-	{ to: Pages.BarAttendances, label: "Atendimento" },
+	{ to: Pages.StoreAttendances, label: "Atendimento" },
 	{ to: Pages.StoreProducts, label: "Produtos" },
 	// { to: Pages.Orders, label: "Pedidos" },
 	// { to: Pages.Sales, label: "Vendas" },

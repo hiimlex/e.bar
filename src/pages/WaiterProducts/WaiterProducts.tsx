@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Pages, ProductCategoriesArray, ProductCategory } from "../../@types";
 import { Chip, MainContainer, Spinner } from "../../components";
-import {
-	AppDispatch,
-	ProductsActions,
-	RootState,
-	fetchProducts,
-} from "../../store";
+import { AppDispatch, ProductsActions, RootState } from "../../store";
 import { ProductsRowCard } from "./components";
 import "./styles.scss";
 import { FileMinus } from "react-feather";
@@ -30,36 +25,34 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	};
 
 	const onSelectCategory = (categoria?: ProductCategory) => {
-		dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
+		// dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
 	};
 
 	const onStockFilter = () => {
-		let newFilter: boolean | undefined = !filters.sem_estoque;
-
-		if (!newFilter) {
-			newFilter = undefined;
-		}
-
-		dispatch(
-			ProductsActions.setFilters({
-				sem_estoque: newFilter,
-				categoria: undefined,
-			})
-		);
+		// let newFilter: boolean | undefined = !filters.sem_estoque;
+		// if (!newFilter) {
+		// 	newFilter = undefined;
+		// }
+		// dispatch(
+		// 	ProductsActions.setFilters({
+		// 		sem_estoque: newFilter,
+		// 		categoria: undefined,
+		// 	})
+		// );
 	};
 
 	const clearFilters = () => {
-		dispatch(
-			ProductsActions.setFilters({
-				sem_estoque: undefined,
-				categoria: undefined,
-			})
-		);
+		// dispatch(
+		// 	ProductsActions.setFilters({
+		// 		sem_estoque: undefined,
+		// 		categoria: undefined,
+		// 	})
+		// );
 	};
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			await dispatch(fetchProducts(enableLoader));
+			// await dispatch(fetchProducts(enableLoader));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
@@ -76,7 +69,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 			onGoBack={goBack}
 			showSearch
 		>
-			<div className="w-products">
+			{/* <div className="w-products">
 				<main className="w-products-content">
 					<header className={`w-products-header`}>
 						<span className="page-title">
@@ -138,7 +131,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 						</div>
 					)}
 				</main>
-			</div>
+			</div> */}
 		</MainContainer>
 	);
 };
