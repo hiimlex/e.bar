@@ -1,17 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { Plus } from "react-feather";
-import { ITable, TOrderBy, ITableFilters } from "../../../../@types";
-import { AttendancesService, TablesService } from "../../../../api";
-import { Button, OrderBy, Spinner } from "../../../../components";
-import "./styles.scss";
+import { Plus, User } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { ITable, ITableFilters, TOrderBy } from "../../../../@types";
+import { AttendancesService, TablesService } from "../../../../api";
+import { Button, OrderBy, Spinner } from "../../../../components";
 import {
 	AppDispatch,
-	OnAttendanceActions,
 	RootState,
 	onAttendancefetchAttendance,
 } from "../../../../store";
+import "./styles.scss";
 
 interface TablesProps {}
 
@@ -22,14 +21,18 @@ const Tables: React.FC<TablesProps> = () => {
 	const [loading, setLoading] = useState(false);
 	const [adding, setAdding] = useState(false);
 
-	const [updating, setUpdating] = useState<number | undefined>(undefined);
 	const { attendance } = useSelector((state: RootState) => state.onAttendance);
 
 	const [filters, setFilters] = useState<ITableFilters>({
 		limit: attendance?.tables_count,
+		is_enabled: true,
 	});
 
 	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		setFilters((curr) => ({ ...curr, limit: attendance?.tables_count }));
+	}, [attendance]);
 
 	const fetchTables = useCallback(
 		async (shouldLoad = true) => {
@@ -46,10 +49,6 @@ const Tables: React.FC<TablesProps> = () => {
 		},
 		[filters]
 	);
-
-	useEffect(() => {
-		setFilters((curr) => ({ ...curr, limit: attendance?.tables_count }));
-	}, [attendance]);
 
 	const addTableToAttendance = async () => {
 		setAdding(true);
@@ -71,36 +70,13 @@ const Tables: React.FC<TablesProps> = () => {
 		}
 	};
 
-	const activate = async (tableId: number) => {
-		await updateTable(tableId, { enabled: true });
-	};
-
-	const deactivate = async (tableId: number) => {
-		await updateTable(tableId, { enabled: false });
-	};
-
-	const updateTable = async (tableId: number, data: Partial<ITable>) => {
-		try {
-			setUpdating(tableId);
-
-			await TablesService.update(tableId.toString(), data);
-
-			await fetchTables(false);
-
-			await dispatch(onAttendancefetchAttendance());
-
-			setUpdating(undefined);
-		} catch (error) {
-			console.error(error);
-			setUpdating(undefined);
-		}
-	};
-
 	const onOrderBy = (sort?: TOrderBy, sort_by?: ITableFilters["sort_by"]) => {
 		if (sort === "") {
 			sort = undefined;
 			sort_by = undefined;
 		}
+
+		console.log(sort, sort_by);
 
 		setFilters((curr) => ({ ...curr, sort, sort_by }));
 	};
@@ -127,27 +103,57 @@ const Tables: React.FC<TablesProps> = () => {
 					{tables.map((table) => (
 						<div
 							className={`card card-gray ${
-								table.enabled ? "table-card" : "table-not-active"
+								table.in_use ? "table-card" : "table-not-active"
 							}`}
 							key={table._id}
 						>
-							<div className="flex-row-text">
-								<span className="tables-info-number">Mesa {table.number}</span>
-								<div className="chip-status chip-status-primary">
-									{t(`Generics.TableStatus.${table.in_use ? "InUse" : "Free"}`)}
-								</div>
+							<div
+								className={`flex  ${
+									table.in_use ? "justify-between" : "justify-end"
+								}`}
+							>
+								{table.in_use && table.order && (
+									<div className="chip-status chip-status-primary flex flex-row items-center gap-1">
+										{/* {t(`Generics.TableStatus.${table.in_use ? "InUse" : "Free"}`)} */}
+										<User size={16} color="white" />
+										{typeof table.order !== "string" && table.order.customers}
+									</div>
+								)}
+
+								<span className="tables-info-number flex justify-self-end">
+									{t("StoreAttendanceView.General.Labels.Table", {
+										number: table.number,
+									})}
+								</span>
 							</div>
-							<span className="table-info-bartender">
+							<span className="tables-info-bartender flex justify-center">
 								{table.in_use_by
 									? t(`StoreAttendanceView.General.Labels.Waiter`, {
 											name:
 												typeof table.in_use_by !== "string" &&
 												table.in_use_by.name
-													? table.in_use_by.name
+													? table.in_use_by.name.split(' ')[0]
 													: "---",
+											// eslint-disable-next-line no-mixed-spaces-and-tabs
 									  })
-									: "---"}
+									: t("Empty.Empty")}
 							</span>
+							{table.order && (
+								<div className="flex justify-between">
+									<span className="tables-order-number">
+										{t(`StoreAttendanceView.General.Labels.Order`, {
+											number:
+												typeof table.order !== "string" && table.order.number,
+										})}
+									</span>
+									<span className="tables-order-number">
+										{t("Generics.Currency.Format", {
+											value:
+												typeof table.order !== "string" && table.order.total,
+										})}
+									</span>
+								</div>
+							)}
 							{/* {table.enabled ? (
 								<Button
 									className="fill-row"

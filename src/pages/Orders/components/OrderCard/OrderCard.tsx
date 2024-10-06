@@ -10,11 +10,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 	return (
 		<article className="order-card">
 			<header className="order-card-header">
-				<div className="chip-status chip-status-primary">{`Mesa ${order.table_id}`}</div>
-				<span className="order-card-title">{`Garcon - ${order.waiter_name}`}</span>
+				{/* <div className="chip-status chip-status-primary">{`Mesa ${order.table_id}`}</div> */}
+				{/* <span className="order-card-title">{`Garcon - ${order.waiter_name}`}</span> */}
 			</header>
 			<main className="info">
-				<h4 className="info-order-id">{`Pedido N° ${order.id}`}</h4>
+				{/* <h4 className="info-order-id">{`Pedido N° ${order.id}`}</h4> */}
 
 				<div className="info-items">
 					<div className="info-items-grid info-items-header">
@@ -22,7 +22,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 						<span>Status</span>
 						<span className="info-items-price">Preço</span>
 					</div>
-					{order.products.map((product, index) => {
+					{/* {order.products.map((product, index) => {
 						const isDelivered = product.status === "delivered";
 						const q = isDelivered ? product.delivered : product.quantity;
 
@@ -40,21 +40,21 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 								</span>
 							</div>
 						);
-					})}
+					})} */}
 				</div>
 				<div className="dashline" />
 				<div className="info-items-total">
 					<span className="info-items-total-label">Total</span>
 					<span className="info-items-total-value">{`R$ ${order.total}`}</span>
 				</div>
-				{order.payment_method && (
+				{/* {order.payment_method && (
 					<div className="info-items-payment-method">
 						<span className="info-items-payment-method-label">
 							Forma de Pagamento
 						</span>
 						<span className="info-items-payment-method-value">{"PIX"}</span>
 					</div>
-				)}
+				)} */}
 			</main>
 			<footer className="order-card-footer">
 				<div className="order-card-confirmed">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SafeAny } from "../../@types";
 import "./styles.scss";
@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({
 	className,
 	styles,
 	fieldKey,
-	value = '',
+	value = "",
 	placeholder,
 	hideLabel = false,
 	wrapperClassName,
@@ -96,14 +96,6 @@ const Input: React.FC<InputProps> = ({
 
 		return (isFocused && hasValue) || hasValue;
 	}, [hasValue, isFocused, placeholder, hideLabel]);
-
-	const inputProps = useMemo(() => {
-		if (mode === "controlled") {
-			return {
-				value,
-			};
-		}
-	}, [mode, value]);
 
 	return (
 		<div className={`input-wrapper ${wrapperClassName}`}>

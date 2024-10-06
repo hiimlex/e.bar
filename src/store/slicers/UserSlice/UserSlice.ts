@@ -75,13 +75,16 @@ const UserSlice = createSlice<
 			(state, action) => {
 				state.attendance = action.payload;
 				state.loading = false;
+				state.hasValidatedAttendance = true;
 			}
 		);
 
 		builder.addCase(
 			UserThunks.validateWaiterAttendanceCode.rejected,
 			(state) => {
+				state.attendance = undefined;
 				state.loading = false;
+				state.hasValidatedAttendance = true;
 			}
 		);
 	},

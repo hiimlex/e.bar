@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { FileMinus, RefreshCw } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
-import { OrdersFilter, OrderStatus, TOrderBy } from "../../@types";
+import { IListOrdersFilters, TOrderBy, TOrderStatusType } from "../../@types";
 import { Endpoints, WaiterOrdersService } from "../../api";
 import { Button, Chip, MainContainer, OrderBy } from "../../components";
+import { socket } from "../../socket/socket";
 import { AppDispatch, OrdersActions, RootState } from "../../store";
 import { OrderCard } from "./components";
 import "./styles.scss";
-import { socket } from "../../socket/socket";
 
 interface OrdersPageProps {}
 
@@ -25,7 +25,7 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 				const { data } = await WaiterOrdersService.fetchAll(filters);
 
 				if (data) {
-					dispatch(OrdersActions.setOrders(data));
+					dispatch(OrdersActions.setOrders(data.content));
 				}
 
 				dispatch(OrdersActions.setLoadingOrders(false));
@@ -45,20 +45,20 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 		socket.on(Endpoints.SocketGetOrders, () => loadOrders(false));
 	}, []);
 
-	const onSelectView = (status: OrderStatus | undefined) => {
+	const onSelectView = (status: TOrderStatusType | undefined) => {
 		dispatch(OrdersActions.setFilters({ status }));
 	};
 
 	const onOrderChange = (
-		sort_by?: OrdersFilter["sort_by"],
-		sort_order?: TOrderBy
+		sort?: TOrderBy,
+		sort_by?: IListOrdersFilters["sort_by"]
 	) => {
-		if (sort_order === "") {
-			sort_by = undefined;
-			sort_order = undefined;
+		if (sort === "") {
+			// sort = undefined;
+			// sort_by = undefined;
 		}
 
-		dispatch(OrdersActions.setFilters({ sort_by, sort_order }));
+		// dispatch(OrdersActions.setFilters({ sort_by, sort_order }));
 	};
 
 	return (
@@ -83,10 +83,10 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 							Todos
 						</Chip>
 						<Chip
-							active={filters.status === "finished"}
+							// active={filters.status === "finished"}
 							clickable
 							theme="secondary"
-							onClick={() => onSelectView("finished")}
+							onClick={() => onSelectView("FINISHED")}
 						>
 							Finalizados
 						</Chip>
@@ -94,20 +94,20 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 					<div className="orders-actions">
 						<OrderBy
 							label="Total"
-							onOrderChange={(sort_order) => onOrderChange("total", sort_order)}
+							onOrderChange={(sort) => onOrderChange(sort, "total")}
 						/>
-						<OrderBy
+						{/* <OrderBy
 							label="N° Mesa"
-							onOrderChange={(sort_order) =>
-								onOrderChange("table_id", sort_order)
+							onOrderChange={(sort) =>
+								onOrderChange(sort, '')
 							}
-						/>
-						<OrderBy
+						/> */}
+						{/* <OrderBy
 							label="Criado em"
 							onOrderChange={(sort_order) =>
 								onOrderChange("created_at", sort_order)
 							}
-						/>
+						/> */}
 						<Button theme="secondary" onClick={loadOrders}>
 							<RefreshCw size={18} /> Atualizar
 						</Button>

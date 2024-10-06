@@ -24,9 +24,7 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const canVerifyCode = useMemo(() => formState.isValid, [formState]);
-	const { isAuthenticated, waiter, attendance } = useSelector(
-		(state: RootState) => state.user
-	);
+	const { attendance } = useSelector((state: RootState) => state.user);
 
 	const onVerifyCode = async (formData: ICodePayload) => {
 		try {
@@ -46,10 +44,11 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 	};
 
 	useEffect(() => {
-		if (isAuthenticated && attendance) {
+		if (attendance) {
 			navigate(Pages.WaiterHome);
 		}
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [attendance]);
 
 	return (
 		<div className="w-code">

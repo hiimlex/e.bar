@@ -4,7 +4,7 @@ import {
 	SliceSelectors,
 	createSlice,
 } from "@reduxjs/toolkit";
-import { IOrder, OrdersFilter, OrdersState } from "../../../@types";
+import { IListOrdersFilters, IOrder, OrdersState } from "../../../@types";
 import { GenericAction } from "../../Store";
 
 const OrdersSlicer = createSlice<
@@ -23,7 +23,7 @@ const OrdersSlicer = createSlice<
 		setOrders: (state, action: GenericAction<IOrder[]>) => {
 			state.orders = action.payload;
 		},
-		setFilters: (state, action: GenericAction<OrdersFilter>) => {
+		setFilters: (state, action: GenericAction<IListOrdersFilters>) => {
 			state.filters = { ...state.filters, ...action.payload };
 		},
 		setLoadingOrders: (state, action: GenericAction<boolean>) => {
@@ -33,7 +33,7 @@ const OrdersSlicer = createSlice<
 });
 
 export const OrdersActions = OrdersSlicer.actions as {
-	setFilters: ActionCreatorWithPayload<OrdersFilter>;
+	setFilters: ActionCreatorWithPayload<IListOrdersFilters>;
 	setLoadingOrders: ActionCreatorWithPayload<boolean>;
 	setOrders: ActionCreatorWithPayload<IOrder[]>;
 };

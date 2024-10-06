@@ -25,7 +25,6 @@
 		&-sm {
 			overflow-x: hidden;
 			overflow-y: auto;
-			padding-bottom: $unit-6;
 		}
 
 		&-md {
@@ -52,6 +51,7 @@
 		width: var(--width);
 		height: var(--height);
 		overflow: hidden;
+		padding-bottom: $unit-4;
 
 		&::-webkit-scrollbar {
 			display: none;

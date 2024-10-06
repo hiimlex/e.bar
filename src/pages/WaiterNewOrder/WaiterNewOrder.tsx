@@ -3,10 +3,11 @@ import { Slash } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ITable, Pages } from "../../@types";
+import { ITable, NamespaceKeys, Pages } from "../../@types";
 import { TablesService, WaiterOrdersService } from "../../api";
 import { Button, Input, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
+import { User } from "react-feather";
 import "./styles.scss";
 
 interface WaiterNewOrderPageProps {}
@@ -14,7 +15,7 @@ interface WaiterNewOrderPageProps {}
 const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
-	const { t } = useTranslation();
+	const { t } = useTranslation<NamespaceKeys>();
 	const { waiter } = useSelector((state: RootState) => state.user);
 	const waiterStore = useMemo(
 		() =>
@@ -53,10 +54,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 			if (data) {
 				dispatch(OnOrderActions.setOrder(data));
-				const to = Pages.WaiterOrder.replace(
-					":orderId",
-					data._id.toString()
-				);
+				const to = Pages.WaiterOrder.replace(":orderId", data._id.toString());
 				navigate(to);
 			}
 
@@ -89,19 +87,21 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 			<div className="new-order">
 				<main className="new-order-content">
 					<header className={`w-products-header`}>
-						<span className="page-title">
-							Nova <br />
-							Comanda
-						</span>
+						<span
+							className="page-title"
+							dangerouslySetInnerHTML={{ __html: t("WaiterNewOrder.Subtitle") }}
+						></span>
 					</header>
 					<main className="new-order-main">
 						<div className="new-order-tables">
-							<span className="new-order-subtitle">Selecionar mesa</span>
+							<span className="new-order-subtitle">
+								{t("WaiterNewOrder.Labels.SelectTable")}
+							</span>
 
 							{tables.length === 0 && (
 								<div className="new-order-no-tables">
 									<Slash size={32} />
-									<span>Nenhuma mesa disponível.</span>
+									<span>{t("Empty.NoAvailableTables")}</span>
 								</div>
 							)}
 
@@ -120,18 +120,26 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 											>
 												<div className="flex-row-text">
 													<span className="tables-info-number">
-														Mesa {table.number}
+														{t("WaiterNewOrder.TableCard.TableNumber", {
+															number: table.number,
+														})}
 													</span>
 													<div
 														className={`chip-status chip-status-${
 															isSelected ? "secondary" : "primary"
 														}`}
 													>
-														{table.in_use ? "OCUPADA" : "Livre"}
+														{t(
+															`Generics.TableStatus.${
+																table.in_use ? "InUse" : "Free"
+															}`
+														)}
 													</div>
 												</div>
 												<span className="table-info-bartender">
-													{table.in_use ? `Garçom ${table.in_use}` : "---"}
+													{table.in_use
+														? t(`WaiterNewOrder.TableCard.UserBy`, { name: "" })
+														: "---"}
 												</span>
 											</div>
 										);
@@ -140,7 +148,9 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 							)}
 						</div>
 						<div className="new-order-customers">
-							<span className="new-order-subtitle">Para quantas pessoas ?</span>
+							<span className="new-order-subtitle">
+								{t("WaiterNewOrder.Labels.ForHowMany")}
+							</span>
 
 							<Input
 								placeholder="0"
@@ -152,6 +162,8 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 								}}
 								value={customers?.toString() || ""}
 								hideLabel
+								hasPrefix
+								prefixContent={<User color="#9a36fd" size={20} />}
 							/>
 						</div>
 					</main>
@@ -160,7 +172,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 						onClick={createOrder}
 						loading={loading}
 					>
-						Continuar
+						{t("Generics.Buttons.Continue")}
 					</Button>
 				</main>
 			</div>

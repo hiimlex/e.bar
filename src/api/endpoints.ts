@@ -88,6 +88,8 @@ export enum Endpoints {
 	WaiterListById = "/api/waiters/:id",
 	WaiterUpdate = "/api/waiters/:id",
 	WaiterDelete = "/api/waiters/:id",
+	WaiterOrderAddItem = "/api/w-orders/item/add/:id",
+	WaiterOrderUpdateItem = "/api/w-orders/item/update/:id",
 
 	// Waiter Orders
 	WaiterOrderCreate = "/api/w-orders",

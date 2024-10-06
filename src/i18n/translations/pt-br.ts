@@ -74,6 +74,8 @@ export const ptBr = {
 			},
 			Labels: {
 				Waiter: "Garçom {{name}}",
+				Table: "Mesa {{number}}",
+				Order: "Pedido #{{number}}",
 			},
 		},
 	},
@@ -95,7 +97,71 @@ export const ptBr = {
 			NoStock: "Sem estoque",
 		},
 	},
-	WaiterNewOrder: {},
+	WaiterNewOrder: {
+		Subtitle: "Nova <br />Comanda",
+		Labels: {
+			SelectTable: "Selecione a mesa",
+			ForHowMany: "Para quantas pessoas?",
+		},
+		TableCard: {
+			TableNumber: "Mesa {{number}}",
+			UsedBy: "Garçom {{name}}",
+		},
+	},
+	WaiterOrder: {
+		Labels: {
+			TableNumber: "Mesa {{number}}",
+			Total: "Total",
+			OrderNumber: "Pedido N° {{number}}",
+		},
+		Buttons: {
+			Payment: "Pagamento",
+			Send: "Enviar",
+			MarkAsDelivered: "Marcar como entregue",
+			SeeProducts: "ver items",
+		},
+		Table: {
+			Headers: {
+				Products: "Produtos",
+				Status: "Status",
+				Price: "Preço",
+			},
+		},
+		MarkAsDelivered: {
+			Title: "Marcar item como<br/> entregue",
+		},
+	},
+	WaiterOrderProducts: {
+		Title: "Items na<br/> Comanda",
+		Buttons: {
+			SeeAll: "Ver cardápio",
+		},
+		Labels: {
+			Total: "Total",
+			SeeServed: "Ver servidos",
+		},
+	},
+	WaiterAddProducts: {
+		Title: "Items na<br/> Comanda",
+		Buttons: {
+			Add: "Adicionar",
+		},
+		Filters: {
+			Stock: "Estoque",
+			Preço: "Preço",
+			All: "Todos",
+			NoStock: "Sem estoque",
+		},
+	},
+	WaiterProducts: {
+		Title: "List de <br/>Produtos",
+	},
+	WaiterMyOrders: {
+		Title: "Meus <br/>Pedidos",
+		Filters: {
+			Finished: "Finalizados",
+		},
+	},
 	Modals: {
 		Product: {
 			create: {
@@ -158,12 +224,15 @@ export const ptBr = {
 	Empty: {
 		Orders: "Nenhum pedido encontrado.",
 		Products: "Nenhum produto encontrado.",
+		NoAvailableTables: "Nenhuma mesa disponível.",
+		Empty: "VAZIA",
 	},
 	Generics: {
 		Buttons: {
 			Continue: "Continuar",
 			Confirm: "Confirmar",
 			Cancel: "Cancelar",
+			Add: "Adicionar",
 		},
 		FieldErrors: {
 			Required: "Campo obrigatório",
@@ -203,6 +272,10 @@ export const ptBr = {
 			OPEN: "Aberto",
 			CLOSED: "Finalizado",
 			CANCELLED: "Cancelado",
+		},
+		Currency: {
+			Symbol: "R$",
+			Format: "R$ {{value}}",
 		},
 	},
 };

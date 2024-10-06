@@ -48,9 +48,14 @@
 
 		&-bartender {
 			font-size: 16px;
-			font-weight: 600;
+			font-weight: 500;
 			color: $color-text-dark;
 		}
+	}
+
+	.card {
+		padding: $unit-2;
+		gap: $unit-2
 	}
 
 	.table-card {
@@ -60,5 +65,25 @@
 
 	.table-not-active {
 		background: $color-gray-2;
+	}
+
+	&-order {
+		&-number {
+			font-size: 13px;
+			font-weight: 500;
+			color: $color-gray-3;
+		}
+
+		&-status {
+			font-size: 13px;
+			font-weight: 500;
+			color: $color-gray-3;
+		}
+
+		&-total {
+			font-size: 13px;
+			font-weight: 500;
+			color: $color-gray-3;
+		}
 	}
 }

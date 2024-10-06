@@ -3,18 +3,35 @@ import {
 	CreateOrderProductPayload,
 	IOrder,
 	IPaginationResponse,
-	OrdersFilter,
-	ServeOrderProductPayload,
+	IListOrdersFilters,
+	UpdateOrderProductPayload,
 } from "../../@types";
 import { queryBuilder } from "../../utils";
 import { api } from "../api";
 import { Endpoints } from "../endpoints";
 
 const fetchAll = async (
-	filters?: OrdersFilter
+	filters?: IListOrdersFilters
 ): Promise<AxiosResponse<IPaginationResponse<IOrder>>> => {
 	try {
 		const url = queryBuilder(Endpoints.WaiterOrderList, filters);
+
+		const res = await api.get(url);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
+const getById = async (
+	orderId: string,
+	filters?: IListOrdersFilters
+): Promise<AxiosResponse<IOrder>> => {
+	try {
+		const url = queryBuilder(Endpoints.WaiterOrderShowById, filters, {
+			id: orderId,
+		});
 
 		const res = await api.get(url);
 
@@ -29,7 +46,10 @@ const create = async (
 	customers: number
 ): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const res = await api.post(Endpoints.WaiterOrderCreate, { table_id, customers });
+		const res = await api.post(Endpoints.WaiterOrderCreate, {
+			table_id,
+			customers,
+		});
 
 		return res;
 	} catch (error) {
@@ -39,13 +59,13 @@ const create = async (
 
 const add_order_products = async (
 	orderId: string,
-	products: CreateOrderProductPayload[]
+	items: CreateOrderProductPayload[]
 ): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const url = queryBuilder(Endpoints.AddOrderProducts, {}, { orderId });
+		const url = queryBuilder(Endpoints.WaiterOrderAddItem, {}, { id: orderId });
 
 		const res = await api.put(url, {
-			products,
+			items,
 		});
 
 		return res;
@@ -54,15 +74,19 @@ const add_order_products = async (
 	}
 };
 
-const serve_order_products = async (
+const update_order_products = async (
 	orderId: string,
-	order_products: ServeOrderProductPayload[]
+	items: UpdateOrderProductPayload[]
 ): Promise<AxiosResponse<IOrder>> => {
 	try {
-		const url = queryBuilder(Endpoints.ServeOrderProducts, {}, { orderId });
+		const url = queryBuilder(
+			Endpoints.WaiterOrderUpdateItem,
+			{},
+			{ id: orderId }
+		);
 
-		const res = await api.post(url, {
-			order_products,
+		const res = await api.put(url, {
+			items,
 		});
 
 		return res;
@@ -75,5 +99,6 @@ export default {
 	fetchAll,
 	create,
 	add_order_products,
-	serve_order_products,
+	update_order_products,
+	getById,
 };

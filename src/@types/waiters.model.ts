@@ -22,6 +22,7 @@ export interface UserState {
 	loading: boolean;
 	socket?: Socket;
 	attendance?: IAttendance;
+	hasValidatedAttendance?: boolean;
 }
 
 export interface WaitersFilters extends ISortFilter<"name"> {

@@ -1,17 +1,25 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { FileMinus } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Pages, ProductCategoriesArray, ProductCategory } from "../../@types";
-import { Chip, MainContainer, Spinner } from "../../components";
-import { AppDispatch, ProductsActions, RootState } from "../../store";
+import { Pages } from "../../@types";
+import { Chip, Input, MainContainer, Spinner } from "../../components";
+import {
+	AppDispatch,
+	ProductsActions,
+	ProductsThunks,
+	RootState,
+} from "../../store";
 import { ProductsRowCard } from "./components";
 import "./styles.scss";
-import { FileMinus } from "react-feather";
+import { useDebounceValue } from "usehooks-ts";
 
 interface WaiterProductsPageProps {}
 
 const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
-	const { filters, products, isLoadingProducts } = useSelector(
+	const { t } = useTranslation();
+	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
 
@@ -20,39 +28,51 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
+	const [showSearch, setShowSearch] = useState(false);
+	const [value, setValue] = useState("");
+	const [search, setSearch] = useDebounceValue("", 300);
+
+	useEffect(() => {
+		dispatch(ProductsActions.setFilters({ name: search }));
+	}, [search]);
+
 	const goBack = () => {
 		navigate(Pages.WaiterHome);
 	};
 
-	const onSelectCategory = (categoria?: ProductCategory) => {
-		// dispatch(ProductsActions.setFilters({ categoria, sem_estoque: undefined }));
+	const onSelectCategory = (category_id?: string) => {
+		dispatch(ProductsActions.setFilters({ category_id, no_stock: undefined }));
 	};
 
 	const onStockFilter = () => {
-		// let newFilter: boolean | undefined = !filters.sem_estoque;
-		// if (!newFilter) {
-		// 	newFilter = undefined;
-		// }
-		// dispatch(
-		// 	ProductsActions.setFilters({
-		// 		sem_estoque: newFilter,
-		// 		categoria: undefined,
-		// 	})
-		// );
+		let newFilter: boolean | undefined = !filters.no_stock;
+		if (!newFilter) {
+			newFilter = undefined;
+		}
+		dispatch(
+			ProductsActions.setFilters({
+				no_stock: newFilter,
+				category_id: undefined,
+			})
+		);
 	};
 
 	const clearFilters = () => {
-		// dispatch(
-		// 	ProductsActions.setFilters({
-		// 		sem_estoque: undefined,
-		// 		categoria: undefined,
-		// 	})
-		// );
+		dispatch(
+			ProductsActions.setFilters({
+				no_stock: undefined,
+				category_id: undefined,
+			})
+		);
 	};
+
+	const loadCategories = useCallback(async () => {
+		await dispatch(ProductsThunks.fetchStoreCategories());
+	}, []);
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			// await dispatch(fetchProducts(enableLoader));
+			await dispatch(ProductsThunks.fetchProducts(enableLoader));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
@@ -62,48 +82,64 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		loadProducts();
 	}, [loadProducts]);
 
+	useEffect(() => {
+		loadCategories();
+	}, []);
+
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
 			showGoBack
 			onGoBack={goBack}
 			showSearch
+			onSearch={() => setShowSearch((curr) => !curr)}
 		>
-			{/* <div className="w-products">
+			<div className="w-products">
 				<main className="w-products-content">
 					<header className={`w-products-header`}>
-						<span className="page-title">
-							Lista de
-							<br />
-							Produtos
-						</span>
+						<span
+							className="page-title"
+							dangerouslySetInnerHTML={{ __html: t("WaiterProducts.Title") }}
+						></span>
 						<div className="w-products-filters">
+							{showSearch && (
+								<Input
+									placeholder="Buscar produto..."
+									onChangeValue={(value) => {
+										setValue(value);
+										setSearch(value);
+									}}
+									wrapperClassName="fill-row"
+									hideLabel
+									value={value}
+								/>
+							)}
 							<div className="w-products-filters-chips scrollable-x no-scroll">
 								<Chip
-									active={!filters.categoria && !filters.sem_estoque}
+									active={!filters.category_id && !filters.no_stock}
 									clickable
 									theme="secondary"
 									onClick={clearFilters}
 								>
-									Todos
+									{t("WaiterHome.Filters.All")}
 								</Chip>
 								<Chip
-									active={filters.sem_estoque}
+									active={filters.no_stock}
 									clickable
 									theme="secondary"
 									onClick={onStockFilter}
 								>
-									S/ Estoque
+									{t("WaiterHome.Filters.NoStock")}
 								</Chip>
-								{ProductCategoriesArray.map((category, index) => (
+								{categories.map((category) => (
 									<Chip
-										key={index}
-										active={category.value === filters.categoria}
+										key={category._id}
+										active={category._id === filters.category_id}
 										clickable
 										theme="secondary"
-										onClick={() => onSelectCategory(category.value)}
+										onClick={() => onSelectCategory(category._id)}
 									>
-										{category.key}
+										{category.name}
 									</Chip>
 								))}
 							</div>
@@ -112,7 +148,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 					{!isLoadingProducts && products.length === 0 && (
 						<div className="empty-box">
 							<FileMinus strokeWidth={2} size={32} />
-							<div>Nenhum produto encontrado.</div>
+							<div>{t("Empty.Products")}</div>
 						</div>
 					)}
 					{!isLoadingProducts && (
@@ -126,12 +162,12 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 						<div className="w-products-loading">
 							<Spinner size={32} theme="primary" />
 							<span className="w-products-loading-message">
-								Carregando produtos...
+								{t("Loaders.Products")}
 							</span>
 						</div>
 					)}
 				</main>
-			</div> */}
+			</div>
 		</MainContainer>
 	);
 };

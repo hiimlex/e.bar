@@ -1,4 +1,5 @@
 import { ISortFilter } from "./generic.model";
+import { IOrder } from "./orders.model";
 import { IPaginationFilters } from "./pagination.model";
 import { IStore } from "./store.model";
 import { IWaiter } from "./waiters.model";
@@ -10,6 +11,7 @@ export interface ITable {
 	enabled: boolean;
 	store: string | IStore;
 	number: number;
+	order?: string | IOrder;
 }
 
 export interface ITableFilters

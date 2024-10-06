@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProduct, OrdersFilter, Pages } from "../../@types";
+import { IProduct, Pages, UpdateOrderProductPayload } from "../../@types";
 import { WaiterOrdersService } from "../../api";
 import { Button, Chip, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
@@ -13,11 +14,7 @@ interface WaiterOrderProductsPageProps {}
 const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	const { orderId } = useParams();
 	const { order } = useSelector((state: RootState) => state.onOrder);
-
-	const [filters, setFilters] = useState<OrdersFilter>({
-		order_id: +(orderId || 0),
-		product_status: "ordered",
-	});
+	const { t } = useTranslation();
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -36,46 +33,49 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	};
 
 	const seeDeliveredProducts = () => {
-		const newStatus =
-			filters.product_status === "delivered" ? "ordered" : "delivered";
-
-		setFilters({ ...filters, product_status: newStatus });
+		// const newStatus =
+		// 	filters.product_status === "delivered" ? "ordered" : "delivered";
+		// setFilters({ ...filters, product_status: newStatus });
 	};
 
 	const dispatch = useDispatch();
 
 	const getOrder = useCallback(async () => {
 		try {
-			const { data } = await WaiterOrdersService.fetchAll(filters);
+			if (!orderId) {
+				navigate(Pages.WaiterHome);
+				return;
+			}
 
+			const { data } = await WaiterOrdersService.getById(orderId);
 			if (data) {
-				dispatch(OnOrderActions.setOrder(data[0]));
-			} else {
+				dispatch(OnOrderActions.setOrder(data));
+			}
+			if (!data) {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [filters]);
+	}, []);
 
 	const changeOrderProductQuantity = async (
 		product: IProduct,
 		quantity: number,
-		order_product_id: number
+		order_product_id: string
 	) => {
 		if (!orderId) {
 			return;
 		}
 
 		try {
-			const payload = {
-				product_id: product._id,
+			const payload: UpdateOrderProductPayload = {
 				quantity,
 				order_product_id,
 			};
 
-			await WaiterOrdersService.add_order_products(orderId || "", [payload]);
+			await WaiterOrdersService.update_order_products(orderId || "", [payload]);
 
 			await getOrder();
 		} catch (error) {
@@ -92,45 +92,47 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 			<div className="w-o-products">
 				<main className="w-o-products-content">
 					<header className={`w-o-products-header`}>
-						<span className="page-title">
-							Produtos na
-							<br />
-							Comanda
-						</span>
+						<span
+							className="page-title"
+							dangerouslySetInnerHTML={{
+								__html: t("WaiterOrderProducts.Title"),
+							}}
+						></span>
 					</header>
 
 					<div>
 						<Chip
-							active={filters.product_status === "delivered"}
+							// active={filters.product_status === "delivered"}
 							onClick={seeDeliveredProducts}
 							theme="secondary"
 							clickable
 						>
-							Ver servidos
+							{t("WaiterOrderProducts.Labels.SeeServed")}
 						</Chip>
 					</div>
 
-					{/* <div className="w-o-products-list no-scroll">
-						{order?.products.map((op, index) => (
-							<ProductsRowCard
-								product={{
-									_id: op.product_id,
-									...op,
-									stock: op.status === "ordered" ? op.stock : op.delivered,
-								}}
-								key={index}
-								showChangeButtons={op.status === "ordered"}
-								onChange={(product, n) =>
-									changeOrderProductQuantity(product, n, op.order_product_id)
-								}
-								quantity={op.quantity}
-								slashedText={op.status === "delivered"}
-							/>
-						))}
-					</div> */}
+					<div className="w-o-products-list no-scroll">
+						{order?.items.map((op, index) => {
+							const product =
+								typeof op.product !== "string" ? op.product : ({} as IProduct);
+
+							return (
+								<ProductsRowCard
+									product={product}
+									key={index}
+									showChangeButtons={op.status === "PENDING"}
+									onChange={(product, n) => {
+										changeOrderProductQuantity(product, n, op._id);
+									}}
+									quantity={op.quantity}
+									slashedText={op.status === "DELIVERED"}
+								/>
+							);
+						})}
+					</div>
 
 					<div className="w-o-products-total">
-						<span>Total</span>
+						<span>{t("WaiterOrderProducts.Labels.Total")}</span>
 						<span>R$ {order?.total}</span>
 					</div>
 
@@ -140,7 +142,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 							className="fill-row"
 							onClick={goToAddProducts}
 						>
-							Ver Cardápio
+							{t("WaiterOrderProducts.Buttons.SeeAll")}
 						</Button>
 					</footer>
 				</main>

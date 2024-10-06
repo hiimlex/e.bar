@@ -19,7 +19,7 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 				</span>
 			</div>
 			<div className="flex flex-row justify-between">
-				<span className="sl-order-id">Pedido N° {order.id}</span>
+				<span className="sl-order-id">Pedido N° {order.number}</span>
 				<div className="sl-order-total">
 					<span>R$ {order.total}</span>
 				</div>

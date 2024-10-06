@@ -1,21 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Check, User } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { OrdersFilter, Pages } from "../../@types";
+import { Pages } from "../../@types";
+import { WaiterOrdersService } from "../../api";
 import { Button, Icons, MainContainer } from "../../components";
-import { RootState } from "../../store";
+import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
 
 interface WaiterOrderPageProps {}
 
 const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	const { orderId } = useParams();
-
+	const { t } = useTranslation();
 	const { order } = useSelector((state: RootState) => state.onOrder);
-	const [filters] = useState<OrdersFilter>({
-		order_id: +(orderId || 0),
-	});
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -34,27 +33,42 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 
 	const getOrder = useCallback(async () => {
 		try {
-			// const { data } = await WaiterOrdersService.fetchAll(filters);
-			// if (data) {
-			// 	dispatch(OnOrderActions.setOrder(data.content));
-			// }
-			// if (!data) {
-			// 	navigate(Pages.WaiterHome);
-			// }
+			if (!orderId) {
+				navigate(Pages.WaiterHome);
+
+				return;
+			}
+
+			const { data } = await WaiterOrdersService.getById(orderId);
+
+			if (data) {
+				dispatch(OnOrderActions.setOrder(data));
+			}
+
+			if (!data) {
+				navigate(Pages.WaiterHome);
+			}
 		} catch (error) {
 			navigate(Pages.WaiterHome);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	useEffect(() => {
-		getOrder();
-	}, []);
-
-	const seeAllOrder = () => {
+	const seeOrderProducts = () => {
 		const to = Pages.WaiterOrderProducts.replace(":orderId", orderId || "");
 
 		navigate(to);
 	};
+
+	const tableNumber = useMemo(
+		() => (typeof order?.table !== "string" ? order?.table.number : "---"),
+		[order?.table]
+	);
+
+	useEffect(() => {
+		getOrder();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [getOrder]);
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
@@ -63,7 +77,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 					<header className={`w-on-order-header`}>
 						<div className="flex flex-row gap-2">
 							<span className="w-on-order-table chip-status chip-status-primary">
-								{/* Mesa {order?.table} */}
+								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 							</span>
 
 							<span className="w-on-order-table chip-status chip-status-primary flex flex-row gap-2">
@@ -72,47 +86,55 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							</span>
 						</div>
 						<div className="flex-row-text w-on-order-header-title">
-							{/* <span className="page-title">Pedido Nº {order?.id}</span> */}
+							<span className="w-on-order-title">
+								{t("WaiterOrder.Labels.OrderNumber", { number: order?.number })}
+							</span>
 							<span
 								role="button"
 								className="link link-secondary"
-								onClick={seeAllOrder}
+								onClick={seeOrderProducts}
 							>
-								ver produtos
+								{t("WaiterOrder.Buttons.SeeProducts")}
 							</span>
 						</div>
 					</header>
 					<div className="detailed-list">
 						<div className="detailed-list-products-header">
-							<span className="detailed-list-products-title">Produtos</span>
-							<span className="detailed-list-products-title">Status</span>
-							<span className="detailed-list-products-title">Preço</span>
+							<span className="detailed-list-products-title">
+								{t("WaiterOrder.Table.Headers.Products")}
+							</span>
+							<span className="detailed-list-products-title">
+								{t("WaiterOrder.Table.Headers.Status")}
+							</span>
+							<span className="detailed-list-products-title">
+								{t("WaiterOrder.Table.Headers.Price")}
+							</span>
 						</div>
-						{/* {order?.products.map((op, index) => (
+						{order?.items.map((op, index) => (
 							<div
 								key={index}
 								className={`detailed-list-products-item ${
-									op.status === "delivered" ? "text-slash" : ""
+									op.status === "DELIVERED" ? "text-slash" : ""
 								}`}
 							>
 								<span className="detailed-list-products-name">
-									({op.status === "delivered" ? op.delivered : op.quantity}x){" "}
-									{op.name}
+									({op.quantity}x){' '}
+									{typeof op.product !== "string" ? op.product.name : "---"}
 								</span>
 								<span className="detailed-list-products-name">
-									{op.status === "delivered" ? "Servido" : "Pendente"}
+									{op.status === "DELIVERED" ? "Servido" : "Pendente"}
 								</span>
 								<span className="detailed-list-products-price">
-									<span>{op.price}</span>
+									<span>{op.total}</span>
 								</span>
 							</div>
-						))} */}
+						))}
 					</div>
 					<div className="dashline"></div>
 					<div className="flex-row-text detailed-list-total">
-						<span>Total</span>
+						<span>{t("WaiterOrder.Labels.Total")}</span>
 						<div className="text-currency">
-							<span>R$</span>
+							<span>{t("Generics.Currency.Symbol")}</span>
 							<span>{order?.total}</span>
 						</div>
 					</div>
@@ -122,16 +144,16 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 						onClick={goToMarkAsServePage}
 						// disabled={order?.products.length === 0}
 					>
-						<Check size={20} /> Marcar como servido
+						<Check size={20} /> {t("WaiterOrder.Buttons.MarkAsDelivered")}
 					</Button>
 					<footer className="w-on-order-footer">
 						<button className="large-button large-button-secondary">
 							<Icons.PaymentSVG fill="#fff" />
-							<span>Pagamento</span>
+							<span>{t("WaiterOrder.Buttons.Payment")}</span>
 						</button>
 						<button className="large-button large-button-primary">
 							<Icons.SendSVG fill="#fff	" />
-							<span>Enviar</span>
+							<span>{t("WaiterOrder.Buttons.Send")}</span>
 						</button>
 					</footer>
 				</main>

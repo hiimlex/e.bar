@@ -4,7 +4,7 @@ import {
 	SliceSelectors,
 	createSlice,
 } from "@reduxjs/toolkit";
-import { OrdersFilter, WaiterState } from "../../../@types";
+import { IListOrdersFilters, WaiterState } from "../../../@types";
 import { GenericAction } from "../../Store";
 import WaiterThunks from "./WaiterThunks";
 
@@ -21,7 +21,7 @@ const WaiterSlice = createSlice<
 		loading_orders: false,
 	},
 	reducers: {
-		setFilters: (state, action: GenericAction<OrdersFilter>) => {
+		setFilters: (state, action: GenericAction<IListOrdersFilters>) => {
 			state.filters = { ...state.filters, ...action.payload };
 		},
 		setLoadingOrders: (state, action: GenericAction<boolean>) => {
@@ -37,7 +37,7 @@ const WaiterSlice = createSlice<
 });
 
 const WaiterActions = WaiterSlice.actions as {
-	setFilters: ActionCreatorWithPayload<OrdersFilter>;
+	setFilters: ActionCreatorWithPayload<IListOrdersFilters>;
 	setLoadingOrders: ActionCreatorWithPayload<boolean | undefined>;
 };
 

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FileMinus } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { OrdersFilter, Pages, TOrderBy } from "../../@types";
+import { IListOrdersFilters, Pages, TOrderBy } from "../../@types";
 import { Chip, MainContainer, OrderBy, Spinner } from "../../components";
 import {
 	AppDispatch,
@@ -10,13 +10,15 @@ import {
 	WaiterActions,
 	WaiterThunks,
 } from "../../store";
-import { SalesWaitersOrder } from "../Sales";
-import { WaiterOrdersCard } from "../WaiterHome";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
+import { WaiterOrdersCard } from "../WaiterHome";
+import { SalesWaitersOrder } from "../Sales";
 
 interface WaiterMyOrdersPageProps {}
 
 const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -37,18 +39,20 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	}, [dispatch, waiter]);
 
 	const onChangeSort = (
-		sort_by?: OrdersFilter["sort_by"],
-		sort_order?: TOrderBy
+		sort?: TOrderBy,
+		sort_by?: IListOrdersFilters["sort_by"]
 	) => {
-		if (sort_order === "") {
-			sort_order = undefined;
+		if (sort === "") {
+			sort = undefined;
 			sort_by = undefined;
 		}
 
-		dispatch(WaiterActions.setFilters({ sort_order, sort_by }));
+		dispatch(WaiterActions.setFilters({ sort, sort_by }));
 	};
 
-	const onChangeStatusFilter = (status: OrdersFilter["status"] | undefined) => {
+	const onChangeStatusFilter = (
+		status: IListOrdersFilters["status"] | undefined
+	) => {
 		dispatch(WaiterActions.setFilters({ status }));
 	};
 
@@ -60,7 +64,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 		[filters]
 	);
 
-	const goToOrder = (order_id: number) => {
+	const goToOrder = (order_id: string) => {
 		navigate(Pages.WaiterOrder.replace(":orderId", order_id.toString()));
 	};
 
@@ -78,11 +82,10 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>
-						<span className="page-title">
-							Meus
-							<br />
-							Pedidos
-						</span>
+						<span
+							className="page-title"
+							dangerouslySetInnerHTML={{ __html: t("WaiterMyOrders.Title") }}
+						></span>
 						{showFilter && (
 							<>
 								<div className="w-orders-filters">
@@ -92,29 +95,29 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 										theme="secondary"
 										onClick={() => onChangeStatusFilter(undefined)}
 									>
-										Todos
+										{t("WaiterHome.Filters.All")}
 									</Chip>
 									<Chip
 										clickable
-										active={filters?.status === "finished"}
+										active={filters?.status === "FINISHED"}
 										theme="secondary"
-										onClick={() => onChangeStatusFilter("finished")}
+										onClick={() => onChangeStatusFilter("FINISHED")}
 									>
-										Finalizados
+										{t("WaiterMyOrders.Filters.Finished")}
 									</Chip>
 								</div>
 								<div className="w-orders-filters">
 									<OrderBy
 										label="Total"
-										onOrderChange={(order) => onChangeSort("total", order)}
+										onOrderChange={(sort) => onChangeSort(sort, "total")}
 									/>
 									<OrderBy
 										label="N Mesa"
-										onOrderChange={(order) => onChangeSort("table_id", order)}
+										onOrderChange={(sort) => onChangeSort(sort, "table_number")}
 									/>
 									<OrderBy
 										label="Criado Em"
-										onOrderChange={(order) => onChangeSort("created_at", order)}
+										onOrderChange={(sort) => onChangeSort(sort, "created_at")}
 									/>
 								</div>
 							</>
@@ -125,15 +128,14 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 						<div className="w-orders-list no-scroll">
 							{orders.map((order, index) => (
 								<>
-									{(order.status === "on_demand" ||
-										order.status === "pending") && (
+									{order.status === "PENDING" && (
 										<WaiterOrdersCard
 											order={order}
 											key={index}
-											onClick={() => goToOrder(order.id)}
+											onClick={() => goToOrder(order._id)}
 										/>
 									)}
-									{order.status === "finished" && (
+									{order.status === "FINISHED" && (
 										<SalesWaitersOrder order={order} key={index} />
 									)}
 								</>

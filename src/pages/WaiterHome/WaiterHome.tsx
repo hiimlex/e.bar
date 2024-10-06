@@ -7,6 +7,7 @@ import { IOrder, Pages } from "../../@types";
 import { Button, Chip, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
+	OnOrderActions,
 	ProductsActions,
 	ProductsThunks,
 	RootState,
@@ -22,7 +23,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
-	const { waiter, attendance } = useSelector((state: RootState) => state.user);
+	const { waiter } = useSelector((state: RootState) => state.user);
 	const { orders, loading_orders } = useSelector(
 		(state: RootState) => state.waiter
 	);
@@ -57,14 +58,14 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 
 	const loadCategories = useCallback(async () => {
 		await dispatch(ProductsThunks.fetchStoreCategories());
-	}, [attendance]);
+	}, []);
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
 			await dispatch(ProductsThunks.fetchProducts(enableLoader));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[filters]
+		[]
 	);
 
 	const loadOrders = useCallback(async () => {
@@ -74,21 +75,16 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 
 	const navigateToOrder = (order: IOrder) => {
 		const to = Pages.WaiterOrder.replace(":orderId", order._id.toString());
+		dispatch(OnOrderActions.setOrder(order));
 
 		navigate(to);
 	};
 
 	useEffect(() => {
 		loadProducts();
-	}, [loadProducts]);
-
-	useEffect(() => {
 		loadCategories();
-	}, [loadCategories]);
-
-	useEffect(() => {
 		loadOrders();
-	}, [loadOrders]);
+	}, []);
 
 	return (
 		<MainContainer showCode>
@@ -112,7 +108,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 							<span
 								className="link link-secondary"
 								role="button"
-								onClick={() => navigate(Pages.WaiterOrder)}
+								onClick={() => navigate(Pages.WaiterMyOrders)}
 							>
 								{t("WaiterHome.Labels.SeeAll")}
 							</span>
@@ -193,7 +189,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						)}
 						{!isLoadingProducts && (
 							<div className="w-home-grid">
-								{products.map((product, index) => (
+								{products.map((product) => (
 									<WaiterProductCard product={product} key={product._id} />
 								))}
 							</div>

@@ -7,7 +7,7 @@ import { AddProduct } from "../../WaiterAddProducts";
 import "./styles.scss";
 
 interface ConfirmAddProductsProps {
-	orderId: number;
+	orderId: string;
 	productList: AddProduct;
 	cancel?: () => void;
 	onChange?: (productList: AddProduct) => void;
@@ -26,17 +26,17 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 	const onAddProduct = (product: IProduct, quantity: number) => {
 		const newToAddProducts = JSON.parse(JSON.stringify(productList));
 
-		// if (!newToAddProducts[product._id]) {
-		// 	newToAddProducts[product._id] = { product, quantity };
-		// }
+		if (!newToAddProducts[product._id]) {
+			newToAddProducts[product._id] = { product, quantity };
+		}
 
-		// if (newToAddProducts[product._id]) {
-		// 	newToAddProducts[product._id].quantity = quantity;
+		if (newToAddProducts[product._id]) {
+			newToAddProducts[product._id].quantity = quantity;
 
-		// 	if (+newToAddProducts[product.id].quantity === 0) {
-		// 		delete newToAddProducts[product.id];
-		// 	}
-		// }
+			if (+newToAddProducts[product._id].quantity === 0) {
+				delete newToAddProducts[product._id];
+			}
+		}
 
 		onChange && onChange(newToAddProducts);
 	};
@@ -52,7 +52,7 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 				})
 			);
 
-			await WaiterOrdersService.add_order_products(orderId.toString(), arr);
+			await WaiterOrdersService.add_order_products(orderId, arr);
 
 			setAdding(false);
 

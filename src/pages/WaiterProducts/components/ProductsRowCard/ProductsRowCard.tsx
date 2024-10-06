@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Minus, Plus } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { IProduct } from "../../../../@types";
 import { IconButton } from "../../../../components";
 import "./styles.scss";
@@ -20,12 +21,13 @@ const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
 	onChange,
 	quantity,
 }) => {
+	const { t } = useTranslation();
 	const quantity_value = useMemo(() => quantity || 0, [quantity]);
 
 	return (
 		<div className={`product-row ${showChangeButtons ? "minify" : ""}`}>
 			<div className="product-row-image">
-				<img src={product.image_url} alt={product.name} />
+				<img src={product.picture?.url} alt={product.name} />
 			</div>
 			<div className="product-row-info">
 				<div className="product-row-info-row">
@@ -39,12 +41,16 @@ const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
 				</div>
 				{showChangeButtons && (
 					<div className="product-row-info-row product-row-info-row-start">
-						<span className="product-row-info-price">{`R$ ${product.price}`}</span>
+						<span className="product-row-info-price">
+							{t("Generics.Currency.Format", { value: product.price })}
+						</span>
 					</div>
 				)}
 				{!showChangeButtons && (
 					<>
-						<span className="product-row-info-price">{`R$ ${product.price}`}</span>
+						<span className="product-row-info-price">
+							{t("Generics.Currency.Format", { value: product.price })}
+						</span>
 					</>
 				)}
 			</div>

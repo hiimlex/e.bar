@@ -1,5 +1,6 @@
 import { ISortFilter, SafeAny } from "./generic.model";
-import { IProduct, ProductCategory } from "./products.model";
+import { IPaginationFilters } from "./pagination.model";
+import { IProduct } from "./products.model";
 import { IStore } from "./store.model";
 import { ITable } from "./tables.model";
 import { IWaiter } from "./waiters.model";
@@ -7,16 +8,6 @@ import { IWaiter } from "./waiters.model";
 export interface CreateOrderPayload {
 	table_id: number;
 	customers: number;
-}
-
-export interface OrdersFilter
-	extends ISortFilter<"table_id" | "total" | "created_at"> {
-	search?: string;
-	table_number?: number;
-	status?: TOrderStatusType;
-	product_status?: TOrderProductStatusType;
-	order_id?: number;
-	waiter_id?: number;
 }
 
 export enum TOrderStatus {
@@ -62,18 +53,23 @@ export interface IOrder {
 }
 
 export interface CreateOrderProductPayload {
-	product_id: number;
+	product_id: string;
 	quantity: number;
-	order_product_id?: number;
+}
+
+export interface UpdateOrderProductPayload {
+	order_product_id: string;
+	quantity?: number;
+	status?: TOrderProductStatusType;
 }
 
 export interface ServeOrderProductPayload {
-	order_product_id?: number;
+	order_product_id?: string;
 }
 
 export interface OrdersState {
 	orders: SafeAny[];
-	filters: OrdersFilter;
+	filters: IListOrdersFilters;
 	is_loading_orders: boolean;
 }
 
@@ -83,6 +79,13 @@ export interface OnOrderState {
 
 export interface WaiterState {
 	orders: IOrder[];
-	filters?: OrdersFilter;
+	filters?: IListOrdersFilters;
 	loading_orders: boolean;
+}
+
+export interface IListOrdersFilters
+	extends ISortFilter<"number" | "table_number" | "total" | "created_at">,
+		IPaginationFilters {
+	status?: keyof typeof TOrderStatus;
+	order_product_status?: keyof typeof TOrderProductStatus;
 }

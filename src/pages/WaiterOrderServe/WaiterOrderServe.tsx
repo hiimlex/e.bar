@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-	IGetOrderProduct,
-	Pages,
-	ServeOrderProductPayload,
-} from "../../@types";
+import { IOrderProduct, Pages, UpdateOrderProductPayload } from "../../@types";
 import { WaiterOrdersService } from "../../api";
 import { Button, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
@@ -15,11 +12,17 @@ interface WaiterOrderServePageProps {}
 
 const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 	const { orderId } = useParams();
+	const { t } = useTranslation();
 
 	const { order } = useSelector((state: RootState) => state.onOrder);
 
+	const tableNumber = useMemo(
+		() => (typeof order?.table !== "string" ? order?.table.number : "---"),
+		[order?.table]
+	);
+
 	const [loading, setLoading] = useState(false);
-	const [toServe, setToServe] = useState<Set<number>>(new Set());
+	const [toServe, setToServe] = useState<Set<string>>(new Set());
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -32,17 +35,13 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 		navigate(to);
 	};
 
-	const addToServe = (orderProduct: IGetOrderProduct) => {
+	const addToServe = (orderProduct: IOrderProduct) => {
 		const toServeCopy = new Set(toServe);
-
-		if (!toServeCopy.has(orderProduct.order_product_id)) {
-			toServeCopy.add(orderProduct.order_product_id);
+		if (!toServeCopy.has(orderProduct._id)) {
+			toServeCopy.add(orderProduct._id);
 		} else {
-			toServeCopy.delete(orderProduct.order_product_id);
+			toServeCopy.delete(orderProduct._id);
 		}
-
-		console.log(toServeCopy);
-
 		setToServe(toServeCopy);
 	};
 
@@ -54,12 +53,12 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 		try {
 			setLoading(true);
 
-			const arr: ServeOrderProductPayload[] = [];
+			const arr: UpdateOrderProductPayload[] = [];
 			toServe.forEach((id) => {
-				arr.push({ order_product_id: id });
+				arr.push({ order_product_id: id, status: "DELIVERED" });
 			});
 
-			await WaiterOrdersService.serve_order_products(orderId, arr);
+			await WaiterOrdersService.update_order_products(orderId, arr);
 
 			goBack();
 
@@ -75,13 +74,12 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 				return;
 			}
 
-			const { data } = await WaiterOrdersService.fetchAll({
-				order_id: +orderId,
-				product_status: "ordered",
+			const { data } = await WaiterOrdersService.getById(orderId, {
+				order_product_status: "PENDING",
 			});
 
 			if (data) {
-				dispatch(OnOrderActions.setOrder(data[0]));
+				dispatch(OnOrderActions.setOrder(data));
 			} else {
 				navigate(Pages.WaiterHome);
 			}
@@ -106,47 +104,55 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 					<header className={`w-serve-order-header`}>
 						<div className="flex flex-row gap-2">
 							<span className="w-serve-order-table chip-status chip-status-secondary">
-								Pedido {order?.id}
+								{t(`WaiterOrder.Labels.OrderNumber`, { number: order?.number })}
 							</span>
 							<span className="w-serve-order-table chip-status chip-status-primary">
-								Mesa {order?.table_id}
+								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 							</span>
 						</div>
 					</header>
-					<span className="page-title">
-						Marcar como <br /> Servido
-					</span>
+					<span
+						className="page-title"
+						dangerouslySetInnerHTML={{
+							__html: t("WaiterOrder.MarkAsDelivered.Title"),
+						}}
+					></span>
 
 					<div className="detailed-list">
 						<div className="detailed-list-products-header">
 							<span className="detailed-list-products-title"></span>
-							<span className="detailed-list-products-title">Produto</span>
-							<span className="detailed-list-products-title">Preço</span>
+							<span className="detailed-list-products-title">
+								{t("WaiterOrder.Table.Headers.Products")}
+							</span>
+							<span className="detailed-list-products-title">
+								{t("WaiterOrder.Table.Headers.Price")}
+							</span>
 						</div>
-						{order?.products.map((op, index) => (
-							<div
-								key={index}
-								className={`detailed-list-products-item ${
-									toServe.has(op.order_product_id) && "text-slash"
-								}`}
-								onClick={() => addToServe(op)}
-							>
-								<div
-									className={`custom-checkbox ${
-										toServe.has(op.order_product_id)
-											? "custom-checkbox-active"
-											: ""
-									}`}
-								/>
-								<span className="detailed-list-products-name">
-									({op.status === "delivered" ? op.delivered : op.quantity}x){" "}
-									{op.name}
-								</span>
-								<span className="detailed-list-products-price">
-									<span>{op.price}</span>
-								</span>
-							</div>
-						))}
+						{order?.items.map(
+							(op, index) =>
+								op.status === "PENDING" && (
+									<div
+										key={index}
+										className={`detailed-list-products-item ${
+											toServe.has(op._id) && "text-slash"
+										}`}
+										onClick={() => addToServe(op)}
+									>
+										<div
+											className={`custom-checkbox ${
+												toServe.has(op._id) ? "custom-checkbox-active" : ""
+											}`}
+										/>
+										<span className="detailed-list-products-name">
+											({op.quantity}x){" "}
+											{typeof op.product !== "string" ? op.product.name : "---"}
+										</span>
+										<span className="detailed-list-products-price">
+											<span>{op.total}</span>
+										</span>
+									</div>
+								)
+						)}
 					</div>
 					<footer className="w-serve-order-footer">
 						<Button
@@ -155,7 +161,7 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 							variant="outlined"
 							onClick={goBack}
 						>
-							Cancelar
+							{t("Generics.Buttons.Cancel")}
 						</Button>
 						<Button
 							onClick={markAsServe}
@@ -164,7 +170,7 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 							theme="secondary"
 							loading={loading}
 						>
-							Confirmar
+							{t("Generics.Buttons.Confirm")}
 						</Button>
 					</footer>
 				</main>
