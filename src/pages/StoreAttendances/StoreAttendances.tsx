@@ -1,6 +1,9 @@
 import { format } from "date-fns";
+import { Dropdown, DropdownItem, DropdownSeparator } from "leux";
 import React, { useCallback, useEffect, useState } from "react";
+import { Eye, MoreVertical, X } from "react-feather";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
 	GetAttendanceFilters,
 	IAttendance,
@@ -20,9 +23,6 @@ import {
 import { useModal } from "../../hooks";
 import { StartAttendanceModal } from "./components";
 import "./styles.scss";
-import { Dropdown, DropdownItem, DropdownSeparator } from "leux";
-import { Eye, MoreVertical, X } from "react-feather";
-import { useNavigate } from "react-router-dom";
 
 interface StoreAttendancesPageProps {}
 

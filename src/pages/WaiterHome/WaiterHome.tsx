@@ -209,4 +209,4 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	);
 };
 
-export default WaiterHomePage;
+export { WaiterHomePage };

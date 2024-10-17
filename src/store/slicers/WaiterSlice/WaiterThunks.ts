@@ -26,6 +26,6 @@ export const getMyOrders = createAsyncThunk<
 	}
 );
 
-export default {
+export const WaiterThunks = {
 	getMyOrders,
 };

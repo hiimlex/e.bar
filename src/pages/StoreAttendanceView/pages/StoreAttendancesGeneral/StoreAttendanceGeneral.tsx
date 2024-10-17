@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import { TStoreAttendanceGeneralView } from "../../../../@types";
 import { Chip, ChipWrapper } from "../../../../components";
 import { Tables, Waiters } from "../../components";
-import { useParams } from "react-router-dom";
 import "./styles.scss";
 
 const StoreAttendanceGeneral: React.FC = () => {

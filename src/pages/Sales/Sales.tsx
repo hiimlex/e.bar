@@ -52,4 +52,4 @@ const SalesPage: React.FC<SalesPageProps> = () => {
 	);
 };
 
-export default SalesPage;
+export { SalesPage };

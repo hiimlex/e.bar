@@ -118,7 +118,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 								}`}
 							>
 								<span className="detailed-list-products-name">
-									({op.quantity}x){' '}
+									({op.quantity}x){" "}
 									{typeof op.product !== "string" ? op.product.name : "---"}
 								</span>
 								<span className="detailed-list-products-name">
@@ -162,4 +162,4 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	);
 };
 
-export default WaiterOrderPage;
+export { WaiterOrderPage };

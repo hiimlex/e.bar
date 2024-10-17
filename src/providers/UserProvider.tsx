@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pages } from "../@types";
 import { AUTH_TOKEN_KEY } from "../api";
-import router from "../router";
+import { router } from "../router";
 import { AppDispatch, RootState, UserThunks } from "../store";
 
 const UserProvider: React.FC = () => {

@@ -57,7 +57,7 @@ const update = async (
 	}
 };
 
-export default {
+export const TablesService = {
 	fetchAll,
 	fetchAvailable,
 	create,

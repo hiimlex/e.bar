@@ -151,4 +151,4 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	);
 };
 
-export default WaiterOrderProductsPage;
+export { WaiterOrderProductsPage };

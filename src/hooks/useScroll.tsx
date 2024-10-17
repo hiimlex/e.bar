@@ -60,4 +60,4 @@ function useScroll(
 	return { scroll, isScrolling, scrollHeight, scrollWidth, scrollLeft };
 }
 
-export default useScroll;
+export { useScroll };

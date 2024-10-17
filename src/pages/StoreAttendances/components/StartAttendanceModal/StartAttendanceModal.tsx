@@ -1,11 +1,10 @@
-import { Checkbox } from "leux";
 import { useMemo, useState } from "react";
 import { Minus, Plus } from "react-feather";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ModalIds, ICreateAttendancePayload } from "../../../../@types";
+import { ICreateAttendancePayload, ModalIds } from "../../../../@types";
 import { AttendancesService } from "../../../../api";
-import { Button, IconButton, Input } from "../../../../components";
+import { Button, IconButton } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import "./styles.scss";
 

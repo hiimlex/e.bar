@@ -110,11 +110,12 @@ const validateCode = async (
 	}
 };
 
-export default {
+export const AttendancesService = {
 	fetchAll,
 	create,
 	getById,
 	finish,
 	addTableToAttendance,
 	validateCode,
+	update,
 };

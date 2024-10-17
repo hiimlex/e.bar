@@ -16,7 +16,6 @@ const ScrollToTop: React.FC = () => {
 
 	const handleScroll = (event: Event) => {
 		if (event.target) {
-			const target = event.target as HTMLElement;
 			setScrollPosition(window.scrollY);
 		}
 	};

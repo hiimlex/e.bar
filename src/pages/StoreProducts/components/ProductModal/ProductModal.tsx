@@ -1,17 +1,13 @@
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-	CreateProductPayload,
-	ProductCategoriesArray,
-	SafeAny,
-} from "../../../../@types";
+import { useSelector } from "react-redux";
+import { CreateProductPayload, SafeAny } from "../../../../@types";
 import { ProductsService } from "../../../../api";
 import { Button, Input, Select, UploadBox } from "../../../../components";
 import { useModal } from "../../../../hooks";
-import "./styles.scss";
-import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
+import "./styles.scss";
 
 interface ProductModalProps {
 	id?: string;

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Edit2, Plus } from "react-feather";
+import { Plus } from "react-feather";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
 import {
 	IWaiter,
@@ -8,20 +10,12 @@ import {
 	WaitersFilters,
 } from "../../../../@types";
 import { WaitersService } from "../../../../api";
-import {
-	Button,
-	IconButton,
-	Input,
-	OrderBy,
-	Spinner,
-} from "../../../../components";
+import { Button, Input, OrderBy, Spinner } from "../../../../components";
 import { useModal } from "../../../../hooks";
+import { RootState } from "../../../../store";
 import { format } from "../../../../utils";
 import { WaiterModal } from "../WaiterModal";
 import "./styles.scss";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
-import { useTranslation } from "react-i18next";
 
 interface WaitersProps {}
 

@@ -273,4 +273,4 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	);
 };
 
-export default WaiterAddProductsPage;
+export { WaiterAddProductsPage };

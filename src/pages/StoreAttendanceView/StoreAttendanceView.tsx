@@ -1,26 +1,19 @@
-import { useTranslation } from "react-i18next";
-import { MainContainer } from "../../components";
-import { ArrowLeft } from "react-feather";
-import { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
-import { AttendancesService } from "../../api";
-import { IAttendance, Pages } from "../../@types";
-import "./styles.scss";
 import { format } from "date-fns";
-import { TabItemType, Tabs } from "./components";
+import { useEffect, useState } from "react";
+import { ArrowLeft } from "react-feather";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Pages, TabEnum, TabItemType } from "../../@types";
+import { MainContainer } from "../../components";
 import {
 	AppDispatch,
 	OnAttendanceActions,
 	RootState,
 	onAttendancefetchAttendance,
 } from "../../store";
-
-export enum TabEnum {
-	General = "General",
-	Sales = "Sales",
-	Orders = "Orders",
-}
+import { Tabs } from "./components";
+import "./styles.scss";
 
 const tabs: TabItemType[] = [
 	{

@@ -161,4 +161,4 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	);
 };
 
-export default WaiterMyOrdersPage;
+export { WaiterMyOrdersPage };

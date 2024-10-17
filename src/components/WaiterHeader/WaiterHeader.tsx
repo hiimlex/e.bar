@@ -4,18 +4,8 @@ import { Brands } from "../Brands";
 import "./styles.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { WaiterHeaderProps } from "../../@types";
 
-export interface WaiterHeaderProps {
-	showGoBack?: boolean;
-	onGoBack?: () => void;
-	showSearch?: boolean;
-	onSearch?: () => void;
-	showMenu?: boolean;
-	onMenu?: () => void;
-	showFilter?: boolean;
-	onFilter?: () => void;
-	showCode?: boolean;
-}
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	onGoBack,

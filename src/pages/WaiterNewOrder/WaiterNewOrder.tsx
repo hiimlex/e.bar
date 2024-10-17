@@ -180,4 +180,4 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	);
 };
 
-export default WaiterNewOrderPage;
+export { WaiterNewOrderPage };

@@ -1,8 +1,8 @@
+import { useMemo } from "react";
 import { Edit2 } from "react-feather";
 import { IProduct } from "../../../../@types";
 import { IconButton } from "../../../../components";
 import "./styles.scss";
-import { useMemo } from "react";
 
 interface ProductCardProps {
 	product: IProduct;

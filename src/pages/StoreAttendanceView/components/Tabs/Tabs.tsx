@@ -1,10 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { TabItemType } from "../../../../@types";
 import "./styles.scss";
-
-export type TabItemType = {
-	label: string;
-	value: string;
-};
 
 interface TabsProps {
 	tabs: Array<TabItemType>;

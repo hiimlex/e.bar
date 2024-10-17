@@ -51,4 +51,4 @@ const fetchStoreCategories = createAsyncThunk<
 	}
 );
 
-export default { fetchProducts, fetchStoreCategories };
+export const ProductsThunks = { fetchProducts, fetchStoreCategories };

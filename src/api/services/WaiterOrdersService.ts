@@ -95,7 +95,7 @@ const update_order_products = async (
 	}
 };
 
-export default {
+export const WaiterOrdersService = {
 	fetchAll,
 	create,
 	add_order_products,

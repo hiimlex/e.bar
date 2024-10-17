@@ -7,7 +7,7 @@ import "./styles.scss";
 import { useDispatch } from "react-redux";
 import { UserActions } from "../../store";
 
-export const NAV_LINKS: NavLink[] = [
+const NAV_LINKS: NavLink[] = [
 	{ to: Pages.StoreAttendances, label: "Atendimento" },
 	{ to: Pages.StoreProducts, label: "Produtos" },
 	// { to: Pages.Orders, label: "Pedidos" },

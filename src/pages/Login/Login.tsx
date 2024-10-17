@@ -162,4 +162,4 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	);
 };
 
-export default LoginPage;
+export { LoginPage };

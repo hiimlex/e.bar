@@ -10,6 +10,6 @@ function phone(s: string): string {
 	return s;
 }
 
-export default {
+export const format = {
 	phone,
 };

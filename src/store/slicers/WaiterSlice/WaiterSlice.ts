@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { IListOrdersFilters, WaiterState } from "../../../@types";
 import { GenericAction } from "../../Store";
-import WaiterThunks from "./WaiterThunks";
+import { WaiterThunks } from "./WaiterThunks";
 
 const WaiterSlice = createSlice<
 	WaiterState,

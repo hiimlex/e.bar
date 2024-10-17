@@ -132,4 +132,4 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 	);
 };
 
-export default OrdersPage;
+export { OrdersPage };

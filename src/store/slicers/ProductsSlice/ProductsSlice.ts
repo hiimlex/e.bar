@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { IListProductsFilters, ProductsState } from "../../../@types";
 import { GenericAction } from "../../Store";
-import ProductsThunks from "./ProductsThunks";
+import { ProductsThunks } from "./ProductsThunks";
 
 const ProductsSlicer = createSlice<
 	ProductsState,

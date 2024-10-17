@@ -3,7 +3,7 @@ import { FileMinus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
-import { ICategory, IProduct, ModalIds, ProductCategory } from "../../@types";
+import { IProduct, ModalIds } from "../../@types";
 import { Button, Input, MainContainer, Spinner } from "../../components";
 import { useBreakpoint, useModal } from "../../hooks";
 import {

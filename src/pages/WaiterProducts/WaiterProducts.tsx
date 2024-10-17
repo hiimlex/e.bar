@@ -172,4 +172,4 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	);
 };
 
-export default WaiterProductsPage;
+export { WaiterProductsPage };

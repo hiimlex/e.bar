@@ -8,4 +8,4 @@ const useModal = (): ModalContextType => {
 	return context;
 };
 
-export default useModal;
+export { useModal };

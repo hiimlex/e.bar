@@ -22,4 +22,4 @@ const fetchAll = async (
 	}
 };
 
-export default { fetchAll };
+export const CategoriesService = { fetchAll };

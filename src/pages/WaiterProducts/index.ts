@@ -1,1 +1,1 @@
-export { default as WaiterProductsPage } from "./WaiterProducts";
+export * from "./WaiterProducts";

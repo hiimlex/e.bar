@@ -37,7 +37,7 @@ const validateWaiterAttendanceCode = createAsyncThunk<
 	}
 );
 
-export default {
+export const UserThunks = {
 	getCurrentUser,
 	validateWaiterAttendanceCode,
 };

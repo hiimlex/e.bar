@@ -1,14 +1,14 @@
 import { PropsWithChildren, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "usehooks-ts";
+import { SafeAny, WaiterHeaderProps } from "../../@types";
 import { useBreakpoint } from "../../hooks";
 import { RootState } from "../../store";
 import { Header } from "../Header";
 import { ScrollToTop } from "../ScrollToTop";
 import { Sidebar } from "../Sidebar";
-import { WaiterHeader, WaiterHeaderProps } from "../WaiterHeader";
+import { WaiterHeader } from "../WaiterHeader";
 import "./styles.scss";
-import { useWindowSize } from "usehooks-ts";
-import { SafeAny } from "../../@types";
 interface MainContainerProps extends PropsWithChildren, WaiterHeaderProps {
 	showAdminHeader?: boolean;
 	wrapperRef?: React.RefObject<HTMLDivElement>;
@@ -31,8 +31,8 @@ const MainContainer: React.FC<MainContainerProps> = ({
 
 	const style: SafeAny = useMemo(() => {
 		return {
-			"--width": width + 'px',
-			"--height": height + 'px',
+			"--width": width + "px",
+			"--height": height + "px",
 		};
 	}, [height]);
 

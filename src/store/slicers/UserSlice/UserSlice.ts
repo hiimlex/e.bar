@@ -8,7 +8,7 @@ import {
 import { IAttendance, IStore, IWaiter, UserState } from "../../../@types";
 import { AUTH_TOKEN_KEY } from "../../../api";
 import { GenericAction } from "../../Store";
-import UserThunks from "./UserThunks";
+import { UserThunks } from "./UserThunks";
 
 const UserSlice = createSlice<
 	UserState,

@@ -1,7 +1,7 @@
-export { default as ProductsService } from "./ProductsService";
-export { default as WaitersService } from "./WaitersService";
-export { default as TablesService } from "./TablesService";
-export { default as AuthService } from "./AuthService";
-export { default as WaiterOrdersService } from "./WaiterOrdersService";
-export { default as AttendancesService } from "./AttendancesService";
-export { default as CategoriesService } from "./CategoriesService";
+export * from "./AttendancesService";
+export * from "./AuthService";
+export * from "./CategoriesService";
+export * from "./ProductsService";
+export * from "./TablesService";
+export * from "./WaiterOrdersService";
+export * from "./WaitersService";

@@ -5,7 +5,9 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
-		react(),
+		react({
+			include: "**/*.tsx",
+		}),
 		VitePWA({
 			registerType: "prompt",
 			// includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
@@ -46,4 +48,9 @@ export default defineConfig({
 			},
 		}),
 	],
+	server: {
+		watch: {
+			usePolling: true,
+		},
+	},
 });

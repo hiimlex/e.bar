@@ -52,7 +52,7 @@ const validateWaiterAttendanceCode = async (): Promise<
 	}
 };
 
-export default {
+export const AuthService = {
 	login,
 	getCurrentUser,
 	getStore,

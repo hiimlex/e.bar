@@ -43,4 +43,4 @@ function useBreakpoint(): BreakpointType {
 	return breakpoint;
 }
 
-export default useBreakpoint;
+export { useBreakpoint };

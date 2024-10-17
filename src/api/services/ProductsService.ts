@@ -67,7 +67,7 @@ const update = async (
 		return Promise.reject(error);
 	}
 };
-export default {
+export const ProductsService = {
 	fetchAll,
 	create,
 	update,

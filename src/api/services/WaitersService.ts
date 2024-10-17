@@ -51,7 +51,7 @@ const update = async (
 	}
 };
 
-export default {
+export const WaitersService = {
 	fetchAll,
 	create,
 	update,

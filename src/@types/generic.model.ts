@@ -16,3 +16,27 @@ export interface ISortFilter<T> {
 }
 
 export type TOrderBy = "asc" | "desc" | "";
+
+export enum TabEnum {
+	General = "General",
+	Sales = "Sales",
+	Orders = "Orders",
+}
+
+export interface WaiterHeaderProps {
+	showGoBack?: boolean;
+	onGoBack?: () => void;
+	showSearch?: boolean;
+	onSearch?: () => void;
+	showMenu?: boolean;
+	onMenu?: () => void;
+	showFilter?: boolean;
+	onFilter?: () => void;
+	showCode?: boolean;
+}
+
+
+export type TabItemType = {
+	label: string;
+	value: string;
+};

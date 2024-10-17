@@ -34,7 +34,7 @@ const Input: React.FC<InputProps> = ({
 	placeholder,
 	hideLabel = false,
 	wrapperClassName,
-	mode = "controlled",
+	// mode = "controlled",
 	errorMessage,
 	errorValue,
 	showError,
