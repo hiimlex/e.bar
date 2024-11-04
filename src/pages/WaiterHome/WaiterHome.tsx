@@ -24,13 +24,14 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 		(state: RootState) => state.products
 	);
 	const { waiter } = useSelector((state: RootState) => state.user);
-	const { orders, loading_orders } = useSelector(
+	const { orders, loadingOrders } = useSelector(
 		(state: RootState) => state.waiter
 	);
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
 
 	const onSelectCategory = (category_id?: string) => {
+		console.log(category_id);
 		dispatch(ProductsActions.setFilters({ category_id, no_stock: undefined }));
 	};
 
@@ -65,7 +66,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 			await dispatch(ProductsThunks.fetchProducts(enableLoader));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
+		[filters]
 	);
 
 	const loadOrders = useCallback(async () => {
@@ -81,10 +82,23 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	};
 
 	useEffect(() => {
-		loadProducts();
 		loadCategories();
-		loadOrders();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (!loadingOrders) {
+			loadOrders();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loadOrders]);
+
+	useEffect(() => {
+		if (!isLoadingProducts) {
+			loadProducts();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loadProducts]);
 
 	return (
 		<MainContainer showCode>
@@ -113,13 +127,13 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 								{t("WaiterHome.Labels.SeeAll")}
 							</span>
 						</div>
-						{!loading_orders && orders.length === 0 && (
+						{!loadingOrders && orders.length === 0 && (
 							<div className="w-home-empty">
 								<FileMinus strokeWidth={2} size={32} />
 								<div>{t("Empty.Orders")}</div>
 							</div>
 						)}
-						{!loading_orders && (
+						{!loadingOrders && (
 							<div className="w-home-grid">
 								{orders.map((order, index) => (
 									<WaiterOrdersCard
@@ -130,7 +144,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 								))}
 							</div>
 						)}
-						{loading_orders && (
+						{loadingOrders && (
 							<div className="w-home-loading">
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">

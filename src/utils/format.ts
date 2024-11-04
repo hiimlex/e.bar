@@ -10,6 +10,13 @@ function phone(s: string): string {
 	return s;
 }
 
+function number(s: string): string {
+	s = s.replace(/\D/g, "");
+
+	return s;
+}
+
 export const format = {
 	phone,
+	number,
 };

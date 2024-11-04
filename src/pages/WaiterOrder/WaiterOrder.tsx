@@ -65,6 +65,12 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 		[order?.table]
 	);
 
+	const goToPayment = () => {
+		const to = Pages.WaiterOrderPayment.replace(":orderId", orderId || "");
+
+		navigate(to);
+	};
+
 	useEffect(() => {
 		getOrder();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,7 +153,10 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 						<Check size={20} /> {t("WaiterOrder.Buttons.MarkAsDelivered")}
 					</Button>
 					<footer className="w-on-order-footer">
-						<button className="large-button large-button-secondary">
+						<button
+							className="large-button large-button-secondary"
+							onClick={goToPayment}
+						>
 							<Icons.PaymentSVG fill="#fff" />
 							<span>{t("WaiterOrder.Buttons.Payment")}</span>
 						</button>

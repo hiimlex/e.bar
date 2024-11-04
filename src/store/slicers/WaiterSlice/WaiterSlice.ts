@@ -18,20 +18,20 @@ const WaiterSlice = createSlice<
 	initialState: {
 		orders: [],
 		filters: {},
-		loading_orders: false,
+		loadingOrders: false,
 	},
 	reducers: {
 		setFilters: (state, action: GenericAction<IListOrdersFilters>) => {
 			state.filters = { ...state.filters, ...action.payload };
 		},
 		setLoadingOrders: (state, action: GenericAction<boolean>) => {
-			state.loading_orders = action.payload;
+			state.loadingOrders = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(WaiterThunks.getMyOrders.fulfilled, (state, action) => {
 			state.orders = action.payload.content;
-			state.loading_orders = false;
+			state.loadingOrders = false;
 		});
 	},
 });

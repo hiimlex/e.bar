@@ -15,6 +15,7 @@ import {
 	WaiterOrderProductsPage,
 	WaiterProductsPage,
 	WaiterOrderServePage,
+	WaiterOrderPaymentPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -159,6 +160,14 @@ const router = createBrowserRouter([
 		element: (
 			<ProtectedRoute>
 				<WaiterOrderServePage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterOrderPayment,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrderPaymentPage />
 			</ProtectedRoute>
 		),
 	},

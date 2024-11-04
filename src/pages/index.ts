@@ -13,3 +13,4 @@ export * from "./WaiterOrderProducts";
 export * from "./WaiterProducts";
 export * from "./WaiterCode";
 export * from "./WaiterOrderServe";
+export * from "./WaiterOrderPayment";

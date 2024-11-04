@@ -126,7 +126,7 @@
 
 	&:hover {
 		cursor: pointer;
-		scale: $scale-2;
+		scale: $scale-1;
 	}
 }
 
@@ -224,4 +224,29 @@
 		justify-content: space-between;
 		gap: 12px;
 	}
+}
+
+.text-subtitle-2 {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.text-subtitle-1 {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.text-body-1 {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+.text-caption {
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.text-button {
+	font-size: 14px;
+	font-weight: 600;
 }

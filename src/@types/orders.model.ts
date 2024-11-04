@@ -80,7 +80,7 @@ export interface OnOrderState {
 export interface WaiterState {
 	orders: IOrder[];
 	filters?: IListOrdersFilters;
-	loading_orders: boolean;
+	loadingOrders: boolean;
 }
 
 export interface IListOrdersFilters

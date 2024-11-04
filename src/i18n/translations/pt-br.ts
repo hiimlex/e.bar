@@ -131,6 +131,23 @@ export const ptBr = {
 			Title: "Marcar item como<br/> entregue",
 		},
 	},
+	WaiterOrderPayment: {
+		Title: "Pagamento de<br/>Pedido",
+		Labels: {
+			Total: "Total",
+			PaymentMethod: "Meio de pagamento",
+			ReceivedValue: "Valor recebido",
+			Name: "Nome",
+			PurchaseChange: "Troco",
+			NF: "Nota fiscal",
+			CreditCard: "Cartão de crédito",
+			Pix: "Pix",
+			Cash: "Dinheiro",
+		},
+		Buttons: {
+			Confirm: "Confirmar",
+		}
+	},
 	WaiterOrderProducts: {
 		Title: "Items na<br/> Comanda",
 		Buttons: {

@@ -13,3 +13,4 @@ export * from "./store.model";
 export * from "./tables.model";
 export * from "./waiters.model";
 export * from "./translation.model";
+export * from "./payment.model";
