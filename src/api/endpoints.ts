@@ -102,8 +102,10 @@ export enum Endpoints {
 	// Payments
 	PaymentCreate = "/api/payments",
 	PaymentList = "/api/payments",
+	PaymentShowByOrder = "/api/payments/order/:order_id",
 	PaymentListById = "/api/payments/:id",
 	PaymentUpdate = "/api/payments/:id",
+
 
 	// Tables
 	TableCreate = "/api/tables",

@@ -1,5 +1,6 @@
 import { ISortFilter, SafeAny } from "./generic.model";
 import { IPaginationFilters } from "./pagination.model";
+import { IPayment } from "./payment.model";
 import { IProduct } from "./products.model";
 import { IStore } from "./store.model";
 import { ITable } from "./tables.model";
@@ -49,6 +50,7 @@ export interface IOrder {
 	created_at: string;
 	updated_at: string;
 	closed_at: string;
+	payment: string | IPayment;
 	// payment_method: OrderPaymentMethod | null;
 }
 

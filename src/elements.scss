@@ -155,6 +155,13 @@
 	&-secondary {
 		color: $color-secondary;
 	}
+
+	&-disabled,
+	&:disabled {
+		color: $color-disabled;
+		cursor: not-allowed !important;
+		scale: 1 !important;
+	}
 }
 
 .chip-status {

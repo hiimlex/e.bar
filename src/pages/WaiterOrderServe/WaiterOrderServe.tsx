@@ -7,6 +7,7 @@ import { WaiterOrdersService } from "../../api";
 import { Button, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
+import { LoaderPage } from "../LoaderPage";
 
 interface WaiterOrderServePageProps {}
 
@@ -91,6 +92,10 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 	useEffect(() => {
 		getOrder();
 	}, []);
+
+	if (!order) {
+		return <LoaderPage />;
+	}
 
 	return (
 		<MainContainer

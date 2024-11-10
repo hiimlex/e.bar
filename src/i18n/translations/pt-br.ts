@@ -119,6 +119,9 @@ export const ptBr = {
 			Send: "Enviar",
 			MarkAsDelivered: "Marcar como entregue",
 			SeeProducts: "ver items",
+			pix: "Pix",
+			"credit-card": "Cartão de crédito",
+			cash: "Dinheiro",
 		},
 		Table: {
 			Headers: {
@@ -146,7 +149,7 @@ export const ptBr = {
 		},
 		Buttons: {
 			Confirm: "Confirmar",
-		}
+		},
 	},
 	WaiterOrderProducts: {
 		Title: "Items na<br/> Comanda",

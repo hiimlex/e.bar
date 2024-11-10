@@ -22,7 +22,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { orders, loading_orders, filters } = useSelector(
+	const { orders, loadingOrders, filters } = useSelector(
 		(state: RootState) => state.waiter
 	);
 	const [showFilter, setShowFilter] = useState(false);
@@ -124,10 +124,10 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 						)}
 					</header>
 
-					{!loading_orders ? (
+					{!loadingOrders ? (
 						<div className="w-orders-list no-scroll">
 							{orders.map((order, index) => (
-								<>
+								<div key={index}>
 									{order.status === "PENDING" && (
 										<WaiterOrdersCard
 											order={order}
@@ -138,7 +138,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 									{order.status === "FINISHED" && (
 										<SalesWaitersOrder order={order} key={index} />
 									)}
-								</>
+								</div>
 							))}
 							{orders.length === 0 && (
 								<div className="empty-box">

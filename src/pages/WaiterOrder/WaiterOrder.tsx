@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Check, User } from "react-feather";
+import { Check, Loader, User } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, Icons, MainContainer } from "../../components";
+import { Button, Icons, MainContainer, Spinner } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
+import { LoaderPage } from "../LoaderPage";
 
 interface WaiterOrderPageProps {}
 
@@ -71,10 +72,22 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 		navigate(to);
 	};
 
+	const orderStatusClass = useMemo(() => {
+		if (order?.status === "FINISHED") {
+			return "chip-status-success-outlined";
+		}
+
+		return "chip-status-secondary";
+	}, [order?.status]);
+
 	useEffect(() => {
 		getOrder();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getOrder]);
+
+	if (!order) {
+		return <LoaderPage />;
+	}
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
@@ -82,26 +95,36 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 				<main className="w-on-order-content">
 					<header className={`w-on-order-header`}>
 						<div className="flex flex-row gap-2">
-							<span className="w-on-order-table chip-status chip-status-primary">
+							<span className="w-on-order-chip chip-status chip-status-primary">
 								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 							</span>
 
-							<span className="w-on-order-table chip-status chip-status-primary flex flex-row gap-2">
+							<span className="w-on-order-chip chip-status chip-status-primary flex flex-row gap-2">
 								<User size={20} />
 								{order?.customers || 0}
 							</span>
+
+							{order?.status && (
+								<span
+									className={`w-on-order-chip chip-status ${orderStatusClass}`}
+								>
+									{t(`Generics.OrderStatus.${order?.status}`)}
+								</span>
+							)}
 						</div>
 						<div className="flex-row-text w-on-order-header-title">
 							<span className="w-on-order-title">
 								{t("WaiterOrder.Labels.OrderNumber", { number: order?.number })}
 							</span>
-							<span
-								role="button"
-								className="link link-secondary"
+							<button
+								className={`link link-secondary ${
+									order?.status === "FINISHED" ? "link-disabled" : ""
+								}`}
 								onClick={seeOrderProducts}
+								disabled={order?.status === "FINISHED"}
 							>
 								{t("WaiterOrder.Buttons.SeeProducts")}
-							</span>
+							</button>
 						</div>
 					</header>
 					<div className="detailed-list">
@@ -148,18 +171,31 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 						className="fill-row"
 						theme="secondary"
 						onClick={goToMarkAsServePage}
-						// disabled={order?.products.length === 0}
+						disabled={
+							order?.status === "FINISHED" ||
+							order?.status === "DELIVERED" ||
+							order?.items.length === 0
+						}
 					>
 						<Check size={20} /> {t("WaiterOrder.Buttons.MarkAsDelivered")}
 					</Button>
 					<footer className="w-on-order-footer">
-						<button
-							className="large-button large-button-secondary"
-							onClick={goToPayment}
-						>
-							<Icons.PaymentSVG fill="#fff" />
-							<span>{t("WaiterOrder.Buttons.Payment")}</span>
-						</button>
+						{!order?.payment && (
+							<button
+								className="large-button large-button-secondary"
+								onClick={goToPayment}
+								disabled={order?.status !== "DELIVERED"}
+							>
+								<Icons.PaymentSVG fill="#fff" />
+								<span>{t("WaiterOrder.Buttons.Payment")}</span>
+							</button>
+						)}
+						{order?.payment && typeof order.payment !== "string" && (
+							<button className="large-button large-button-secondary-outlined">
+								<img src={`/src/assets/${order.payment.method}.svg`}></img>
+								<span>{t(`WaiterOrder.Buttons.${order.payment.method}`)}</span>
+							</button>
+						)}
 						<button className="large-button large-button-primary">
 							<Icons.SendSVG fill="#fff	" />
 							<span>{t("WaiterOrder.Buttons.Send")}</span>

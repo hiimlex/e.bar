@@ -4,6 +4,7 @@ import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Spinner } from "../components";
+import { LoaderPage } from "../pages";
 
 const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
 	const { isAuthenticated, loading } = useSelector(
@@ -17,11 +18,7 @@ const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
 	}
 
 	if (loading) {
-		return (
-			<div className="loading-app">
-				<Spinner theme="secondary" size={32} />
-			</div>
-		);
+		return <LoaderPage />;
 	}
 
 	if (!loading && !isAuthenticated) {
