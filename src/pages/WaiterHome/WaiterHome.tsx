@@ -11,6 +11,7 @@ import {
 	ProductsActions,
 	ProductsThunks,
 	RootState,
+	WaiterActions,
 	WaiterThunks,
 } from "../../store";
 import { WaiterOrdersCard, WaiterProductCard } from "./components";
@@ -24,11 +25,22 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 		(state: RootState) => state.products
 	);
 	const { waiter } = useSelector((state: RootState) => state.user);
-	const { orders, loadingOrders } = useSelector(
-		(state: RootState) => state.waiter
-	);
+	const {
+		orders,
+		loadingOrders,
+		filters: orderFilters,
+	} = useSelector((state: RootState) => state.waiter);
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		dispatch(
+			WaiterActions.setOrderFilters({
+				status: ["PENDING", "DELIVERED"],
+			})
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onSelectCategory = (category_id?: string) => {
 		console.log(category_id);
@@ -72,7 +84,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	const loadOrders = useCallback(async () => {
 		await dispatch(WaiterThunks.getMyOrders());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [orderFilters]);
 
 	const navigateToOrder = (order: IOrder) => {
 		const to = Pages.WaiterOrder.replace(":orderId", order._id.toString());

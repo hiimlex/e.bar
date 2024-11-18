@@ -35,7 +35,7 @@ const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
 
 					{!showChangeButtons && (
 						<span className="chip-status chip-status-secondary product-row-info-stock">
-							{`${product.stock}x`}
+							{`${quantity}x`}
 						</span>
 					)}
 				</div>

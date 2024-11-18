@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { IOrder } from "../../../../@types";
+import { IOrder, TOrderStatus } from "../../../../@types";
 import "./styles.scss";
 import { useTranslation } from "react-i18next";
 interface WaiterOrdersCardProps {
@@ -17,13 +17,20 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 		[order.table]
 	);
 
+	const getStatusColor: Record<TOrderStatus, string> = {
+		CANCELED: "chip-status-danger",
+		DELIVERED: "chip-status-secondary",
+		FINISHED: "chip-status-success",
+		PENDING: "chip-status-warning",
+	};
+
 	return (
 		<div className="w-order">
 			<div className="w-order-status">
 				<span className="chip-status chip-status-primary">
 					{t("WaiterHome.Labels.TableNumber", { number: tableNumber || "" })}
 				</span>
-				<span className="chip-status chip-status-success-outlined">
+				<span className={`chip-status ${getStatusColor[order.status]}`}>
 					{t(`Generics.OrderStatus.${order.status}`)}
 				</span>
 			</div>

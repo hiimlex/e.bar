@@ -87,6 +87,8 @@ const WaiterOrderPaymentPage: React.FC = () => {
 				return;
 			}
 
+			setLoading(true);
+
 			const { name, nf, receivedValue } = data;
 
 			const createPayment: ICreatePayment = {
@@ -110,12 +112,15 @@ const WaiterOrderPaymentPage: React.FC = () => {
 			if (method === "cash") {
 				createPayment.cash_config = {
 					charge: chargeBack,
+					receivedValue,
 				};
 			}
 
-			const payment = await PaymentsService.create(createPayment);
+			await PaymentsService.create(createPayment);
 
-			console.log(payment);
+			setLoading(false);
+
+			navigate(Pages.WaiterOrder.replace(":orderId", order._id));
 		} catch (error) {
 			console.error(error);
 		}

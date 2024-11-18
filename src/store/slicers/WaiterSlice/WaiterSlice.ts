@@ -21,7 +21,7 @@ const WaiterSlice = createSlice<
 		loadingOrders: false,
 	},
 	reducers: {
-		setFilters: (state, action: GenericAction<IListOrdersFilters>) => {
+		setOrderFilters: (state, action: GenericAction<IListOrdersFilters>) => {
 			state.filters = { ...state.filters, ...action.payload };
 		},
 		setLoadingOrders: (state, action: GenericAction<boolean>) => {
@@ -37,7 +37,7 @@ const WaiterSlice = createSlice<
 });
 
 const WaiterActions = WaiterSlice.actions as {
-	setFilters: ActionCreatorWithPayload<IListOrdersFilters>;
+	setOrderFilters: ActionCreatorWithPayload<IListOrdersFilters>;
 	setLoadingOrders: ActionCreatorWithPayload<boolean | undefined>;
 };
 

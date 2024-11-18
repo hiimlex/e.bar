@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, ArrowUp } from "react-feather";
-import "./styles.scss";
 import { useTranslation } from "react-i18next";
 import { TOrderBy } from "../../@types";
+import "./styles.scss";
 
 interface OrderByProps {
 	label: string;
 	onOrderChange?: (order: TOrderBy) => void;
+	reset?: boolean;
 }
 
-
-const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
+const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange, reset }) => {
 	const { t } = useTranslation();
 	const [order, setOrder] = useState<TOrderBy>("");
 
@@ -34,6 +34,12 @@ const OrderBy: React.FC<OrderByProps> = ({ label, onOrderChange }) => {
 	};
 
 	const isActive = useMemo(() => order !== "", [order]);
+
+	useEffect(() => {
+		if (!!reset && reset) {
+			setOrder("");
+		}
+	}, [reset]);
 
 	return (
 		<div

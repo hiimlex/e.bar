@@ -1,4 +1,5 @@
 import { Spinner } from "../../components";
+import "./styles.scss";
 
 const LoaderPage = () => {
 	return (

@@ -7,11 +7,9 @@ export function errToAxiosError(err: SafeAny): AxiosError {
 	return new AxiosError(message, code, config, request, response);
 }
 
-export const BASE_URL = "http://localhost:3000" ;
-// BASE_URL = "http://192.168.1.116:3000";
+export const BASE_URL = "http://localhost:3000";
 
 export const api = axios.create({
-	// baseURL: "http://127.0.0.1:8080",
 	baseURL: BASE_URL,
 	withCredentials: true,
 });

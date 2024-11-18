@@ -181,6 +181,12 @@ export const ptBr = {
 		Filters: {
 			Finished: "Finalizados",
 		},
+		Card: {
+			OrderNumber: "Pedido N° {{number}}",
+			TableNumber: "Mesa {{number}}",
+			Expand: "expandir",
+			Reduce: "reduzir",
+		},
 	},
 	Modals: {
 		Product: {
@@ -296,6 +302,11 @@ export const ptBr = {
 		Currency: {
 			Symbol: "R$",
 			Format: "R$ {{value}}",
+		},
+		PaymentMethods: {
+			pix: "Pix",
+			"credit-card": "Cartão de crédito",
+			cash: "Dinheiro",
 		},
 	},
 };

@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Check, Loader, User } from "react-feather";
+import { Check, User } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, Icons, MainContainer, Spinner } from "../../components";
+import { Button, Icons, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
-import { LoaderPage } from "../LoaderPage";
 
 interface WaiterOrderPageProps {}
 
@@ -84,10 +83,6 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 		getOrder();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [getOrder]);
-
-	if (!order) {
-		return <LoaderPage />;
-	}
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>

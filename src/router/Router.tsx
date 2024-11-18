@@ -1,4 +1,4 @@
-import { Navigate, RouteObject, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import { Pages } from "../@types";
 import {
 	LoginPage,
@@ -12,14 +12,22 @@ import {
 	WaiterMyOrdersPage,
 	WaiterNewOrderPage,
 	WaiterOrderPage,
-	WaiterOrderProductsPage,
-	WaiterProductsPage,
-	WaiterOrderServePage,
 	WaiterOrderPaymentPage,
+	WaiterOrderProductsPage,
+	WaiterOrderServePage,
+	WaiterProductsPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
-const ADMIN_ROUTES: RouteObject[] = [
+const router = createBrowserRouter([
+	{
+		path: "",
+		element: <Navigate to={Pages.Login} />,
+	},
+	{
+		path: Pages.Login,
+		element: <LoginPage />,
+	},
 	{
 		path: Pages.StoreProducts,
 		element: (
@@ -79,18 +87,6 @@ const ADMIN_ROUTES: RouteObject[] = [
 	// 		</ProtectedRoute>
 	// 	),
 	// },
-];
-
-const router = createBrowserRouter([
-	{
-		path: "",
-		element: <Navigate to={Pages.Login} />,
-	},
-	{
-		path: Pages.Login,
-		element: <LoginPage />,
-	},
-	...ADMIN_ROUTES,
 	{
 		path: Pages.WaiterCode,
 		element: (

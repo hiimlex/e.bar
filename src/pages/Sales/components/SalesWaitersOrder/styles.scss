@@ -87,7 +87,7 @@
 	&-grid {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 40px 1fr minmax(20px, 68px);
+		grid-template-columns: 1fr 100px minmax(20px, 68px);
 		gap: $unit-2;
 		align-items: flex-start;
 

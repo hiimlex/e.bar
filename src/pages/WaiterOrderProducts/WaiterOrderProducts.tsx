@@ -1,8 +1,13 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { IProduct, Pages, UpdateOrderProductPayload } from "../../@types";
+import {
+	IListOrdersFilters,
+	IProduct,
+	Pages,
+	UpdateOrderProductPayload,
+} from "../../@types";
 import { WaiterOrdersService } from "../../api";
 import { Button, Chip, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
@@ -15,6 +20,9 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	const { orderId } = useParams();
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const { t } = useTranslation();
+	const [filters, setFilters] = useState<IListOrdersFilters>({
+		order_product_status: "PENDING",
+	});
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +41,12 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	};
 
 	const seeDeliveredProducts = () => {
-		// const newStatus =
-		// 	filters.product_status === "delivered" ? "ordered" : "delivered";
-		// setFilters({ ...filters, product_status: newStatus });
+		const order_product_status: IListOrdersFilters["order_product_status"] =
+			filters?.order_product_status?.includes("DELIVERED")
+				? "PENDING"
+				: ["DELIVERED", "PENDING"];
+
+		setFilters({ ...filters, order_product_status });
 	};
 
 	const dispatch = useDispatch();
@@ -47,10 +58,12 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 				return;
 			}
 
-			const { data } = await WaiterOrdersService.getById(orderId);
+			const { data } = await WaiterOrdersService.getById(orderId, filters);
+
 			if (data) {
 				dispatch(OnOrderActions.setOrder(data));
 			}
+
 			if (!data) {
 				navigate(Pages.WaiterHome);
 			}
@@ -58,7 +71,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [filters]);
 
 	const changeOrderProductQuantity = async (
 		product: IProduct,
@@ -102,7 +115,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 
 					<div>
 						<Chip
-							// active={filters.product_status === "delivered"}
+							active={filters.order_product_status?.includes("DELIVERED")}
 							onClick={seeDeliveredProducts}
 							theme="secondary"
 							clickable

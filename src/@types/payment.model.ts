@@ -48,7 +48,7 @@ export type IPayment =
 			store: string | IStore;
 			order: string | IOrder;
 			method: TPaymentMethods;
-	  }
+	}
 	| IPixPayment
 	| ICreditCardPayment
 	| ICashPayment;
@@ -59,6 +59,7 @@ export type ICreatePayment = {
 	method: TPaymentMethods;
 	cash_config?: {
 		charge: number;
+		receivedValue: number;
 	};
 	pix_config?: {
 		name: string;

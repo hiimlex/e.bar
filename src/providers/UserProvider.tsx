@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Pages } from "../@types";
 import { AUTH_TOKEN_KEY } from "../api";
+import { LoaderPage } from "../pages";
 import { router } from "../router";
 import { AppDispatch, RootState, UserThunks } from "../store";
 
@@ -47,7 +48,6 @@ const UserProvider: React.FC = () => {
 			!loading &&
 			hasValidatedAttendance
 		) {
-			console.log("Waiter is authenticated but has no attendance cookie");
 			navigate(Pages.WaiterCode);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,7 +68,7 @@ const UserProvider: React.FC = () => {
 		// });
 	}, []);
 
-	return <></>;
+	return loading ? <LoaderPage /> : null;
 };
 
 export { UserProvider };

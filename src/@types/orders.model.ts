@@ -86,8 +86,10 @@ export interface WaiterState {
 }
 
 export interface IListOrdersFilters
-	extends ISortFilter<"number" | "table_number" | "total" | "created_at">,
+	extends ISortFilter<"number" | "table.number" | "total" | "created_at">,
 		IPaginationFilters {
-	status?: keyof typeof TOrderStatus;
-	order_product_status?: keyof typeof TOrderProductStatus;
+	status?: keyof typeof TOrderStatus | (keyof typeof TOrderStatus)[];
+	order_product_status?:
+		| keyof typeof TOrderProductStatus
+		| (keyof typeof TOrderProductStatus)[];
 }
