@@ -14,10 +14,13 @@ import { PaymentsService, WaiterOrdersService } from "../../api";
 import { Button, Input, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 const WaiterOrderPaymentPage: React.FC = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const navigate = useNavigate();
@@ -66,6 +69,19 @@ const WaiterOrderPaymentPage: React.FC = () => {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,7 +138,18 @@ const WaiterOrderPaymentPage: React.FC = () => {
 
 			navigate(Pages.WaiterOrder.replace(":orderId", order._id));
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	};
 

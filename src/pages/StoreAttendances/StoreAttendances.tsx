@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Dropdown, DropdownItem, DropdownSeparator } from "leux";
+import { Dropdown, DropdownItem, DropdownSeparator, useToast } from "leux";
 import React, { useCallback, useEffect, useState } from "react";
 import { Eye, MoreVertical, X } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -23,11 +23,13 @@ import {
 import { useModal } from "../../hooks";
 import { StartAttendanceModal } from "./components";
 import "./styles.scss";
+import { AxiosError } from "axios";
 
 interface StoreAttendancesPageProps {}
 
 const StoreAttendancesPage: React.FC<StoreAttendancesPageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { openModal } = useModal();
 
 	const [attendances, setAttendances] = useState<IAttendance[]>([]);
@@ -42,7 +44,18 @@ const StoreAttendancesPage: React.FC<StoreAttendancesPageProps> = () => {
 				setAttendances(data.content);
 			}
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	}, [filters]);
 
@@ -84,7 +97,18 @@ const StoreAttendancesPage: React.FC<StoreAttendancesPageProps> = () => {
 			await AttendancesService.finish(attendanceId);
 			loadAttendances();
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	};
 

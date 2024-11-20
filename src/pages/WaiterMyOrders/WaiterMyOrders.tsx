@@ -3,7 +3,7 @@ import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { IListOrdersFilters, Pages, TOrderBy } from "../../@types";
+import { IListOrdersFilters, Pages, SafeAny, TOrderBy } from "../../@types";
 import { Chip, MainContainer, OrderBy, Spinner } from "../../components";
 import {
 	AppDispatch,
@@ -14,11 +14,13 @@ import {
 import { SalesWaitersOrder } from "../Sales";
 import { WaiterOrdersCard } from "../WaiterHome";
 import "./styles.scss";
+import { useToast } from "leux";
 
 interface WaiterMyOrdersPageProps {}
 
 const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -42,18 +44,36 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 			sort_by = undefined;
 		}
 
-		dispatch(WaiterActions.setFilters({ sort, sort_by }));
+		dispatch(WaiterActions.setOrderFilters({ sort, sort_by }));
 	};
 
 	const onChangeStatusFilter = (
 		status: IListOrdersFilters["status"] | undefined
 	) => {
-		dispatch(WaiterActions.setFilters({ status }));
+		dispatch(WaiterActions.setOrderFilters({ status }));
 	};
 
 	const loadOrders = useCallback(
 		async (loader = true) => {
-			await dispatch(WaiterThunks.getMyOrders(loader));
+			await dispatch(
+				WaiterThunks.getMyOrders({
+					loading: loader,
+					onError: (error) => {
+						if (error.response) {
+							const message = error.response.data as SafeAny;
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
 		[orderFilters]
@@ -64,16 +84,17 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	};
 
 	useEffect(() => {
-		loadOrders();
+		dispatch(WaiterActions.setOrderFilters({ status: undefined }));
+	}, []);
+
+	useEffect(() => {
+		if (!loadingOrders) {
+			loadOrders();
+		}
 	}, [loadOrders]);
 
 	return (
-		<MainContainer
-			showGoBack
-			onGoBack={goBack}
-			showFilter
-			onFilter={() => setShowFilter((curr) => !curr)}
-		>
+		<MainContainer showGoBack onGoBack={goBack}>
 			<div className="w-orders">
 				<main className="w-orders-content">
 					<header className={`w-orders-header`}>
@@ -81,46 +102,43 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 							className="page-title"
 							dangerouslySetInnerHTML={{ __html: t("WaiterMyOrders.Title") }}
 						></span>
-						{showFilter && (
-							<>
-								<div className="w-orders-filters">
-									<Chip
-										clickable
-										active={orderFilters?.status === undefined}
-										theme="secondary"
-										onClick={() => onChangeStatusFilter(undefined)}
-									>
-										{t("WaiterHome.Filters.All")}
-									</Chip>
-									<Chip
-										clickable
-										active={orderFilters?.status === "FINISHED"}
-										theme="secondary"
-										onClick={() => onChangeStatusFilter("FINISHED")}
-									>
-										{t("WaiterMyOrders.Filters.Finished")}
-									</Chip>
-								</div>
-								<div className="w-orders-filters">
-									<OrderBy
-										label="Total"
-										onOrderChange={(sort) => onChangeSort(sort, "total")}
-										reset={
-											!orderFilters?.sort_by || orderFilters.sort_by !== "total"
-										}
-									/>
 
-									<OrderBy
-										label="Criado Em"
-										onOrderChange={(sort) => onChangeSort(sort, "created_at")}
-										reset={
-											!orderFilters?.sort_by ||
-											orderFilters.sort_by !== "created_at"
-										}
-									/>
-								</div>
-							</>
-						)}
+						<div className="w-orders-filters">
+							<Chip
+								clickable
+								active={orderFilters?.status === undefined}
+								theme="secondary"
+								onClick={() => onChangeStatusFilter(undefined)}
+							>
+								{t("WaiterHome.Filters.All")}
+							</Chip>
+							<Chip
+								clickable
+								active={orderFilters?.status === "FINISHED"}
+								theme="secondary"
+								onClick={() => onChangeStatusFilter("FINISHED")}
+							>
+								{t("WaiterMyOrders.Filters.Finished")}
+							</Chip>
+						</div>
+						<div className="w-orders-filters">
+							<OrderBy
+								label="Total"
+								onOrderChange={(sort) => onChangeSort(sort, "total")}
+								reset={
+									!orderFilters?.sort_by || orderFilters.sort_by !== "total"
+								}
+							/>
+
+							<OrderBy
+								label="Criado Em"
+								onOrderChange={(sort) => onChangeSort(sort, "created_at")}
+								reset={
+									!orderFilters?.sort_by ||
+									orderFilters.sort_by !== "created_at"
+								}
+							/>
+						</div>
 					</header>
 
 					{!loadingOrders ? (

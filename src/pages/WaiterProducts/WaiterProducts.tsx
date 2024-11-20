@@ -1,9 +1,11 @@
+import { useToast } from "leux";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Pages } from "../../@types";
+import { useDebounceValue } from "usehooks-ts";
+import { Pages, SafeAny } from "../../@types";
 import { Chip, Input, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
@@ -13,12 +15,12 @@ import {
 } from "../../store";
 import { ProductsRowCard } from "./components";
 import "./styles.scss";
-import { useDebounceValue } from "usehooks-ts";
 
 interface WaiterProductsPageProps {}
 
 const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
@@ -66,25 +68,37 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		);
 	};
 
-	const loadCategories = useCallback(async () => {
-		await dispatch(ProductsThunks.fetchStoreCategories());
-	}, []);
-
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			await dispatch(ProductsThunks.fetchProducts(enableLoader));
+			await dispatch(
+				ProductsThunks.fetchProducts({
+					loading: enableLoader,
+					onError: (error) => {
+						if (error.response?.data) {
+							const { message } = error.response.data as SafeAny;
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
 	);
 
 	useEffect(() => {
-		loadProducts();
+		if (!isLoadingProducts) {
+			loadProducts();
+		}
 	}, [loadProducts]);
-
-	useEffect(() => {
-		loadCategories();
-	}, []);
 
 	return (
 		<MainContainer
@@ -154,7 +168,11 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 					{!isLoadingProducts && (
 						<div className="w-products-list no-scroll">
 							{products.map((product, index) => (
-								<ProductsRowCard product={product} key={index} />
+								<ProductsRowCard
+									product={product}
+									key={index}
+									quantity={product.stock}
+								/>
 							))}
 						</div>
 					)}

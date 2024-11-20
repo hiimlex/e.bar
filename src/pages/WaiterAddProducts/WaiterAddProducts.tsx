@@ -1,10 +1,12 @@
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDebounceValue } from "usehooks-ts";
-import { IProduct, Pages } from "../../@types";
+import { IProduct, Pages, SafeAny } from "../../@types";
 import { WaiterOrdersService } from "../../api";
 import { Button, Chip, Input, MainContainer, Spinner } from "../../components";
 import {
@@ -28,6 +30,7 @@ export type AddProduct = Record<
 const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+	const ToastService = useToast();
 
 	const { filters, products, categories, isLoadingProducts } = useSelector(
 		(state: RootState) => state.products
@@ -102,7 +105,25 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			await dispatch(ProductsThunks.fetchProducts(enableLoader));
+			await dispatch(
+				ProductsThunks.fetchProducts({
+					loading: enableLoader,
+					onError: (error) => {
+						if (error.response?.data) {
+							const { message } = error.response.data as SafeAny;
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
@@ -111,19 +132,6 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	useEffect(() => {
 		loadProducts();
 	}, [loadProducts]);
-
-	const loadStoreCategories = useCallback(async () => {
-		try {
-			await dispatch(ProductsThunks.fetchStoreCategories());
-		} catch (error) {
-			console.error(error);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
-		loadStoreCategories();
-	}, [loadStoreCategories]);
 
 	const getOrder = useCallback(async () => {
 		try {
@@ -139,6 +147,19 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

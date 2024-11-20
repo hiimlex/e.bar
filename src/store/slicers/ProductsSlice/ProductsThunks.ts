@@ -1,17 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ICategory, IPaginationResponse, IProduct } from "../../../@types";
-import { AxiosError } from "axios";
-import { ProductsActions } from "./ProductsSlice";
-import { RootState } from "../../Store";
+import { Axios, AxiosError } from "axios";
+import {
+	ICategory,
+	IPaginationResponse,
+	IProduct,
+	ThunkOnError,
+} from "../../../@types";
 import { CategoriesService, ProductsService } from "../../../api";
+import { RootState } from "../../Store";
+import { ProductsActions } from "./ProductsSlice";
 
 const fetchProducts = createAsyncThunk<
 	IPaginationResponse<IProduct>,
-	boolean | undefined,
+	({ loading: boolean } & ThunkOnError) | undefined,
 	{ rejectValue: AxiosError }
 >(
 	"Products/fetchProducts",
-	async (loading, { getState, rejectWithValue, dispatch }) => {
+	async (payload, { getState, rejectWithValue, dispatch }) => {
+		const { loading, onError } = payload || {};
 		try {
 			dispatch(ProductsActions.setIsLoadingProducts(loading));
 			const filters = (getState() as RootState).products.filters;
@@ -20,6 +26,9 @@ const fetchProducts = createAsyncThunk<
 
 			return data;
 		} catch (error) {
+			if (onError) {
+				onError(error as AxiosError);
+			}
 			return rejectWithValue(error as AxiosError);
 		}
 	}
@@ -27,12 +36,13 @@ const fetchProducts = createAsyncThunk<
 
 const fetchStoreCategories = createAsyncThunk<
 	IPaginationResponse<ICategory>,
-	boolean | undefined,
+	({ loading: boolean } & ThunkOnError) | undefined,
 	{ rejectValue: AxiosError }
 >(
 	"Products/fetchStoreCategories",
-	async (loading, { getState, rejectWithValue, dispatch }) => {
+	async (payload, { getState, rejectWithValue, dispatch }) => {
 		try {
+			const loading = payload?.loading || false;
 			dispatch(ProductsActions.setIsLoadingProducts(loading));
 			const waiter_store = (getState() as RootState).user.waiter?.store;
 			const waiter_store_id =
@@ -46,6 +56,10 @@ const fetchStoreCategories = createAsyncThunk<
 
 			return data;
 		} catch (error) {
+			const onError = payload?.onError;
+			if (onError) {
+				onError(error as AxiosError);
+			}
 			return rejectWithValue(error as AxiosError);
 		}
 	}

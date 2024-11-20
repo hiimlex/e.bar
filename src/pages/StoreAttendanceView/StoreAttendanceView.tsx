@@ -4,7 +4,7 @@ import { ArrowLeft } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
-import { Pages, TabEnum, TabItemType } from "../../@types";
+import { Pages, SafeAny, TabEnum, TabItemType } from "../../@types";
 import { MainContainer } from "../../components";
 import {
 	AppDispatch,
@@ -14,6 +14,8 @@ import {
 } from "../../store";
 import { Tabs } from "./components";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 const tabs: TabItemType[] = [
 	{
@@ -32,6 +34,7 @@ const tabs: TabItemType[] = [
 
 const StoreAttendanceView: React.FC = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 
 	const { attendanceId } = useParams();
 	const dispatch = useDispatch<AppDispatch>();
@@ -52,7 +55,26 @@ const StoreAttendanceView: React.FC = () => {
 
 			dispatch(OnAttendanceActions.setAttendanceId(attendanceId));
 
-			await dispatch(onAttendancefetchAttendance());
+			await dispatch(
+				onAttendancefetchAttendance({
+					onError: (error) => {
+						setLoading(false);
+
+						if (error.response) {
+							const message  = (error.response.data as SafeAny);
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 
 			navigate(
 				Pages.StoreAttendanceGeneral.replace(":attendanceId", attendanceId),
@@ -62,7 +84,19 @@ const StoreAttendanceView: React.FC = () => {
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
+
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	};
 

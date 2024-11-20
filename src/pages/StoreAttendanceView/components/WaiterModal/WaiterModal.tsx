@@ -7,6 +7,8 @@ import { Button, Input } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import { format } from "../../../../utils";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaiterModalProps {
 	modalId?: string;
@@ -24,6 +26,7 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 	waiterId,
 }) => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { closeModal } = useModal();
 	const [loading, setLoading] = useState(false);
 	const {
@@ -41,60 +44,97 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 		setLoading(true);
 
 		if (mode === "create") {
-			// create waiter
-			try {
-				const unmaskPhone = phone.replace(/\D/g, "");
-
-				await WaitersService.create({
-					email,
-					name,
-					password,
-					phone: unmaskPhone,
-				});
-
-				setLoading(false);
-
-				if (modalId) {
-					closeModal(modalId);
-				}
-
-				if (beforeClose) {
-					beforeClose();
-				}
-			} catch (error) {
-				setLoading(false);
-			}
+			createWaiter(data);
 		}
 
 		if (mode === "edit") {
-			if (!waiterId) {
-				setLoading(false);
+			editWaiter(data);
+		}
+	};
 
-				return;
+	const createWaiter = async (data: CreateWaiterPayload) => {
+		const { email, name, password, phone } = data;
+
+		try {
+			const unmaskPhone = phone.replace(/\D/g, "");
+
+			await WaitersService.create({
+				email,
+				name,
+				password,
+				phone: unmaskPhone,
+			});
+
+			setLoading(false);
+
+			if (modalId) {
+				closeModal(modalId);
 			}
 
-			// edit waiter
-			try {
-				const unmaskPhone = phone.replace(/\D/g, "");
-
-				await WaitersService.update(waiterId.toString(), {
-					email,
-					name,
-					phone: unmaskPhone,
-				});
-
-				setLoading(false);
-
-				if (modalId) {
-					closeModal(modalId);
-				}
-
-				if (beforeClose) {
-					beforeClose();
-				}
-			} catch (error) {
-				setLoading(false);
+			if (beforeClose) {
+				beforeClose();
 			}
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
+			setLoading(false);
+		}
+	};
+
+	const editWaiter = async (data: CreateWaiterPayload) => {
+		const { email, name, password, phone } = data;
+
+		if (!waiterId) {
+			setLoading(false);
+
+			return;
+		}
+
+		// edit waiter
+		try {
+			const unmaskPhone = phone.replace(/\D/g, "");
+
+			await WaitersService.update(waiterId.toString(), {
+				email,
+				name,
+				phone: unmaskPhone,
+			});
+
+			setLoading(false);
+
+			if (modalId) {
+				closeModal(modalId);
+			}
+
+			if (beforeClose) {
+				beforeClose();
+			}
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
+			setLoading(false);
 		}
 	};
 
@@ -159,7 +199,6 @@ const WaiterModal: React.FC<WaiterModalProps> = ({
 						onChangeValue={(value) => {
 							const formattedPhone = format.phone(value);
 
-							console.log(formattedPhone);
 							onChange(formattedPhone);
 						}}
 						onBlur={onBlur}

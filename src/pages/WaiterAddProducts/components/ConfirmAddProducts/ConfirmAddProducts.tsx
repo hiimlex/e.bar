@@ -5,6 +5,9 @@ import { Button } from "../../../../components";
 import { ProductsRowCard } from "../../../WaiterProducts/components";
 import { AddProduct } from "../../WaiterAddProducts";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
+import { useTranslation } from "react-i18next";
 
 interface ConfirmAddProductsProps {
 	orderId: string;
@@ -21,6 +24,8 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 	orderId,
 	onConfirm,
 }) => {
+	const { t } = useTranslation();
+	const ToastService = useToast();
 	const [adding, setAdding] = useState(false);
 
 	const onAddProduct = (product: IProduct, quantity: number) => {
@@ -58,7 +63,18 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 
 			onConfirm && onConfirm();
 		} catch (error) {
-			console.log(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 			setAdding(false);
 		}
 	};

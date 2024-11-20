@@ -9,6 +9,8 @@ import { Button, Input, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import { User } from "react-feather";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaiterNewOrderPageProps {}
 
@@ -16,6 +18,7 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const { t } = useTranslation<NamespaceKeys>();
+	const ToastService = useToast();
 	const { waiter } = useSelector((state: RootState) => state.user);
 	const waiterStore = useMemo(
 		() =>
@@ -60,6 +63,19 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 			setLoading(false);
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setLoading(false);
 		}
 	};
@@ -74,7 +90,18 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 			setTables(data.content);
 		} catch (error) {
-			console.log("Error loading tables", error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	}, []);
 

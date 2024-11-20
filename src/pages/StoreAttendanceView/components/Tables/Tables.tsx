@@ -11,11 +11,14 @@ import {
 	onAttendancefetchAttendance,
 } from "../../../../store";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface TablesProps {}
 
 const Tables: React.FC<TablesProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const [tables, setTables] = useState<ITable[]>([]);
 
 	const [loading, setLoading] = useState(false);
@@ -43,7 +46,18 @@ const Tables: React.FC<TablesProps> = () => {
 
 				setLoading(false);
 			} catch (error) {
-				console.error(error);
+				if (error instanceof AxiosError && error.response) {
+					const { message } = error.response.data;
+
+					if (message && typeof message === "string") {
+						const translateMessage = t(`Errors.${message}`);
+
+						ToastService.createToast({
+							label: translateMessage,
+							colorScheme: "danger",
+						});
+					}
+				}
 				setLoading(false);
 			}
 		},
@@ -65,8 +79,20 @@ const Tables: React.FC<TablesProps> = () => {
 
 			setAdding(false);
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setAdding(false);
-			console.error(error);
 		}
 	};
 
@@ -75,8 +101,6 @@ const Tables: React.FC<TablesProps> = () => {
 			sort = undefined;
 			sort_by = undefined;
 		}
-
-		console.log(sort, sort_by);
 
 		setFilters((curr) => ({ ...curr, sort, sort_by }));
 	};
@@ -132,7 +156,7 @@ const Tables: React.FC<TablesProps> = () => {
 											name:
 												typeof table.in_use_by !== "string" &&
 												table.in_use_by.name
-													? table.in_use_by.name.split(' ')[0]
+													? table.in_use_by.name.split(" ")[0]
 													: "---",
 											// eslint-disable-next-line no-mixed-spaces-and-tabs
 									  })

@@ -1,12 +1,16 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Pages } from "../@types";
+import { Pages, SafeAny } from "../@types";
 import { AUTH_TOKEN_KEY } from "../api";
 import { LoaderPage } from "../pages";
 import { router } from "../router";
 import { AppDispatch, RootState, UserThunks } from "../store";
+import { useTranslation } from "react-i18next";
+import { useToast } from "leux";
 
 const UserProvider: React.FC = () => {
+	const { t } = useTranslation();
+	const ToastService = useToast();
 	const {
 		isAuthenticated,
 		waiter,
@@ -21,12 +25,46 @@ const UserProvider: React.FC = () => {
 		const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
 		if (token) {
-			await dispatch(UserThunks.getCurrentUser());
+			await dispatch(
+				UserThunks.getCurrentUser({
+					onError: (error) => {
+						if (error.response) {
+							const message = error.response.data as SafeAny;
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 		}
 	}, []);
 
 	const validateWaiterAttendanceCookie = async () => {
-		await dispatch(UserThunks.validateWaiterAttendanceCode());
+		await dispatch(
+			UserThunks.validateWaiterAttendanceCode({
+				onError: (error) => {
+					if (error.response) {
+						const message = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
 	};
 
 	useEffect(() => {

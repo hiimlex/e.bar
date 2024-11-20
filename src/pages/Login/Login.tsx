@@ -9,11 +9,13 @@ import { AUTH_TOKEN_KEY, AuthService } from "../../api";
 import { Brands, Button, Input } from "../../components";
 import { AppDispatch, RootState, UserActions } from "../../store";
 import "./styles.scss";
+import { useToast } from "leux";
 
 interface LoginPageProps {}
 
 const LoginPage: React.FC<LoginPageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 
 	const { control, handleSubmit, formState } = useForm<LoginPayload>({
 		mode: "all",
@@ -56,8 +58,17 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 			setLoading(false);
 		} catch (error) {
-			if (error instanceof AxiosError) {
-				console.log(error.response?.data);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
 			}
 
 			setLoading(false);

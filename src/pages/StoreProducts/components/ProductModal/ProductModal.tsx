@@ -8,6 +8,8 @@ import { Button, Input, Select, UploadBox } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import { RootState } from "../../../../store";
 import "./styles.scss";
+import { useToast } from "leux";
+import { AxiosError } from "axios";
 
 interface ProductModalProps {
 	id?: string;
@@ -27,6 +29,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 	imagePreview,
 }) => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { closeModal } = useModal();
 	const [loading, setLoading] = useState(false);
 	const { control, handleSubmit, formState, watch } =
@@ -86,6 +89,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				beforeClose();
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setLoading(false);
 		}
 	};
@@ -121,6 +137,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
 				beforeClose();
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setLoading(false);
 		}
 	};

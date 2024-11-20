@@ -13,6 +13,8 @@ import { Button, Chip, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import { ProductsRowCard } from "../WaiterProducts/components";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaiterOrderProductsPageProps {}
 
@@ -20,6 +22,7 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	const { orderId } = useParams();
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const [filters, setFilters] = useState<IListOrdersFilters>({
 		order_product_status: "PENDING",
 	});
@@ -68,6 +71,18 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,7 +107,18 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 
 			await getOrder();
 		} catch (error) {
-			console.log("Error updating order product", error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	};
 

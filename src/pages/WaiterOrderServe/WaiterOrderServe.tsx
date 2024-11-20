@@ -8,12 +8,15 @@ import { Button, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
 import { LoaderPage } from "../LoaderPage";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaiterOrderServePageProps {}
 
 const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+	const ToastService = useToast();
 
 	const { order } = useSelector((state: RootState) => state.onOrder);
 
@@ -65,6 +68,19 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 
 			setLoading(false);
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setLoading(false);
 		}
 	};
@@ -85,6 +101,19 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			navigate(Pages.WaiterHome);
 		}
 	}, []);

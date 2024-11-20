@@ -20,7 +20,7 @@ const UserSlice = createSlice<
 	initialState: {
 		isAdmin: false,
 		isAuthenticated: false,
-		loading: true,
+		loading: false,
 	},
 	reducers: {
 		setWaiter: (state, action: GenericAction<IWaiter>) => {

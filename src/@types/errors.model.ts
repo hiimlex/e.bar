@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export enum FieldErrorsType {
 	Required = "Generics.FieldErrors.Required",
 	InvalidEmail = "Generics.FieldErrors.InvalidEmail",
@@ -22,7 +24,7 @@ export enum SystemErrors {
 	// Product
 	PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
 	// Store
-	STORE_NOT_FOUND = "STORE_NOT_FOUND", 
+	STORE_NOT_FOUND = "STORE_NOT_FOUND",
 	STORE_NOT_CREATED = "STORE_NOT_CREATED",
 	STORE_ALREADY_HAS_AN_ACTIVE_ATTENDANCE = "STORE_ALREADY_HAS_AN_ACTIVE_ATTENDANCE",
 	// Files
@@ -46,3 +48,11 @@ export interface HTTPError extends Error {
 	method: string;
 	path: string;
 }
+
+export interface AxiosErrorResponse {
+	data: {
+		message: string;
+	};
+}
+
+export type ThunkOnError = { onError?: (error: AxiosError) => void };

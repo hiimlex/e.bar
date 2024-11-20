@@ -3,6 +3,7 @@
 .w-product {
 	&-card {
 		min-width: 160px;
+		max-width: 240px;
 		width: 100%;
 		background: $color-gray-1;
 		box-shadow: $shadow-soft;
@@ -91,4 +92,7 @@
 		align-items: center;
 		justify-content: flex-end;
 	}
+}
+
+@media (max-width: 700px) {
 }

@@ -35,7 +35,7 @@ const ProductsSlicer = createSlice<
 			state.isLoadingProducts = false;
 		});
 
-		builder.addCase(ProductsThunks.fetchProducts.rejected, (state) => {
+		builder.addCase(ProductsThunks.fetchProducts.rejected, (state, payload) => {
 			state.isLoadingProducts = false;
 		});
 

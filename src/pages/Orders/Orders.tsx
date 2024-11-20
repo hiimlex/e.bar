@@ -8,10 +8,15 @@ import { socket } from "../../socket/socket";
 import { AppDispatch, OrdersActions, RootState } from "../../store";
 import { OrderCard } from "./components";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
+import { useToast } from "leux";
 
 interface OrdersPageProps {}
 
 const OrdersPage: React.FC<OrdersPageProps> = () => {
+	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { orders, filters, is_loading_orders } = useSelector(
 		(state: RootState) => state.orders
 	);
@@ -30,7 +35,19 @@ const OrdersPage: React.FC<OrdersPageProps> = () => {
 
 				dispatch(OrdersActions.setLoadingOrders(false));
 			} catch (error) {
-				console.log("Error loading orders", error);
+				if (error instanceof AxiosError && error.response) {
+					const { message } = error.response.data;
+
+					if (message && typeof message === "string") {
+						const translateMessage = t(`Errors.${message}`);
+
+						ToastService.createToast({
+							label: translateMessage,
+							colorScheme: "danger",
+						});
+					}
+				}
+
 				dispatch(OrdersActions.setLoadingOrders(false));
 			}
 		},

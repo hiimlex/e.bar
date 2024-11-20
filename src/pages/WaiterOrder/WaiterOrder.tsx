@@ -8,12 +8,15 @@ import { WaiterOrdersService } from "../../api";
 import { Button, Icons, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
+import { useToast } from "leux";
+import { AxiosError } from "axios";
 
 interface WaiterOrderPageProps {}
 
 const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { order } = useSelector((state: RootState) => state.onOrder);
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -49,6 +52,18 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 				navigate(Pages.WaiterHome);
 			}
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 			navigate(Pages.WaiterHome);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

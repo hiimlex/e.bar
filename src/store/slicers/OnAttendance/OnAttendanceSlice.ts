@@ -5,20 +5,19 @@ import {
 	createAsyncThunk,
 	createSlice,
 } from "@reduxjs/toolkit";
-import { IAttendance, OnAttendanceState } from "../../../@types";
+import { IAttendance, OnAttendanceState, ThunkOnError } from "../../../@types";
 import { GenericAction, RootState } from "../../Store";
 import { AxiosError } from "axios";
 import { AttendancesService } from "../../../api";
 
 export const onAttendancefetchAttendance = createAsyncThunk<
 	IAttendance,
-	boolean | undefined,
+	ThunkOnError | undefined,
 	{ rejectValue: AxiosError }
 >(
 	"OnAttendance/fetchAttendance",
-	async (loading, { getState, rejectWithValue, dispatch }) => {
+	async (payload, { getState, rejectWithValue, dispatch }) => {
 		try {
-			// dispatch(OnAttendanceActions.setIsLoadingProducts(loading));
 			const id = (getState() as RootState).onAttendance.attendanceId;
 
 			if (!id) {
@@ -29,6 +28,10 @@ export const onAttendancefetchAttendance = createAsyncThunk<
 
 			return data;
 		} catch (error) {
+			const { onError } = payload || {};
+			if (onError) {
+				onError(error as AxiosError);
+			}
 			return rejectWithValue(error as AxiosError);
 		}
 	}

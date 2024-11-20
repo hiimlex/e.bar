@@ -3,7 +3,7 @@ import { FileMinus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useDebounceValue } from "usehooks-ts";
-import { IProduct, ModalIds } from "../../@types";
+import { IProduct, ModalIds, SafeAny } from "../../@types";
 import { Button, Input, MainContainer, Spinner } from "../../components";
 import { useBreakpoint, useModal } from "../../hooks";
 import {
@@ -14,11 +14,14 @@ import {
 } from "../../store";
 import { ProductCard, ProductModal } from "./components";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface StoreProductsPageProps {}
 
 const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
@@ -78,16 +81,41 @@ const StoreProductsPage: React.FC<StoreProductsPageProps> = () => {
 		try {
 			await dispatch(ProductsThunks.fetchProducts());
 		} catch (error) {
-			console.error(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	}, [filters]);
 
 	const getCategories = useCallback(async () => {
-		try {
-			await dispatch(ProductsThunks.fetchStoreCategories());
-		} catch (error) {
-			console.error(error);
-		}
+		await dispatch(
+			ProductsThunks.fetchStoreCategories({
+				loading: true,
+				onError: (error) => {
+					if (error.response?.data) {
+						const { message } = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
 	}, []);
 
 	const openAddProductModal = () => {

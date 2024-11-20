@@ -16,11 +16,14 @@ import { RootState } from "../../../../store";
 import { format } from "../../../../utils";
 import { WaiterModal } from "../WaiterModal";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaitersProps {}
 
 const Waiters: React.FC<WaitersProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const [waiters, setWaiters] = useState<IWaiter[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
@@ -54,6 +57,18 @@ const Waiters: React.FC<WaitersProps> = () => {
 			} catch (error) {
 				setWaiters([]);
 				setLoading(false);
+				if (error instanceof AxiosError && error.response) {
+					const { message } = error.response.data;
+
+					if (message && typeof message === "string") {
+						const translateMessage = t(`Errors.${message}`);
+
+						ToastService.createToast({
+							label: translateMessage,
+							colorScheme: "danger",
+						});
+					}
+				}
 			}
 		},
 		[filters]
@@ -111,6 +126,18 @@ const Waiters: React.FC<WaitersProps> = () => {
 			await fetchWaiters(false);
 			setActivatingWaiterId(undefined);
 		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 			setActivatingWaiterId(undefined);
 		}
 	};

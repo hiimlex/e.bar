@@ -3,7 +3,7 @@ import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { IOrder, Pages } from "../../@types";
+import { IOrder, Pages, SafeAny } from "../../@types";
 import { Button, Chip, MainContainer, Spinner } from "../../components";
 import {
 	AppDispatch,
@@ -16,11 +16,13 @@ import {
 } from "../../store";
 import { WaiterOrdersCard, WaiterProductCard } from "./components";
 import "./styles.scss";
+import { useToast } from "leux";
 
 interface WaiterHomePageProps {}
 
 const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { filters, products, isLoadingProducts, categories } = useSelector(
 		(state: RootState) => state.products
 	);
@@ -39,11 +41,11 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 				status: ["PENDING", "DELIVERED"],
 			})
 		);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onSelectCategory = (category_id?: string) => {
-		console.log(category_id);
 		dispatch(ProductsActions.setFilters({ category_id, no_stock: undefined }));
 	};
 
@@ -70,19 +72,73 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 	};
 
 	const loadCategories = useCallback(async () => {
-		await dispatch(ProductsThunks.fetchStoreCategories());
+		await dispatch(
+			ProductsThunks.fetchStoreCategories({
+				loading: true,
+				onError: (error) => {
+					if (error.response?.data) {
+						const { message } = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
 	}, []);
 
 	const loadProducts = useCallback(
 		async (enableLoader = true) => {
-			await dispatch(ProductsThunks.fetchProducts(enableLoader));
+			await dispatch(
+				ProductsThunks.fetchProducts({
+					loading: enableLoader,
+					onError: (error) => {
+						if (error.response) {
+							const message = error.response.data as SafeAny;
+
+							if (message && typeof message === "string") {
+								const translateMessage = t(`Errors.${message}`);
+
+								ToastService.createToast({
+									label: translateMessage,
+									colorScheme: "danger",
+								});
+							}
+						}
+					},
+				})
+			);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[filters]
 	);
 
 	const loadOrders = useCallback(async () => {
-		await dispatch(WaiterThunks.getMyOrders());
+		await dispatch(
+			WaiterThunks.getMyOrders({
+				loading: true,
+				onError: (error) => {
+					if (error.response) {
+						const message = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [orderFilters]);
 

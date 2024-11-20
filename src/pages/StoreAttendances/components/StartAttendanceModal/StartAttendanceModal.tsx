@@ -7,6 +7,8 @@ import { AttendancesService } from "../../../../api";
 import { Button, IconButton } from "../../../../components";
 import { useModal } from "../../../../hooks";
 import "./styles.scss";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface StartAttendanceModalProps {
 	tables_count?: number;
@@ -18,6 +20,7 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 	onClose,
 }) => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 	const { closeModal } = useModal();
 	const { control, setValue, handleSubmit, formState } =
 		useForm<ICreateAttendancePayload>({
@@ -52,7 +55,19 @@ const StartAttendanceModal: React.FC<StartAttendanceModalProps> = ({
 
 			setLoading(false);
 		} catch (error) {
-			console.log(error);
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
 			setLoading(false);
 		}
 	};

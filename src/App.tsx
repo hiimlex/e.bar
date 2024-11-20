@@ -1,3 +1,4 @@
+import { ToastProvider } from "leux";
 import { Provider as StoreProvider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import "./global.scss";
@@ -10,9 +11,11 @@ function App() {
 	return (
 		<StoreProvider store={store}>
 			<UserProvider />
-			<ModalProvider>
-				<RouterProvider router={router} />
-			</ModalProvider>
+			<ToastProvider duration={3000}>
+				<ModalProvider>
+					<RouterProvider router={router} />
+				</ModalProvider>
+			</ToastProvider>
 		</StoreProvider>
 	);
 }

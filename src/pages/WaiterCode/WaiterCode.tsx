@@ -8,11 +8,14 @@ import { Brands, Button, Input } from "../../components";
 import { AppDispatch, RootState, UserActions } from "../../store";
 import "./styles.scss";
 import { AttendancesService } from "../../api";
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 
 interface WaiterCodePageProps {}
 
 const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 	const { t } = useTranslation();
+	const ToastService = useToast();
 
 	const { control, handleSubmit, formState } = useForm<ICodePayload>({
 		mode: "all",
@@ -39,7 +42,19 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
+
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
 		}
 	};
 
