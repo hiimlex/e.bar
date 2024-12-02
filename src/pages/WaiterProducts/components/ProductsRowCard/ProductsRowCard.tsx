@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Minus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { IProduct } from "../../../../@types";
-import { IconButton } from "../../../../components";
+import { ChipStatus, IconButton } from "../../../../components";
 import "./styles.scss";
 
 interface ProductsRowCardProps {
@@ -34,9 +34,9 @@ const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
 					<h5 className="product-row-info-name">{product.name}</h5>
 
 					{!showChangeButtons && (
-						<span className="chip-status chip-status-secondary product-row-info-stock">
+						<ChipStatus colorScheme="secondary" customClass="product-row-info-stock">
 							{`${quantity}x`}
-						</span>
+						</ChipStatus>
 					)}
 				</div>
 				{showChangeButtons && (

@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 import { useCallback, useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -10,14 +12,18 @@ import {
 	WaitersFilters,
 } from "../../../../@types";
 import { WaitersService } from "../../../../api";
-import { Button, Input, OrderBy, Spinner } from "../../../../components";
+import {
+	Button,
+	ChipStatus,
+	Input,
+	OrderBy,
+	Spinner,
+} from "../../../../components";
 import { useModal } from "../../../../hooks";
 import { RootState } from "../../../../store";
 import { format } from "../../../../utils";
 import { WaiterModal } from "../WaiterModal";
 import "./styles.scss";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
 
 interface WaitersProps {}
 
@@ -180,7 +186,7 @@ const Waiters: React.FC<WaitersProps> = () => {
 							<div className="flex-col-text">
 								<div className="flex-row-text">
 									<span className="waiters-info-name">{waiter.name}</span>
-									<div className="chip-status chip-status-primary">
+									<ChipStatus colorScheme="primary">
 										{t(
 											`Generics.WaiterStatus.${
 												attendance?.working_at.some(
@@ -190,7 +196,7 @@ const Waiters: React.FC<WaitersProps> = () => {
 													: "Off"
 											}`
 										)}
-									</div>
+									</ChipStatus>
 								</div>
 								<span className="waiters-info-phone">{waiter.phone}</span>
 								<span className="waiters-info-email">{waiter.email}</span>

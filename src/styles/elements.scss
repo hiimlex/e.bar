@@ -1,4 +1,4 @@
-@import "./base.scss";
+@import "../base.scss";
 
 .modal {
 	min-width: 420px;
@@ -151,50 +151,6 @@
 		color: $color-disabled;
 		cursor: not-allowed !important;
 		scale: 1 !important;
-	}
-}
-
-.chip-status {
-	padding: 4px 12px;
-	border-radius: 12px;
-	font-weight: 600;
-	font-size: 14px;
-	width: fit-content;
-	height: fit-content;
-
-	&-primary {
-		background: $color-primary;
-		color: $color-white;
-	}
-
-	&-secondary {
-		background: $color-secondary;
-		color: $color-white;
-	}
-
-	&-danger {
-		background: $color-danger;
-		color: $color-white;
-	}
-
-	&-success {
-		background: $color-success;
-		color: $color-white;
-	}
-
-	&-success-outlined {
-		background: rgba($color-success, 0.2);
-		color: $color-success;
-	}
-
-	&-warning {
-		background: $color-warning;
-		color: $color-white;
-	}
-
-	&-default {
-		background: $color-gray-1;
-		color: $color-text-dark;
 	}
 }
 

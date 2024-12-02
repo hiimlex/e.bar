@@ -1,7 +1,11 @@
-import { ButtonHTMLAttributes, PropsWithChildren, useMemo } from "react";
-import "./styles.scss";
-import { ButtonSizes, ButtonThemes, ButtonVariants } from "../../@types/button.model";
+import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import {
+	ButtonSizes,
+	ButtonThemes,
+	ButtonVariants,
+} from "../../@types/button.model";
 import { Spinner } from "../Spinner";
+import S from "./Button.styles";
 
 interface ButtonProps
 	extends PropsWithChildren,
@@ -24,33 +28,24 @@ const Button: React.FC<ButtonProps> = ({
 	disabled,
 	...rest
 }) => {
-	const classNames = useMemo(
-		() =>
-			[
-				"button",
-				`button-${variant}`,
-				`button-${theme}`,
-				`button-${size}`,
-				`${loading ? "button-loading" : ""}`,
-				className,
-			].join(" "),
-		[className, variant, theme, size, loading]
-	);
-
 	const handleOnClick = () => {
 		if (loading) return;
 		onClick && onClick();
 	};
 
 	return (
-		<button
+		<S.Button
+			as="button"
 			disabled={disabled}
+			colorScheme={theme}
+			variant={variant}
+			size={size}
 			onClick={handleOnClick}
-			className={classNames}
+			className={className}
 			{...rest}
 		>
 			{loading ? <Spinner size={24} theme="white" /> : children}
-		</button>
+		</S.Button>
 	);
 };
 

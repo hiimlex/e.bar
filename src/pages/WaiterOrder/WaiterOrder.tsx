@@ -5,7 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, Icons, MainContainer } from "../../components";
+import {
+	Button,
+	ChipStatus,
+	ChipStatusProps,
+	Icons,
+	MainContainer,
+} from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import "./styles.scss";
 import { useToast } from "leux";
@@ -86,12 +92,15 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 		navigate(to);
 	};
 
-	const orderStatusClass = useMemo(() => {
+	const orderStatusChip: {
+		colorScheme: ChipStatusProps["colorScheme"];
+		variant: ChipStatusProps["variant"];
+	} = useMemo(() => {
 		if (order?.status === "FINISHED") {
-			return "chip-status-success-outlined";
+			return { colorScheme: "success", variant: "outlined" };
 		}
 
-		return "chip-status-secondary";
+		return { colorScheme: "secondary", variant: "filled" };
 	}, [order?.status]);
 
 	useEffect(() => {
@@ -105,21 +114,26 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 				<main className="w-on-order-content">
 					<header className={`w-on-order-header`}>
 						<div className="flex flex-row gap-2">
-							<span className="w-on-order-chip chip-status chip-status-primary">
+							<ChipStatus customClass="w-on-order-chip" colorScheme="primary">
 								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
-							</span>
+							</ChipStatus>
 
-							<span className="w-on-order-chip chip-status chip-status-primary flex flex-row gap-2">
+							<ChipStatus
+								colorScheme="primary"
+								customClass="w-on-order-chip flex flex-row gap-2"
+							>
 								<User size={20} />
 								{order?.customers || 0}
-							</span>
+							</ChipStatus>
 
 							{order?.status && (
-								<span
-									className={`w-on-order-chip chip-status ${orderStatusClass}`}
+								<ChipStatus
+									customClass="w-on-order-chip"
+									variant={orderStatusChip.variant}
+									colorScheme={orderStatusChip.colorScheme}
 								>
 									{t(`Generics.OrderStatus.${order?.status}`)}
-								</span>
+								</ChipStatus>
 							)}
 						</div>
 						<div className="flex-row-text w-on-order-header-title">

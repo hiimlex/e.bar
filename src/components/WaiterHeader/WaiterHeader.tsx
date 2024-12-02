@@ -5,7 +5,7 @@ import "./styles.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { WaiterHeaderProps } from "../../@types";
-
+import { ChipStatus } from "../ChipStatus";
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	onGoBack,
@@ -24,9 +24,13 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	return (
 		<div className="w-app-header-wrapper">
 			{showCode && !!attendance && (
-				<span className="chip-status chip-status-success-outlined text-center self-center">
+				<ChipStatus
+					variant="outlined"
+					colorScheme="success"
+					customClass="text-center self-center"
+				>
 					#{attendance.code}
-				</span>
+				</ChipStatus>
 			)}
 			<header className={`w-app-header w-app-header-${breakpoint}`}>
 				<div className="flex-1 w-app-header-action">

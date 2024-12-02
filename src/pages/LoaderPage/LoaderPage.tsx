@@ -1,11 +1,11 @@
 import { Spinner } from "../../components";
-import "./styles.scss";
+import S from "./LoaderPage.styles";
 
 const LoaderPage = () => {
 	return (
-		<div className="loading-app">
+		<S.LoadingApp className="loading-app">
 			<Spinner theme="secondary" size={32} />
-		</div>
+		</S.LoadingApp>
 	);
 };
 

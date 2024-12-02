@@ -9,6 +9,7 @@ import { ScrollToTop } from "../ScrollToTop";
 import { Sidebar } from "../Sidebar";
 import { WaiterHeader } from "../WaiterHeader";
 import "./styles.scss";
+
 interface MainContainerProps extends PropsWithChildren, WaiterHeaderProps {
 	showAdminHeader?: boolean;
 	wrapperRef?: React.RefObject<HTMLDivElement>;

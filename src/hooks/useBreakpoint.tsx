@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 
-type Breakpoints = "sm" | "md" | "lg" | "xl";
+export type Breakpoints = "sm" | "md" | "lg" | "xl";
 
 type BreakpointType = {
 	breakpoint: Breakpoints;

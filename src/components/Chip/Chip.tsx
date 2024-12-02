@@ -7,7 +7,7 @@ import {
 } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { useScroll } from "../../hooks";
-import "./styles.scss";
+import S from "./Chip.styles";
 
 interface ChipProps extends PropsWithChildren {
 	active?: boolean;
@@ -28,15 +28,15 @@ const Chip: React.FC<ChipProps> = ({
 		}
 	};
 
-	const classNames = useMemo(
-		() => `chip ${active ? "active" : ""} ${theme ? `chip-${theme}` : ""}`,
-		[active]
-	);
-
 	return (
-		<div onClick={handleOnClick} role="button" className={classNames}>
+		<S.Chip
+			onClick={handleOnClick}
+			active={active}
+			role="button"
+			colorScheme={theme}
+		>
 			{children}
-		</div>
+		</S.Chip>
 	);
 };
 
@@ -48,6 +48,7 @@ const ChipWrapper: React.FC<
 	ChipWrapperProps & RefAttributes<HTMLDivElement>
 > = ({ children, maxWidth, ...rest }) => {
 	const chipWrapperRef = useRef<HTMLDivElement>(null);
+
 	const [intervalId, setIntervalId] = useState<number | null>(null);
 
 	const { scrollLeft, scrollWidth } = useScroll(
@@ -106,38 +107,29 @@ const ChipWrapper: React.FC<
 	};
 
 	return (
-		<div className="chip-container">
+		<S.ChipContainer isScrollable={isScrollable}>
 			{isScrollable && (
-				<button
-					className="chip-wrapper-arrow-left"
+				<S.ChipWrapperArrowLeft
 					onMouseDown={() => keepScrolling(-100)}
 					onMouseUp={stopScrolling}
 					disabled={scrollLeft < 30}
 				>
 					<ChevronLeft size={24} strokeWidth={2} />
-				</button>
+				</S.ChipWrapperArrowLeft>
 			)}
-			<div
-				className={`chip-container ${
-					isScrollable && "chip-wrapper-scrollable"
-				} ${scrollLeft > 30 && "scrollable-left"}`}
-				style={{ maxWidth }}
-				ref={chipWrapperRef}
-				{...rest}
-			>
+			<S.ChipWrapper style={{ maxWidth }} ref={chipWrapperRef} {...rest}>
 				{children}
-			</div>
+			</S.ChipWrapper>
 			{isScrollable && (
-				<button
+				<S.ChipWrapperArrowRight
 					disabled={!canScrollRight}
-					className="chip-wrapper-arrow-right"
 					onMouseDown={() => keepScrolling(100)}
 					onMouseUp={stopScrolling}
 				>
 					<ChevronRight size={24} strokeWidth={2} />
-				</button>
+				</S.ChipWrapperArrowRight>
 			)}
-		</div>
+		</S.ChipContainer>
 	);
 };
 

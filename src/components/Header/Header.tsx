@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Pages } from "../../@types";
 import { useBreakpoint } from "../../hooks";
-import { Brands } from "../Brands";
-import "./styles.scss";
-import { useDispatch } from "react-redux";
 import { UserActions } from "../../store";
+import { Brands } from "../Brands";
 
 const NAV_LINKS: NavLink[] = [
 	{ to: Pages.StoreAttendances, label: "Atendimento" },
@@ -13,6 +12,8 @@ const NAV_LINKS: NavLink[] = [
 	// { to: Pages.Orders, label: "Pedidos" },
 	// { to: Pages.Sales, label: "Vendas" },
 ];
+
+import S from "./Header.styles";
 
 const Header: React.FC = () => {
 	const { breakpoint } = useBreakpoint();
@@ -44,32 +45,28 @@ const Header: React.FC = () => {
 	}, []);
 
 	return (
-		<div className={`header-wrapper ${scrolled ? "header-scrolled" : ""}`}>
-			<div className={`header header-${breakpoint}`}>
-				<div className="header-brands">
+		<S.HeaderWrapper isScrolled={scrolled}>
+			<S.Header breakpoint={breakpoint}>
+				<S.HeaderBrands className="header-brands">
 					<Brands.EBarBrand />
-				</div>
+				</S.HeaderBrands>
 
-				<nav className="header-nav">
+				<S.HeaderNav className="header-nav">
 					{NAV_LINKS.map((link, index) => {
 						const isActive = location.pathname === link.to;
 
 						return (
-							<Link
-								key={index}
-								className={`header-nav-link ${isActive ? "active" : ""}`}
-								to={link.to}
-							>
+							<S.NavLink key={index} active={isActive} to={link.to}>
 								{link.label}
-							</Link>
+							</S.NavLink>
 						);
 					})}
 					<span className="header-nav-link" onClick={logout}>
 						Sair
 					</span>
-				</nav>
-			</div>
-		</div>
+				</S.HeaderNav>
+			</S.Header>
+		</S.HeaderWrapper>
 	);
 };
 

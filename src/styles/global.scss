@@ -1,0 +1,73 @@
+@import "../base.scss";
+
+.flex-col-text {
+	display: flex;
+	flex-direction: column;
+	gap: $unit-1;
+}
+
+.flex-row-text {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.fill-row {
+	align-self: stretch;
+	width: 100%;
+}
+
+.fill-height {
+	align-self: stretch;
+	height: 100%;
+}
+
+.gap-3 {
+	gap: $unit-3;
+}
+
+.dashline {
+	border-top: 1px solid $color-gray-2;
+}
+
+.text-currency {
+	display: grid;
+	grid-template-columns: 30px 1fr;
+	gap: 6px;
+
+	&:last-child {
+		text-align: right;
+	}
+}
+
+.flex-1 {
+	display: flex;
+	flex: 1;
+}
+
+.scrollable-y {
+	overflow-x: auto;
+}
+
+.scrollable-x {
+	overflow-x: auto;
+}
+
+.no-scroll {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.le-dropdown {
+	background: $color-background;
+	border-radius: 12px;
+	box-shadow: 0 4px 5px 1px rgba(#333, 0.1);
+}

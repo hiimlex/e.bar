@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { FieldErrorsType, ICodePayload, Pages } from "../../@types";
 import { Brands, Button, Input } from "../../components";
 import { AppDispatch, RootState, UserActions } from "../../store";
-import "./styles.scss";
 import { AttendancesService } from "../../api";
 import { AxiosError } from "axios";
 import { useToast } from "leux";
+
+import S from "./WaiterCode.styles";
 
 interface WaiterCodePageProps {}
 
@@ -66,16 +67,16 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 	}, [attendance]);
 
 	return (
-		<div className="w-code">
-			<div className="w-code-content">
+		<S.Container>
+			<S.Content>
 				<Brands.EBarBrand />
 
-				<h2
+				<S.Title
 					className="w-code-subtitle"
 					dangerouslySetInnerHTML={{ __html: t("WaiterCode.Subtitle") }}
 				/>
 
-				<form className="w-code-form" onSubmit={handleSubmit(onVerifyCode)}>
+				<S.Form className="w-code-form" onSubmit={handleSubmit(onVerifyCode)}>
 					<Controller
 						name="code"
 						rules={{
@@ -109,9 +110,9 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 					<Button disabled={!canVerifyCode} loading={loading} type="submit">
 						{t("Generics.Buttons.Continue")}
 					</Button>
-				</form>
-			</div>
-		</div>
+				</S.Form>
+			</S.Content>
+		</S.Container>
 	);
 };
 

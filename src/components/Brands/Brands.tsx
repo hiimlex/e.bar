@@ -3,17 +3,17 @@ interface BrandProps {
 }
 
 import React from "react";
-import "./styles.scss";
+import { S } from "./Brands.styles";
 
 const EBarBrand: React.FC<BrandProps> = () => {
 	return (
-		<h1 className="text-logo">
+		<S.TextLogo>
 			<strong>e</strong>.bar
-		</h1>
-		// <img src={socialsipsvg} className="brand-img" style={styles} alt="Social Sips" />
+		</S.TextLogo>
+		// <img src={socialsipsvg} className={s.brandImg} style={styles} alt="Social Sips" />
 	);
 };
 
 const Brands = { EBarBrand };
 
-export { Brands };
+export default Brands;

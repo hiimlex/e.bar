@@ -8,8 +8,8 @@ import { FieldErrorsType, LoginPayload, Pages } from "../../@types";
 import { AUTH_TOKEN_KEY, AuthService } from "../../api";
 import { Brands, Button, Input } from "../../components";
 import { AppDispatch, RootState, UserActions } from "../../store";
-import "./styles.scss";
 import { useToast } from "leux";
+import S from "./Login.styles";
 
 interface LoginPageProps {}
 
@@ -93,16 +93,13 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	}, [isAuthenticated, isAdmin, waiter, store]);
 
 	return (
-		<div className="login">
-			<div className="login-content">
+		<S.Container>
+			<S.Content>
 				<Brands.EBarBrand />
 
-				<h2
-					className="login-subtitle"
-					dangerouslySetInnerHTML={{ __html: t("Login.Subtitle") }}
-				/>
+				<S.Title dangerouslySetInnerHTML={{ __html: t("Login.Subtitle") }} />
 
-				<form className="login-form" onSubmit={handleSubmit(onLogin)}>
+				<S.Form onSubmit={handleSubmit(onLogin)}>
 					<Controller
 						name="email"
 						rules={{
@@ -167,9 +164,9 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 					<Button disabled={!canLogin} loading={loading} type="submit">
 						{t("Generics.Buttons.Continue")}
 					</Button>
-				</form>
-			</div>
-		</div>
+				</S.Form>
+			</S.Content>
+		</S.Container>
 	);
 };
 

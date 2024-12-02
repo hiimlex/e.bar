@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IOrder, TOrderStatus } from "../../../../@types";
+import { ChipStatus, ChipStatusProps } from "../../../../components";
 import "./styles.scss";
 interface SalesWaitersOrder {
 	order: IOrder;
@@ -10,26 +11,26 @@ const SalesWaitersOrder: React.FC<SalesWaitersOrder> = ({ order }) => {
 	const { t } = useTranslation();
 	const [expand, setExpand] = useState(false);
 
-	const getStatusColor: Record<TOrderStatus, string> = {
-		CANCELED: "chip-status-danger",
-		DELIVERED: "chip-status-secondary",
-		FINISHED: "chip-status-success",
-		PENDING: "chip-status-warning",
+	const getStatusColor: Record<TOrderStatus, ChipStatusProps["colorScheme"]> = {
+		CANCELED: "danger",
+		DELIVERED: "secondary",
+		FINISHED: "success",
+		PENDING: "warning",
 	};
 
 	return (
 		<div className="sl-order">
 			<div className="sl-order-status">
 				{typeof order.table !== "string" && (
-					<span className="chip-status chip-status-primary">
+					<ChipStatus colorScheme="primary">
 						{t("WaiterMyOrders.Card.TableNumber", {
 							number: order.table.number,
 						})}
-					</span>
+					</ChipStatus>
 				)}
-				<span className={`chip-status ${getStatusColor[order.status]}`}>
+				<ChipStatus colorScheme={getStatusColor[order.status]}>
 					{t(`Generics.OrderStatus.${order.status}`)}
-				</span>
+				</ChipStatus>
 			</div>
 			<div className="flex flex-row justify-between">
 				<span className="sl-order-id">Pedido N° {order.number}</span>

@@ -1,18 +1,18 @@
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 import { useCallback, useEffect, useState } from "react";
 import { Plus, User } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { ITable, ITableFilters, TOrderBy } from "../../../../@types";
 import { AttendancesService, TablesService } from "../../../../api";
-import { Button, OrderBy, Spinner } from "../../../../components";
+import { ChipStatus, Button, OrderBy, Spinner } from "../../../../components";
 import {
 	AppDispatch,
 	RootState,
 	onAttendancefetchAttendance,
 } from "../../../../store";
 import "./styles.scss";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
 
 interface TablesProps {}
 
@@ -137,11 +137,14 @@ const Tables: React.FC<TablesProps> = () => {
 								}`}
 							>
 								{table.in_use && table.order && (
-									<div className="chip-status chip-status-primary flex flex-row items-center gap-1">
+									<ChipStatus
+										colorScheme="primary"
+										customClass="flex flex-row items-center gap-1"
+									>
 										{/* {t(`Generics.TableStatus.${table.in_use ? "InUse" : "Free"}`)} */}
 										<User size={16} color="white" />
 										{typeof table.order !== "string" && table.order.customers}
-									</div>
+									</ChipStatus>
 								)}
 
 								<span className="tables-info-number flex justify-self-end">

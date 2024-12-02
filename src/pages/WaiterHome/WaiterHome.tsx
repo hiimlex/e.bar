@@ -1,3 +1,4 @@
+import { useToast } from "leux";
 import { useCallback, useEffect } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -15,8 +16,8 @@ import {
 	WaiterThunks,
 } from "../../store";
 import { WaiterOrdersCard, WaiterProductCard } from "./components";
-import "./styles.scss";
-import { useToast } from "leux";
+
+import S from "./WaiterHome.styles";
 
 interface WaiterHomePageProps {}
 
@@ -170,11 +171,11 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 
 	return (
 		<MainContainer showCode>
-			<div className="w-home">
-				<main className="w-home-content">
-					<span className="page-title">
+			<S.Container>
+				<S.Content>
+					<S.PageTitle>
 						{t("WaiterHome.Subtitle", { name: waiter?.name })}
-					</span>
+					</S.PageTitle>
 					<Button
 						className="fill-row"
 						onClick={() => navigate(Pages.WaiterNewOrder)}
@@ -182,11 +183,9 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						{t("WaiterHome.Buttons.NewOrder")}
 					</Button>
 
-					<div className="w-home-orders">
-						<div className="w-home-orders--header">
-							<span className="w-home-subtitle">
-								{t("WaiterHome.Labels.MyOrders")}
-							</span>
+					<S.Section>
+						<S.SectionHeader>
+							<S.PageSubtitle>{t("WaiterHome.Labels.MyOrders")}</S.PageSubtitle>
 							<span
 								className="link link-secondary"
 								role="button"
@@ -194,15 +193,15 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 							>
 								{t("WaiterHome.Labels.SeeAll")}
 							</span>
-						</div>
+						</S.SectionHeader>
 						{!loadingOrders && orders.length === 0 && (
-							<div className="w-home-empty">
+							<S.Empty>
 								<FileMinus strokeWidth={2} size={32} />
 								<div>{t("Empty.Orders")}</div>
-							</div>
+							</S.Empty>
 						)}
 						{!loadingOrders && (
-							<div className="w-home-grid">
+							<S.Grid>
 								{orders.map((order, index) => (
 									<WaiterOrdersCard
 										order={order}
@@ -210,22 +209,20 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 										key={index}
 									/>
 								))}
-							</div>
+							</S.Grid>
 						)}
 						{loadingOrders && (
-							<div className="w-home-loading">
+							<S.LoadingContainer>
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">
 									<span>{t("Loaders.Orders")}</span>
 								</span>
-							</div>
+							</S.LoadingContainer>
 						)}
-					</div>
-					<div className="w-home-products">
-						<div className="w-home-products--header">
-							<span className="w-home-subtitle">
-								{t("WaiterHome.Labels.Products")}
-							</span>
+					</S.Section>
+					<S.Section>
+						<S.SectionHeader>
+							<S.PageSubtitle>{t("WaiterHome.Labels.Products")}</S.PageSubtitle>
 							<span
 								role="button"
 								className="link link-secondary"
@@ -233,8 +230,8 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 							>
 								{t("WaiterHome.Labels.SeeAll")}
 							</span>
-						</div>
-						<div className="w-home-grid">
+						</S.SectionHeader>
+						<S.Filters className="w-home-grid">
 							<Chip
 								active={!filters.category_id && !filters.no_stock}
 								clickable
@@ -262,33 +259,33 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 									{category.name}
 								</Chip>
 							))}
-						</div>
-						{!isLoadingProducts && products.length === 0 && (
-							<div className="w-home-empty">
-								<FileMinus strokeWidth={2} size={32} />
-								<div>{t("Empty.Products")}</div>
-							</div>
-						)}
+						</S.Filters>
 						{!isLoadingProducts && (
-							<div className="w-home-grid">
+							<S.Grid className="w-home-grid">
 								{products.map((product) => (
 									<WaiterProductCard product={product} key={product._id} />
 								))}
-							</div>
+							</S.Grid>
 						)}
 						{isLoadingProducts && (
-							<div className="w-home-loading">
+							<S.LoadingContainer className="w-home-loading">
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">
 									{t("Loaders.Products")}
 								</span>
-							</div>
+							</S.LoadingContainer>
 						)}
-					</div>
-				</main>
-			</div>
+						{!isLoadingProducts && products.length === 0 && (
+							<S.Empty className="w-home-empty">
+								<FileMinus strokeWidth={2} size={32} />
+								<div>{t("Empty.Products")}</div>
+							</S.Empty>
+						)}
+					</S.Section>
+				</S.Content>
+			</S.Container>
 		</MainContainer>
 	);
 };
 
-export { WaiterHomePage };
+export default WaiterHomePage;

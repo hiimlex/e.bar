@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { Pages, SafeAny, TabEnum, TabItemType } from "../../@types";
-import { MainContainer } from "../../components";
+import { ChipStatus, MainContainer } from "../../components";
 import {
 	AppDispatch,
 	OnAttendanceActions,
@@ -61,7 +61,7 @@ const StoreAttendanceView: React.FC = () => {
 						setLoading(false);
 
 						if (error.response) {
-							const message  = (error.response.data as SafeAny);
+							const message = error.response.data as SafeAny;
 
 							if (message && typeof message === "string") {
 								const translateMessage = t(`Errors.${message}`);
@@ -131,34 +131,32 @@ const StoreAttendanceView: React.FC = () => {
 									code: attendance?.code || "",
 								})}
 							</h4>
-							<span className="chip-status chip-status-success-outlined">
+							<ChipStatus colorScheme="success" variant="outlined">
 								{t(`Generics.AttendanceStatus.${attendance?.status}`)}
-							</span>
+							</ChipStatus>
 						</div>
 					</header>
 
 					<div className="b-o-attendance-status">
 						<div className="flex group">
 							<span className="group-label">Inicio</span>
-							<span className="group-value chip-status chip-status-default">
+							<ChipStatus customClass="group-value">
 								{attendance?.started_at &&
 									format(
 										new Date(attendance?.started_at),
 										t("Generics.Dates.Long.Format")
 									)}
-							</span>
+							</ChipStatus>
 						</div>
 						<div className="flex group">
 							<span className="group-label">Mesas ativas</span>
-							<span className="group-value chip-status chip-status-default">
+							<ChipStatus customClass="group-value">
 								{attendance?.tables_count || "---"}
-							</span>
+							</ChipStatus>
 						</div>
 						<div className="flex group">
 							<span className="group-label">Garçons ativos</span>
-							<span className="group-value chip-status chip-status-default">
-								{"12"}
-							</span>
+							<ChipStatus customClass="group-value ">{"12"}</ChipStatus>
 						</div>
 					</div>
 

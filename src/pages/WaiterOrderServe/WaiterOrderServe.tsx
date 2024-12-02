@@ -1,15 +1,15 @@
+import { AxiosError } from "axios";
+import { useToast } from "leux";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { IOrderProduct, Pages, UpdateOrderProductPayload } from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, MainContainer } from "../../components";
+import { Button, ChipStatus, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import "./styles.scss";
 import { LoaderPage } from "../LoaderPage";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
+import "./styles.scss";
 
 interface WaiterOrderServePageProps {}
 
@@ -137,12 +137,18 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 				<main className="w-serve-order-content">
 					<header className={`w-serve-order-header`}>
 						<div className="flex flex-row gap-2">
-							<span className="w-serve-order-table chip-status chip-status-secondary">
+							<ChipStatus
+								colorScheme="secondary"
+								customClass="w-serve-order-table"
+							>
 								{t(`WaiterOrder.Labels.OrderNumber`, { number: order?.number })}
-							</span>
-							<span className="w-serve-order-table chip-status chip-status-primary">
+							</ChipStatus>
+							<ChipStatus
+								colorScheme="primary"
+								customClass="w-serve-order-table"
+							>
 								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
-							</span>
+							</ChipStatus>
 						</div>
 					</header>
 					<span

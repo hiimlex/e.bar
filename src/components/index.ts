@@ -1,3 +1,4 @@
+export * from "./ChipStatus";
 export * from "./Brands";
 export * from "./Button";
 export * from "./Chip";

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ITable, NamespaceKeys, Pages } from "../../@types";
 import { TablesService, WaiterOrdersService } from "../../api";
-import { Button, Input, MainContainer } from "../../components";
+import { Button, ChipStatus, Input, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import { User } from "react-feather";
 import "./styles.scss";
@@ -151,17 +151,15 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 															number: table.number,
 														})}
 													</span>
-													<div
-														className={`chip-status chip-status-${
-															isSelected ? "secondary" : "primary"
-														}`}
+													<ChipStatus
+														colorScheme={isSelected ? "secondary" : "primary"}
 													>
 														{t(
 															`Generics.TableStatus.${
 																table.in_use ? "InUse" : "Free"
 															}`
 														)}
-													</div>
+													</ChipStatus>
 												</div>
 												<span className="table-info-bartender">
 													{table.in_use

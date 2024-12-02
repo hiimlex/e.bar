@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { IOrder, TOrderStatus } from "../../../../@types";
 import "./styles.scss";
 import { useTranslation } from "react-i18next";
+import { ChipStatus, ChipStatusProps } from "../../../../components";
 interface WaiterOrdersCardProps {
 	onClick?: (order: IOrder) => void;
 	order: IOrder;
@@ -17,22 +18,22 @@ const WaiterOrdersCard: React.FC<WaiterOrdersCardProps> = ({
 		[order.table]
 	);
 
-	const getStatusColor: Record<TOrderStatus, string> = {
-		CANCELED: "chip-status-danger",
-		DELIVERED: "chip-status-secondary",
-		FINISHED: "chip-status-success",
-		PENDING: "chip-status-warning",
+	const getStatusColor: Record<TOrderStatus, ChipStatusProps["colorScheme"]> = {
+		CANCELED: "danger",
+		DELIVERED: "secondary",
+		FINISHED: "success",
+		PENDING: "warning",
 	};
 
 	return (
 		<div className="w-order">
 			<div className="w-order-status">
-				<span className="chip-status chip-status-primary">
+				<ChipStatus colorScheme="primary">
 					{t("WaiterHome.Labels.TableNumber", { number: tableNumber || "" })}
-				</span>
-				<span className={`chip-status ${getStatusColor[order.status]}`}>
+				</ChipStatus>
+				<ChipStatus colorScheme={getStatusColor[order.status]}>
 					{t(`Generics.OrderStatus.${order.status}`)}
-				</span>
+				</ChipStatus>
 			</div>
 
 			<div className="w-order-row">
