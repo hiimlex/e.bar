@@ -8,6 +8,7 @@ export interface IPaymentForm {
 	receivedValue: number;
 	name: string;
 	nf: string;
+	attachment: File | null;
 }
 
 interface IPixPayment {

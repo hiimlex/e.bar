@@ -1,13 +1,21 @@
 import { keyframes } from "styled-components";
 
 export const shouldForwardProp: (prop: string) => boolean = (prop) =>
-	!["colorScheme", "variant", "size", "active", "breakpoint"].includes(prop);
+	![
+		"colorScheme",
+		"variant",
+		"size",
+		"active",
+		"breakpoint",
+		"textColored",
+		"textColor",
+		"textSlashed",
+	].includes(prop);
 
 export const colors = {
 	primary: "#9a36fd",
 	secondary: "#201f20",
 	background: "#fcfcfc",
-	white: "#fff",
 
 	gray100: "#f0f0f0",
 	gray200: "#d8d8d8",
@@ -25,16 +33,19 @@ export const styles = {
 	scaleLarge: 1.1,
 };
 
+export type CustomThemeText = keyof typeof text;
+
 export const text = {
 	placeholder: "#505050",
 	dark: "#414141",
 	darker: "#212121",
+	white: "#fff",
 };
 
 export const shadows = {
-	soft: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-	normal: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-	strong: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+	soft: "0px 3px 5px rgba(0, 0, 0, 0.05)",
+	normal: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+	strong: "0px 6px 15px rgba(0, 0, 0, 0.2)",
 };
 
 export const theme = {

@@ -38,7 +38,7 @@ const Chip = styled.div.withConfig({
 			active &&
 			`
 			background: ${theme.colors.primary};
-			color: ${theme.colors.white};
+			color: ${theme.text.white};
 		`
 		}
 	`}
@@ -54,7 +54,7 @@ const Chip = styled.div.withConfig({
 			active &&
 			`
 			background: ${theme.colors.secondary};
-			color: ${theme.colors.white};
+			color: ${theme.text.white};
 		`
 		}
 	`}

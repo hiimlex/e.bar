@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useToast } from "leux";
+import { useCallback, useEffect } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +12,10 @@ import {
 	WaiterActions,
 	WaiterThunks,
 } from "../../store";
+import { Styled } from "../../styles";
 import { SalesWaitersOrder } from "../Sales";
 import { WaiterOrdersCard } from "../WaiterHome";
-import "./styles.scss";
-import { useToast } from "leux";
+import S from "./WaiterMyOrders.styles";
 
 interface WaiterMyOrdersPageProps {}
 
@@ -29,7 +30,6 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 		loadingOrders,
 		filters: orderFilters,
 	} = useSelector((state: RootState) => state.waiter);
-	const [showFilter, setShowFilter] = useState(false);
 
 	const goBack = () => {
 		navigate(Pages.WaiterHome);
@@ -95,15 +95,15 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 
 	return (
 		<MainContainer showGoBack onGoBack={goBack}>
-			<div className="w-orders">
-				<main className="w-orders-content">
-					<header className={`w-orders-header`}>
-						<span
-							className="page-title"
+			<S.Container className="w-orders">
+				<S.Content className="w-orders-content">
+					<S.Header className={`w-orders-header`}>
+						<Styled.Typography.Title
+							textColor="darker"
 							dangerouslySetInnerHTML={{ __html: t("WaiterMyOrders.Title") }}
-						></span>
+						></Styled.Typography.Title>
 
-						<div className="w-orders-filters">
+						<S.Filters className="w-orders-filters">
 							<Chip
 								clickable
 								active={orderFilters?.status === undefined}
@@ -120,8 +120,8 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 							>
 								{t("WaiterMyOrders.Filters.Finished")}
 							</Chip>
-						</div>
-						<div className="w-orders-filters">
+						</S.Filters>
+						<S.Filters className="w-orders-filters">
 							<OrderBy
 								label="Total"
 								onOrderChange={(sort) => onChangeSort(sort, "total")}
@@ -138,11 +138,11 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 									orderFilters.sort_by !== "created_at"
 								}
 							/>
-						</div>
-					</header>
+						</S.Filters>
+					</S.Header>
 
 					{!loadingOrders ? (
-						<div className="w-orders-list no-scroll">
+						<S.List className="no-scroll">
 							{orders.map((order, index) => (
 								<div key={index}>
 									{order.status === "PENDING" && (
@@ -158,22 +158,22 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 								</div>
 							))}
 							{orders.length === 0 && (
-								<div className="empty-box">
+								<Styled.Empty className="empty-box">
 									<FileMinus size={32} />
 									<span>{t("Empty.Orders")}</span>
-								</div>
+								</Styled.Empty>
 							)}
-						</div>
+						</S.List>
 					) : (
-						<div className="w-orders-loading">
+						<Styled.LoadingContainer className="w-orders-loading">
 							<Spinner size={32} theme="primary" />
-							<span className="w-orders-loading-message">
+							<Styled.Typography.Caption className="w-orders-loading-message">
 								{t("Loaders.AttendanceOrders")}
-							</span>
-						</div>
+							</Styled.Typography.Caption>
+						</Styled.LoadingContainer>
 					)}
-				</main>
-			</div>
+				</S.Content>
+			</S.Container>
 		</MainContainer>
 	);
 };

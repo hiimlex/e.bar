@@ -1,55 +1,31 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { AxiosError } from "axios";
+import { Box, useToast } from "leux";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-	FieldErrorsType,
-	ICreatePayment,
-	IPaymentForm,
-	Pages,
-	TPaymentMethods,
-} from "../../@types";
+import { ICreatePayment, IPaymentForm, Pages } from "../../@types";
 import { PaymentsService, WaiterOrdersService } from "../../api";
-import { Button, Input, MainContainer } from "../../components";
+import { BottomSheet, Button, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import "./styles.scss";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
+
+import { Styled } from "../../styles";
+import S from "./WaiterOrderPayment.styles";
+import { AddPaymentBottomSheet } from "./components/AddPaymentBottomSheet";
 
 const WaiterOrderPaymentPage: React.FC = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+	const [showAddPayment, setShowAddPayment] = useState(true);
 	const ToastService = useToast();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const {
-		control,
-		formState: { isValid },
-		watch,
-		handleSubmit,
-	} = useForm<IPaymentForm>({
-		mode: "all",
-	});
 
-	const values = watch();
-
-	const [method, setMethod] = useState<TPaymentMethods>("pix");
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const { attendance } = useSelector((state: RootState) => state.user);
 	const [loading, setLoading] = useState(false);
-
-	const chargeBack = useMemo(() => {
-		if (order?.total) {
-			if (values.receivedValue > order.total) {
-				return values.receivedValue - order.total;
-			}
-		}
-
-		return 0;
-	}, [values.receivedValue]);
 
 	const getOrder = useCallback(async () => {
 		try {
@@ -91,10 +67,6 @@ const WaiterOrderPaymentPage: React.FC = () => {
 		const to = Pages.WaiterOrder.replace(":orderId", orderId || "");
 
 		navigate(to);
-	};
-
-	const selectPaymentMethod = (method: TPaymentMethods) => {
-		setMethod(method);
 	};
 
 	const onPay = async (data: IPaymentForm) => {
@@ -159,182 +131,73 @@ const WaiterOrderPaymentPage: React.FC = () => {
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
-			<div className="w-op">
-				<main className="w-op-header">
-					<header>
-						<span
-							className="page-title"
-							dangerouslySetInnerHTML={{
-								__html: t("WaiterOrderPayment.Title"),
-							}}
-						></span>
-					</header>
-				</main>
-				<div className="w-op-container">
-					<div className="flex flex-row justify-between items-center">
-						<strong className="w-op-total">
-							{t("WaiterOrderPayment.Labels.Total")}
-						</strong>
-						<strong className="w-op-total-value">R$ {order?.total || 0}</strong>
-					</div>
-					<div className="w-op-methods">
-						<span className="w-op-methods-title">
-							{t("WaiterOrderPayment.Labels.PaymentMethod")}
-						</span>
-						<div className="flex flex-row items-center justify-between">
-							<div
-								role="button"
-								onClick={() => selectPaymentMethod("pix")}
-								className={`w-op-methods-item ${
-									method === "pix" ? "active" : ""
-								}`}
-							>
-								<img src="/src/assets/pix.svg"></img>
-								<label className="label">
-									{t("WaiterOrderPayment.Labels.Pix")}
-								</label>
-							</div>
-							<div
-								role="button"
-								onClick={() => selectPaymentMethod("credit-card")}
-								className={`w-op-methods-item ${
-									method === "credit-card" ? "active" : ""
-								}`}
-							>
-								<img src="/src/assets/credit-card.svg"></img>
-								<label>{t("WaiterOrderPayment.Labels.CreditCard")}</label>
-							</div>
-							<div
-								role="button"
-								onClick={() => selectPaymentMethod("cash")}
-								className={`w-op-methods-item ${
-									method === "cash" ? "active" : ""
-								}`}
-							>
-								<img src="/src/assets/cash.svg"></img>
-								<label>{t("WaiterOrderPayment.Labels.Cash")}</label>
-							</div>
-						</div>
-					</div>
+			<S.Wrapper>
+				<S.Header className="w-op-header">
+					<span
+						className="page-title"
+						dangerouslySetInnerHTML={{
+							__html: t("WaiterOrderPayment.Title"),
+						}}
+					></span>
+				</S.Header>
+				<S.Container>
+					<S.ContainerHeader>
+						<Box
+							flex
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="space-between"
+						>
+							<Styled.Typography.Subtitle2 className="w-op-order">
+								{t("WaiterOrderPayment.Labels.Payment")}
+							</Styled.Typography.Subtitle2>
+							<S.ClickableIcon>
+								<img src="/src/assets/qr_code.svg"></img>
+							</S.ClickableIcon>
+						</Box>
+						<Box
+							flex
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="space-between"
+						>
+							<Styled.Typography.BodyBold textColor="dark">
+								{t("WaiterOrderPayment.Labels.Total")}
+							</Styled.Typography.BodyBold>
+							<Styled.Typography.BodyBold textColor="dark">
+								R$ {order?.total || 0}
+							</Styled.Typography.BodyBold>
+						</Box>
+						<Box
+							flex
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="space-between"
+						>
+							<Styled.Typography.BodyBold textColor="dark">
+								{t("WaiterOrderPayment.Labels.ValuePerPerson")}
+							</Styled.Typography.BodyBold>
+							<Styled.Typography.BodyBold textColor="dark">
+								R$ {(order?.total || 0) / (order?.customers || 1)}
+							</Styled.Typography.BodyBold>
+						</Box>
+					</S.ContainerHeader>
 
-					{method === "pix" && (
-						<div className="w-op-pix">
-							<span className="text-subtitle-2">
-								{t("WaiterOrderPayment.Labels.Name")}
-							</span>
-							<Controller
-								control={control}
-								name="name"
-								rules={{
-									required: {
-										value: true,
-										message: FieldErrorsType.Required,
-									},
-								}}
-								render={({ field, fieldState: { error } }) => (
-									<Input
-										placeholder={t("WaiterOrderPayment.Labels.Name")}
-										value={field.value}
-										hideLabel
-										onChangeValue={(value) => {
-											field.onChange(value);
-										}}
-										errorMessage={error?.message}
-										showError={!!error}
-									/>
-								)}
-							/>
-						</div>
-					)}
-					{method === "credit-card" && (
-						<div className="w-op-credit-card">
-							<span className="text-subtitle-2">
-								{t("WaiterOrderPayment.Labels.NF")}
-							</span>
-							<Controller
-								control={control}
-								rules={{
-									required: {
-										value: true,
-										message: FieldErrorsType.Required,
-									},
-								}}
-								name="nf"
-								render={({ field, fieldState: { error } }) => (
-									<Input
-										hasPrefix
-										prefixContent={<span className="text-body-1">#</span>}
-										value={field.value}
-										placeholder="0"
-										hideLabel
-										type="number"
-										onChangeValue={(value) => {
-											field.onChange(value);
-										}}
-										errorMessage={error?.message}
-										showError={!!error}
-									/>
-								)}
-							/>
-						</div>
-					)}
-					{method === "cash" && (
-						<div className="w-op-cash flex gap-6 flex-col">
-							<div>
-								<span className="text-subtitle-2">
-									{t("WaiterOrderPayment.Labels.ReceivedValue")}
-								</span>
-								<Controller
-									control={control}
-									name="receivedValue"
-									rules={{
-										required: {
-											value: true,
-											message: FieldErrorsType.Required,
-										},
-										min: {
-											value: order?.total || 0,
-											message: FieldErrorsType.Min,
-										},
-									}}
-									render={({ field, fieldState: { error } }) => (
-										<Input
-											hasPrefix
-											prefixContent={<span className="text-body-1">R$</span>}
-											value={field.value}
-											placeholder="0"
-											hideLabel
-											type="number"
-											onChangeValue={(value) => {
-												field.onChange(value);
-											}}
-											errorMessage={error?.message}
-											showError={!!error}
-											errorValue={{ min: order?.total || 0 }}
-										/>
-									)}
-								/>
-							</div>
-							<div className="flex flex-row justify-between">
-								<span className="text-subtitle-2">
-									{t("WaiterOrderPayment.Labels.PurchaseChange")}
-								</span>
-								<span className="text-subtitle-2">R$ {chargeBack}</span>
-							</div>
-						</div>
-					)}
-				</div>
-				<footer className="w-op-actions">
-					<Button
-						className="fill-row"
-						disabled={!isValid}
-						onClick={handleSubmit(onPay)}
-						loading={loading}
-					>
+					<S.AddPaymentButton>
+						{t("WaiterOrderPayment.Buttons.AddPayment")}
+					</S.AddPaymentButton>
+				</S.Container>
+				<S.Footer className="w-op-actions">
+					<Button className="fill-row">
 						{t("WaiterOrderPayment.Buttons.Confirm")}
 					</Button>
-				</footer>
-			</div>
+				</S.Footer>
+			</S.Wrapper>
+			{showAddPayment && order && (
+				<BottomSheet title="WaiterOrderPayment.Modals.AddPayment.Title">
+					<AddPaymentBottomSheet order={order} />
+				</BottomSheet>
+			)}
 		</MainContainer>
 	);
 };

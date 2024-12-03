@@ -1,4 +1,4 @@
-import { useToast } from "leux";
+import { Box, useToast } from "leux";
 import { useCallback, useEffect } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,7 @@ import {
 import { WaiterOrdersCard, WaiterProductCard } from "./components";
 
 import S from "./WaiterHome.styles";
+import { Styled } from "../../styles";
 
 interface WaiterHomePageProps {}
 
@@ -173,9 +174,9 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 		<MainContainer showCode>
 			<S.Container>
 				<S.Content>
-					<S.PageTitle>
+					<Styled.Typography.Title textColor="darker">
 						{t("WaiterHome.Subtitle", { name: waiter?.name })}
-					</S.PageTitle>
+					</Styled.Typography.Title>
 					<Button
 						className="fill-row"
 						onClick={() => navigate(Pages.WaiterNewOrder)}
@@ -185,21 +186,18 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 
 					<S.Section>
 						<S.SectionHeader>
-							<S.PageSubtitle>{t("WaiterHome.Labels.MyOrders")}</S.PageSubtitle>
-							<span
-								className="link link-secondary"
+							<Styled.Typography.Subtitle textColor="darker">
+								{t("WaiterHome.Labels.MyOrders")}
+							</Styled.Typography.Subtitle>
+							<Styled.Typography.Link
+								textColored="secondary"
 								role="button"
 								onClick={() => navigate(Pages.WaiterMyOrders)}
 							>
 								{t("WaiterHome.Labels.SeeAll")}
-							</span>
+							</Styled.Typography.Link>
 						</S.SectionHeader>
-						{!loadingOrders && orders.length === 0 && (
-							<S.Empty>
-								<FileMinus strokeWidth={2} size={32} />
-								<div>{t("Empty.Orders")}</div>
-							</S.Empty>
-						)}
+
 						{!loadingOrders && (
 							<S.Grid>
 								{orders.map((order, index) => (
@@ -211,25 +209,35 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 								))}
 							</S.Grid>
 						)}
+
+						{!loadingOrders && orders.length === 0 && (
+							<Styled.Empty>
+								<FileMinus strokeWidth={2} size={32} />
+								<Box>{t("Empty.Orders")}</Box>
+							</Styled.Empty>
+						)}
+
 						{loadingOrders && (
-							<S.LoadingContainer>
+							<Styled.LoadingContainer>
 								<Spinner size={32} theme="primary" />
-								<span className="w-home-loading-message">
-									<span>{t("Loaders.Orders")}</span>
-								</span>
-							</S.LoadingContainer>
+								<Styled.Typography.Caption>
+									{t("Loaders.Orders")}
+								</Styled.Typography.Caption>
+							</Styled.LoadingContainer>
 						)}
 					</S.Section>
 					<S.Section>
 						<S.SectionHeader>
-							<S.PageSubtitle>{t("WaiterHome.Labels.Products")}</S.PageSubtitle>
-							<span
+							<Styled.Typography.Subtitle textColor="darker">
+								{t("WaiterHome.Labels.Products")}
+							</Styled.Typography.Subtitle>
+							<Styled.Typography.Link
 								role="button"
-								className="link link-secondary"
+								textColored="secondary"
 								onClick={() => navigate(Pages.WaiterProducts)}
 							>
 								{t("WaiterHome.Labels.SeeAll")}
-							</span>
+							</Styled.Typography.Link>
 						</S.SectionHeader>
 						<S.Filters className="w-home-grid">
 							<Chip
@@ -268,18 +276,20 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 							</S.Grid>
 						)}
 						{isLoadingProducts && (
-							<S.LoadingContainer className="w-home-loading">
+							<Styled.LoadingContainer className="w-home-loading">
 								<Spinner size={32} theme="primary" />
 								<span className="w-home-loading-message">
 									{t("Loaders.Products")}
 								</span>
-							</S.LoadingContainer>
+							</Styled.LoadingContainer>
 						)}
 						{!isLoadingProducts && products.length === 0 && (
-							<S.Empty className="w-home-empty">
+							<Styled.Empty className="w-home-empty">
 								<FileMinus strokeWidth={2} size={32} />
-								<div>{t("Empty.Products")}</div>
-							</S.Empty>
+								<Styled.Typography.Caption>
+									{t("Empty.Products")}
+								</Styled.Typography.Caption>
+							</Styled.Empty>
 						)}
 					</S.Section>
 				</S.Content>

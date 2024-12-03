@@ -1,5 +1,7 @@
+import { AxiosError } from "axios";
+import { Box, useToast } from "leux";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Slash } from "react-feather";
+import { Slash, User } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +9,9 @@ import { ITable, NamespaceKeys, Pages } from "../../@types";
 import { TablesService, WaiterOrdersService } from "../../api";
 import { Button, ChipStatus, Input, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import { User } from "react-feather";
-import "./styles.scss";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
+
+import { getUnitInPx, Styled } from "../../styles";
+import S from "./WaiterNewOrder.styles";
 
 interface WaiterNewOrderPageProps {}
 
@@ -111,46 +112,51 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
-			<div className="new-order">
-				<main className="new-order-content">
-					<header className={`w-products-header`}>
-						<span
-							className="page-title"
+			<S.Wrapper>
+				<S.Container>
+					<S.Header>
+						<Styled.Typography.Title
+							textColor="darker"
 							dangerouslySetInnerHTML={{ __html: t("WaiterNewOrder.Subtitle") }}
-						></span>
-					</header>
-					<main className="new-order-main">
-						<div className="new-order-tables">
-							<span className="new-order-subtitle">
+						></Styled.Typography.Title>
+					</S.Header>
+					<S.Content>
+						<S.Tables>
+							<Styled.Typography.Body textColor="dark">
 								{t("WaiterNewOrder.Labels.SelectTable")}
-							</span>
+							</Styled.Typography.Body>
 
 							{tables.length === 0 && (
-								<div className="new-order-no-tables">
+								<Styled.Empty>
 									<Slash size={32} />
-									<span>{t("Empty.NoAvailableTables")}</span>
-								</div>
+									<Styled.Typography.Caption textColor="dark">
+										{t("Empty.NoAvailableTables")}
+									</Styled.Typography.Caption>
+								</Styled.Empty>
 							)}
 
 							{tables.length > 0 && (
-								<div className="new-order-list no-scroll">
+								<S.TablesList className="no-scroll">
 									{tables.map((table, index) => {
 										const isSelected = selectedTable === table._id;
 										return (
-											<div
-												role="button"
+											<S.TableCard
 												onClick={() => onSelectTable(table._id)}
-												className={`card card-gray ${
-													isSelected ? " card-selected" : ""
-												}`}
+												isSelected={isSelected}
 												key={index}
+												isGray
 											>
-												<div className="flex-row-text">
-													<span className="tables-info-number">
+												<Box
+													flex
+													flexDirection="row"
+													justifyContent="space-between"
+													alignItems="center"
+												>
+													<Styled.Typography.Subtitle>
 														{t("WaiterNewOrder.TableCard.TableNumber", {
 															number: table.number,
 														})}
-													</span>
+													</Styled.Typography.Subtitle>
 													<ChipStatus
 														colorScheme={isSelected ? "secondary" : "primary"}
 													>
@@ -160,22 +166,22 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 															}`
 														)}
 													</ChipStatus>
-												</div>
-												<span className="table-info-bartender">
+												</Box>
+												<Styled.Typography.Body>
 													{table.in_use
 														? t(`WaiterNewOrder.TableCard.UserBy`, { name: "" })
 														: "---"}
-												</span>
-											</div>
+												</Styled.Typography.Body>
+											</S.TableCard>
 										);
 									})}
-								</div>
+								</S.TablesList>
 							)}
-						</div>
-						<div className="new-order-customers">
-							<span className="new-order-subtitle">
+						</S.Tables>
+						<Box flex flexDirection="column" flexGap={getUnitInPx(2)}>
+							<Styled.Typography.Body>
 								{t("WaiterNewOrder.Labels.ForHowMany")}
-							</span>
+							</Styled.Typography.Body>
 
 							<Input
 								placeholder="0"
@@ -190,8 +196,8 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 								hasPrefix
 								prefixContent={<User color="#9a36fd" size={20} />}
 							/>
-						</div>
-					</main>
+						</Box>
+					</S.Content>
 					<Button
 						disabled={selectedTable === null || !customers}
 						onClick={createOrder}
@@ -199,8 +205,8 @@ const WaiterNewOrderPage: React.FC<WaiterNewOrderPageProps> = () => {
 					>
 						{t("Generics.Buttons.Continue")}
 					</Button>
-				</main>
-			</div>
+				</S.Container>
+			</S.Wrapper>
 		</MainContainer>
 	);
 };

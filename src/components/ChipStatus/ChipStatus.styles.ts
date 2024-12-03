@@ -29,7 +29,7 @@ const ChipStatus = styled.div.withConfig({
 
 const ChipSuccessFilled = css`
 	background: ${({ theme }) => theme.colors.success};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 `;
 
 const ChipSuccessOutlined = css`
@@ -39,7 +39,7 @@ const ChipSuccessOutlined = css`
 
 const ChipDangerFilled = css`
 	background: ${({ theme }) => theme.colors.danger};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 `;
 
 const ChipDangerOutlined = css`
@@ -49,7 +49,7 @@ const ChipDangerOutlined = css`
 
 const ChipPrimaryFilled = css`
 	background: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 `;
 
 const ChipPrimaryOutlined = css`
@@ -59,7 +59,7 @@ const ChipPrimaryOutlined = css`
 
 const ChipSecondaryFilled = css`
 	background: ${({ theme }) => theme.colors.secondary};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 `;
 
 const ChipSecondaryOutlined = css`
@@ -69,7 +69,7 @@ const ChipSecondaryOutlined = css`
 
 const ChipWarningFilled = css`
 	background: ${({ theme }) => theme.colors.warning};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 `;
 
 const ChipWarningOutlined = css`

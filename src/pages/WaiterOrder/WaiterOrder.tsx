@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+import { Box, useToast } from "leux";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Check, User } from "react-feather";
 import { useTranslation } from "react-i18next";
@@ -13,9 +15,9 @@ import {
 	MainContainer,
 } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import "./styles.scss";
-import { useToast } from "leux";
-import { AxiosError } from "axios";
+import { Styled } from "../../styles";
+
+import S from "./WaiterOrder.styles";
 
 interface WaiterOrderPageProps {}
 
@@ -110,10 +112,10 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
-			<div className="w-on-order">
-				<main className="w-on-order-content">
-					<header className={`w-on-order-header`}>
-						<div className="flex flex-row gap-2">
+			<S.Wrapper>
+				<S.Container>
+					<S.Header>
+						<Box flex flexDirection="row" customClass="gap-2">
 							<ChipStatus customClass="w-on-order-chip" colorScheme="primary">
 								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 							</ChipStatus>
@@ -135,62 +137,71 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 									{t(`Generics.OrderStatus.${order?.status}`)}
 								</ChipStatus>
 							)}
-						</div>
-						<div className="flex-row-text w-on-order-header-title">
-							<span className="w-on-order-title">
+						</Box>
+						<Box
+							flex
+							flexDirection="row"
+							alignItems="center"
+							justifyContent="space-between"
+						>
+							<Styled.Typography.Subtitle>
 								{t("WaiterOrder.Labels.OrderNumber", { number: order?.number })}
-							</span>
-							<button
-								className={`link link-secondary ${
-									order?.status === "FINISHED" ? "link-disabled" : ""
-								}`}
+							</Styled.Typography.Subtitle>
+							<Styled.Typography.Link
+								textColored="secondary"
 								onClick={seeOrderProducts}
 								disabled={order?.status === "FINISHED"}
 							>
 								{t("WaiterOrder.Buttons.SeeProducts")}
-							</button>
-						</div>
-					</header>
-					<div className="detailed-list">
-						<div className="detailed-list-products-header">
-							<span className="detailed-list-products-title">
+							</Styled.Typography.Link>
+						</Box>
+					</S.Header>
+					<S.List>
+						<S.ListHeader className="detailed-list-products-header">
+							<Styled.Typography.Caption fontWeight={500}>
 								{t("WaiterOrder.Table.Headers.Products")}
-							</span>
-							<span className="detailed-list-products-title">
+							</Styled.Typography.Caption>
+							<Styled.Typography.Caption fontWeight={500}>
 								{t("WaiterOrder.Table.Headers.Status")}
-							</span>
-							<span className="detailed-list-products-title">
+							</Styled.Typography.Caption>
+							<Styled.Typography.Caption fontWeight={500}>
 								{t("WaiterOrder.Table.Headers.Price")}
-							</span>
-						</div>
+							</Styled.Typography.Caption>
+						</S.ListHeader>
 						{order?.items.map((op, index) => (
-							<div
-								key={index}
-								className={`detailed-list-products-item ${
-									op.status === "DELIVERED" ? "text-slash" : ""
-								}`}
-							>
-								<span className="detailed-list-products-name">
+							<S.ListItem key={index} textSlashed={op.status === "DELIVERED"}>
+								<Styled.Typography.Caption fontWeight={600}>
 									({op.quantity}x){" "}
 									{typeof op.product !== "string" ? op.product.name : "---"}
-								</span>
-								<span className="detailed-list-products-name">
+								</Styled.Typography.Caption>
+								<Styled.Typography.Caption fontWeight={600}>
 									{op.status === "DELIVERED" ? "Servido" : "Pendente"}
-								</span>
-								<span className="detailed-list-products-price">
-									<span>{op.total}</span>
-								</span>
-							</div>
+								</Styled.Typography.Caption>
+								<Styled.Typography.Caption fontWeight={600}>
+									{op.total}
+								</Styled.Typography.Caption>
+							</S.ListItem>
 						))}
-					</div>
-					<div className="dashline"></div>
-					<div className="flex-row-text detailed-list-total">
-						<span>{t("WaiterOrder.Labels.Total")}</span>
-						<div className="text-currency">
-							<span>{t("Generics.Currency.Symbol")}</span>
-							<span>{order?.total}</span>
-						</div>
-					</div>
+					</S.List>
+					<Styled.DashLine />
+					<Box
+						flex
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="space-between"
+					>
+						<Styled.Typography.Subtitle2>
+							{t("WaiterOrder.Labels.Total")}
+						</Styled.Typography.Subtitle2>
+						<Styled.Typography.Currency>
+							<Styled.Typography.Subtitle2>
+								{t("Generics.Currency.Symbol")}
+							</Styled.Typography.Subtitle2>
+							<Styled.Typography.Subtitle2>
+								{order?.total}
+							</Styled.Typography.Subtitle2>
+						</Styled.Typography.Currency>
+					</Box>
 					<Button
 						className="fill-row"
 						theme="secondary"
@@ -203,30 +214,31 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 					>
 						<Check size={20} /> {t("WaiterOrder.Buttons.MarkAsDelivered")}
 					</Button>
-					<footer className="w-on-order-footer">
+					<S.Footer>
 						{!order?.payment && (
-							<button
-								className="large-button large-button-secondary"
+							<S.LargeButton
+								colorScheme="secondary"
 								onClick={goToPayment}
 								disabled={order?.status !== "DELIVERED"}
 							>
 								<Icons.PaymentSVG fill="#fff" />
 								<span>{t("WaiterOrder.Buttons.Payment")}</span>
-							</button>
+							</S.LargeButton>
 						)}
 						{order?.payment && typeof order.payment !== "string" && (
-							<button className="large-button large-button-secondary-outlined">
+							<S.LargeButton colorScheme="secondary">
 								<img src={`/src/assets/${order.payment.method}.svg`}></img>
 								<span>{t(`WaiterOrder.Buttons.${order.payment.method}`)}</span>
-							</button>
+							</S.LargeButton>
 						)}
-						<button className="large-button large-button-primary">
+
+						<S.LargeButton colorScheme="primary">
 							<Icons.SendSVG fill="#fff	" />
 							<span>{t("WaiterOrder.Buttons.Send")}</span>
-						</button>
-					</footer>
-				</main>
-			</div>
+						</S.LargeButton>
+					</S.Footer>
+				</S.Container>
+			</S.Wrapper>
 		</MainContainer>
 	);
 };

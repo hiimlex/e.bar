@@ -146,9 +146,19 @@ export const ptBr = {
 			CreditCard: "Cartão de crédito",
 			Pix: "Pix",
 			Cash: "Dinheiro",
+			Payment: "Pagamento",
+			ValuePerPerson: "Valor por pessoa",
+			Attachment: "Comprovante",
 		},
 		Buttons: {
+			Cancel: "Cancelar",
 			Confirm: "Confirmar",
+			AddPayment: "+ Adicionar pagamento",
+		},
+		Modals: {
+			AddPayment: {
+				Title: "+ Adicionar pagamento",
+			},
 		},
 	},
 	WaiterOrderProducts: {
@@ -174,7 +184,7 @@ export const ptBr = {
 		},
 	},
 	WaiterProducts: {
-		Title: "List de <br/>Produtos",
+		Title: "Lista de <br/>Produtos",
 	},
 	WaiterMyOrders: {
 		Title: "Meus <br/>Pedidos",

@@ -14,18 +14,6 @@ const Content = styled.article`
 	gap: ${getUnitInPx(4)};
 `;
 
-const PageTitle = styled.h1`
-	font-size: 25px;
-	line-height: 140%;
-	font-weight: 600;
-	color: ${({ theme }) => theme.text.darker};
-`;
-
-const PageSubtitle = styled.span`
-	font-size: 20px;
-	font-weight: 600;
-	color: ${({ theme }) => theme.text.darker};
-`;
 
 const Section = styled.section`
 	display: flex;
@@ -86,14 +74,12 @@ const Empty = styled.div`
 `;
 
 export default {
-	PageTitle,
 	Container,
 	Content,
 	Section,
 	Grid,
 	LoadingContainer,
 	SectionHeader,
-	PageSubtitle,
 	Empty,
 	Filters
 };

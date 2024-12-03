@@ -116,4 +116,4 @@ const WaiterCodePage: React.FC<WaiterCodePageProps> = () => {
 	);
 };
 
-export { WaiterCodePage };
+export default WaiterCodePage;

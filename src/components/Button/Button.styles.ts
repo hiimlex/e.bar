@@ -41,8 +41,8 @@ const Button = styled.button.withConfig({
 	${({ disabled, theme }) =>
 		disabled &&
 		`
-			color: ${theme.text.placeholder} !important;
-			background: ${theme.colors.gray300} !important;
+			color: ${theme.colors.gray300} !important;
+			background: ${theme.colors.disabled} !important;
 			cursor: not-allowed !important;
 			opacity: 1 !important;
 			scale: 1 !important;
@@ -98,7 +98,7 @@ const ButtonSecondaryOutlined = css`
 
 const ButtonPrimaryFilled = css`
 	background-color: ${({ theme }) => theme.colors.primary};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 
 	&:hover {
 		opacity: 0.8;
@@ -108,7 +108,7 @@ const ButtonPrimaryFilled = css`
 const ButtonSecondaryFilled = css`
 	background-color: ${({ theme }) => theme.colors.secondary};
 	border-color: ${({ theme }) => theme.colors.secondary};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 
 	&:hover {
 		opacity: 0.8;
@@ -118,7 +118,7 @@ const ButtonSecondaryFilled = css`
 const ButtonDangerFilled = css`
 	background-color: ${({ theme }) => theme.colors.danger};
 	border-color: ${({ theme }) => theme.colors.danger};
-	color: ${({ theme }) => theme.colors.white};
+	color: ${({ theme }) => theme.text.white};
 
 	&:hover {
 		opacity: 0.8;
@@ -149,21 +149,50 @@ const ButtonDangerText = css`
 	}
 `;
 
+const ButtonDefaultFilled = css`
+	background-color: ${({ theme }) =>
+		theme.colors.secondary + hexPercentage[20]};
+	color: ${({ theme }) => theme.text.dark};
+
+	&:hover {
+		opacity: 0.8;
+	}
+`;
+const ButtonDefaultOutlined = css`
+	background-color: ${({ theme }) => theme.colors.gray100};
+	border: 1px solid ${({ theme }) => theme.colors.gray300};
+	color: ${({ theme }) => theme.text.dark};
+
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.gray200};
+	}
+`;
+const ButtonDefaultText = css`
+	color: ${({ theme }) => theme.text.dark};
+
+	&:hover {
+		opacity: 0.8;
+	}
+`;
+
 const ButtonStyles: Record<
 	ButtonVariants,
 	Record<ButtonThemes, RuleSet | undefined>
 > = {
 	filled: {
+		default: ButtonDefaultFilled,
 		danger: ButtonDangerFilled,
 		primary: ButtonPrimaryFilled,
 		secondary: ButtonSecondaryFilled,
 	},
 	outlined: {
+		default: ButtonDefaultOutlined,
 		danger: undefined,
 		primary: ButtonPrimaryOutlined,
 		secondary: ButtonSecondaryOutlined,
 	},
 	text: {
+		default: ButtonDefaultText,
 		danger: ButtonDangerText,
 		primary: ButtonPrimaryText,
 		secondary: ButtonSecondaryText,
