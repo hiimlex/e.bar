@@ -145,7 +145,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 						<S.List className="no-scroll">
 							{orders.map((order, index) => (
 								<div key={index}>
-									{order.status === "PENDING" && (
+									{order.status !== "FINISHED" && (
 										<WaiterOrdersCard
 											order={order}
 											key={index}

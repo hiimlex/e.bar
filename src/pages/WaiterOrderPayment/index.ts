@@ -1,1 +1,1 @@
-export * from "./WaiterOrderPayment";
+export { default as WaiterOrderPaymentPage } from "./WaiterOrderPayment";

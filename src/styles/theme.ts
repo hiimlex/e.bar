@@ -10,6 +10,7 @@ export const shouldForwardProp: (prop: string) => boolean = (prop) =>
 		"textColored",
 		"textColor",
 		"textSlashed",
+		'fitSize'
 	].includes(prop);
 
 export const colors = {
@@ -29,8 +30,8 @@ export const colors = {
 
 export const styles = {
 	transition: "all 0.1s ease-in-out",
-	scale: 1.05,
-	scaleLarge: 1.1,
+	scale: 1.02,
+	scaleLarge: 1.05,
 };
 
 export type CustomThemeText = keyof typeof text;
@@ -40,6 +41,9 @@ export const text = {
 	dark: "#414141",
 	darker: "#212121",
 	white: "#fff",
+	gray100: "#f0f0f0",
+	gray200: "#d8d8d8",
+	gray300: "#afafaf",
 };
 
 export const shadows = {

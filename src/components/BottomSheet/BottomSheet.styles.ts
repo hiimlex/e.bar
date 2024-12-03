@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { getUnitInPx } from "../../styles";
+import { animated } from "@react-spring/web";
 
-const BottomSheetContainer = styled.div`
+const BottomSheetContainer = styled(animated.div)`
 	width: 100%;
 	height: fit-content;
 
@@ -16,7 +17,7 @@ const BottomSheetContainer = styled.div`
 	gap: ${getUnitInPx(3)};
 `;
 
-const BottomSheetOverlay = styled.div`
+const Backdrop = styled(animated.div)`
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -32,4 +33,4 @@ const BottomSheetOverlay = styled.div`
 	justify-content: flex-end;
 `;
 
-export default { BottomSheetContainer, BottomSheetOverlay };
+export default { BottomSheetContainer, Backdrop };

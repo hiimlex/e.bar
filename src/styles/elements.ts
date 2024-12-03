@@ -56,7 +56,9 @@ const Label = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
 `;
 
-const FieldLabel = styled.label.withConfig({ shouldForwardProp })<TypographyProps>`
+const FieldLabel = styled.label.withConfig({
+	shouldForwardProp,
+})<TypographyProps>`
 	font-size: 13px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
 	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};

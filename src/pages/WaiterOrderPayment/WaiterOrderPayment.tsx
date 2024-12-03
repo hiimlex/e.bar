@@ -6,17 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ICreatePayment, IPaymentForm, Pages } from "../../@types";
 import { PaymentsService, WaiterOrdersService } from "../../api";
-import { BottomSheet, Button, MainContainer } from "../../components";
+import { BottomSheet, Button, MainContainer, Sheets } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 
 import { Styled } from "../../styles";
 import S from "./WaiterOrderPayment.styles";
-import { AddPaymentBottomSheet } from "./components/AddPaymentBottomSheet";
 
 const WaiterOrderPaymentPage: React.FC = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
-	const [showAddPayment, setShowAddPayment] = useState(true);
+	const [showAddPayment, setShowAddPayment] = useState(false);
 	const ToastService = useToast();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +24,7 @@ const WaiterOrderPaymentPage: React.FC = () => {
 
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const { attendance } = useSelector((state: RootState) => state.user);
+
 	const [loading, setLoading] = useState(false);
 
 	const getOrder = useCallback(async () => {
@@ -67,6 +67,12 @@ const WaiterOrderPaymentPage: React.FC = () => {
 		const to = Pages.WaiterOrder.replace(":orderId", orderId || "");
 
 		navigate(to);
+	};
+
+	const onAddPayment = (formData: IPaymentForm) => {
+		console.log(formData);
+
+		closeAddPaymentSheet();
 	};
 
 	const onPay = async (data: IPaymentForm) => {
@@ -123,6 +129,14 @@ const WaiterOrderPaymentPage: React.FC = () => {
 				}
 			}
 		}
+	};
+
+	const openAddPaymentSheet = () => {
+		setShowAddPayment(true);
+	};
+
+	const closeAddPaymentSheet = () => {
+		setShowAddPayment(false);
 	};
 
 	useEffect(() => {
@@ -183,23 +197,30 @@ const WaiterOrderPaymentPage: React.FC = () => {
 						</Box>
 					</S.ContainerHeader>
 
-					<S.AddPaymentButton>
+					<S.AddPaymentButton onClick={openAddPaymentSheet}>
 						{t("WaiterOrderPayment.Buttons.AddPayment")}
 					</S.AddPaymentButton>
 				</S.Container>
 				<S.Footer className="w-op-actions">
-					<Button className="fill-row">
-						{t("WaiterOrderPayment.Buttons.Confirm")}
+					<Button className="fill-row" theme="secondary">
+						{t("WaiterOrderPayment.Buttons.Finish")}
 					</Button>
 				</S.Footer>
 			</S.Wrapper>
 			{showAddPayment && order && (
-				<BottomSheet title="WaiterOrderPayment.Modals.AddPayment.Title">
-					<AddPaymentBottomSheet order={order} />
+				<BottomSheet
+					title="WaiterOrderPayment.Modals.AddPayment.Title"
+					onClose={closeAddPaymentSheet}
+					closeOnBackdropClick
+				>
+					<Sheets.AddPaymentBottomSheet
+						order={order}
+						onAddPayment={onAddPayment}
+					/>
 				</BottomSheet>
 			)}
 		</MainContainer>
 	);
 };
 
-export { WaiterOrderPaymentPage };
+export default WaiterOrderPaymentPage;

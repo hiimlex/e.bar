@@ -41,7 +41,7 @@ const AddPaymentButton = styled.button`
 
 	padding: ${getUnitInPx(2)} ${getUnitInPx(3)};
 	border-radius: ${getUnitInPx(2)};
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 700;
 	color: ${({ theme }) => theme.colors.primary};
 	transition: ${({ theme }) => theme.styles.transition};

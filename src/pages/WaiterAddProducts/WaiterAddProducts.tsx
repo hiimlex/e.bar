@@ -6,9 +6,23 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDebounceValue } from "usehooks-ts";
-import { IProduct, Pages, SafeAny } from "../../@types";
+import {
+	AddProduct,
+	IProduct,
+	Pages,
+	SafeAny,
+	WaiterAddProductsPageProps,
+} from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, Chip, Input, MainContainer, Spinner } from "../../components";
+import {
+	BottomSheet,
+	Button,
+	Chip,
+	Input,
+	MainContainer,
+	Sheets,
+	Spinner,
+} from "../../components";
 import {
 	AppDispatch,
 	OnOrderActions,
@@ -17,15 +31,9 @@ import {
 	RootState,
 } from "../../store";
 import { ProductsRowCard } from "../WaiterProducts/components";
-import { ConfirmAddProducts } from "./components";
-import "./styles.scss";
 
-interface WaiterAddProductsPageProps {}
-
-export type AddProduct = Record<
-	string,
-	{ product: IProduct; quantity: number }
->;
+import { Styled } from "../../styles";
+import S from "./WaiterAddProducts.styles";
 
 const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 	const { orderId } = useParams();
@@ -183,13 +191,13 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 			showSearch
 			onSearch={() => setShowSearch((curr) => !curr)}
 		>
-			<div className="w-a-products">
-				<main className="w-a-products-content">
-					<header className={`w-a-products-header`}>
-						<span
+			<S.Container>
+				<S.Content>
+					<S.Header>
+						<Styled.Typography.Title
 							className="page-title"
 							dangerouslySetInnerHTML={{ __html: t("WaiterAddProducts.Title") }}
-						></span>
+						></Styled.Typography.Title>
 						{showSearch && (
 							<Input
 								placeholder="Buscar produto..."
@@ -201,7 +209,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 								value={value}
 							/>
 						)}
-						<div className="w-a-products-filters-chips scrollable-x no-scroll">
+						<S.Filters className="scrollable-x no-scroll">
 							<Chip
 								active={!filters.category_id && !filters.no_stock}
 								clickable
@@ -229,22 +237,12 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 									{category.name}
 								</Chip>
 							))}
-						</div>
-					</header>
+						</S.Filters>
+					</S.Header>
 
-					{!isLoadingProducts && products.length === 0 && (
-						<div className="empty-box">
-							<FileMinus size={32} />
-							<span>{t("Empty.Products")}</span>
-						</div>
-					)}
-
+					{/* Products section */}
 					{!isLoadingProducts && (
-						<div
-							className={`w-a-products-list no-scroll ${
-								canAddProducts ? "margin-bottom" : ""
-							}`}
-						>
+						<S.ProductList>
 							{products.map((product, index) => (
 								<ProductsRowCard
 									product={product}
@@ -254,19 +252,29 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 									quantity={toAddProducts[product._id]?.quantity ?? 0}
 								/>
 							))}
-						</div>
+						</S.ProductList>
 					)}
+					{/* Empty section */}
+					{!isLoadingProducts && products.length === 0 && (
+						<Styled.Empty>
+							<FileMinus size={32} />
+							<Styled.Typography.Caption>
+								{t("Empty.Products")}
+							</Styled.Typography.Caption>
+						</Styled.Empty>
+					)}
+					{/* Loading section */}
 					{isLoadingProducts && (
-						<div className="w-a-products-loading">
+						<Styled.LoadingContainer>
 							<Spinner size={32} theme="primary" />
-							<span className="w-a-products-loading-message">
+							<Styled.Typography.Caption>
 								{t("Loaders.Products")}
-							</span>
-						</div>
+							</Styled.Typography.Caption>
+						</Styled.LoadingContainer>
 					)}
 
 					{canAddProducts && (
-						<footer className="w-a-products-footer">
+						<S.FloatingFooter>
 							<Button
 								theme="secondary"
 								className="fill-row"
@@ -274,21 +282,23 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 							>
 								{t("Generics.Buttons.Add")}
 							</Button>
-						</footer>
+						</S.FloatingFooter>
 					)}
-				</main>
-			</div>
+				</S.Content>
+			</S.Container>
 			{showConfirmModal && orderId && (
-				<ConfirmAddProducts
-					orderId={orderId}
-					productList={toAddProducts}
-					cancel={() => setShowConfirmModal(false)}
-					onChange={(newToAddProducts) => setToAddProducts(newToAddProducts)}
-					onConfirm={() => {
-						setShowConfirmModal(false);
-						goBack();
-					}}
-				/>
+				<BottomSheet title="WaiterAddProducts.Confirm.Title">
+					<Sheets.ConfirmAddProducts
+						orderId={orderId}
+						productList={toAddProducts}
+						cancel={() => setShowConfirmModal(false)}
+						onChange={(newToAddProducts) => setToAddProducts(newToAddProducts)}
+						onConfirm={() => {
+							setShowConfirmModal(false);
+							goBack();
+						}}
+					/>
+				</BottomSheet>
 			)}
 		</MainContainer>
 	);

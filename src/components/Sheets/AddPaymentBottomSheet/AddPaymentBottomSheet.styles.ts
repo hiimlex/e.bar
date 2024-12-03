@@ -1,9 +1,5 @@
 import styled from "styled-components";
-import {
-	getUnitInPx,
-	hexPercentage,
-	shouldForwardProp,
-} from "../../../../styles";
+import { getUnitInPx, hexPercentage, shouldForwardProp } from "../../../styles";
 
 const Container = styled.div`
 	width: 100%;
@@ -46,4 +42,22 @@ const PaymentMethodItem = styled.div.withConfig({ shouldForwardProp })<{
 	height: 100%;
 `;
 
-export default { Container, PaymentMethod, PaymentMethodItem };
+const InputFileWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 8px;
+	border-bottom: 1px solid ${({ theme }) => theme.colors.gray300};
+`;
+const InputFilePrefix = styled.div``;
+const InputFileSuffix = styled.div``;
+
+export default {
+	Container,
+	PaymentMethod,
+	PaymentMethodItem,
+	InputFileWrapper,
+	InputFilePrefix,
+	InputFileSuffix,
+};

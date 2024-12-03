@@ -1,29 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SafeAny } from "../../@types";
+import { InputProps } from "./Input.model";
 import "./styles.scss";
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	mode?: "controlled" | "uncontrolled";
-
-	fieldKey?: string;
-	onChangeValue?: (value: string) => void;
-	className?: string;
-	styles?: React.CSSProperties;
-	value?: string | number;
-	wrapperClassName?: string;
-
-	hideLabel?: boolean;
-
-	errorMessage?: string;
-	errorValue?: Record<string, SafeAny>;
-	showError?: boolean;
-
-	hasPrefix?: boolean;
-	prefixContent?: React.ReactNode;
-	hasSuffix?: boolean;
-	suffixContent?: React.ReactNode;
-}
 
 const Input: React.FC<InputProps> = ({
 	onChangeValue,
@@ -147,4 +125,4 @@ const Input: React.FC<InputProps> = ({
 	);
 };
 
-export { Input };
+export default Input;

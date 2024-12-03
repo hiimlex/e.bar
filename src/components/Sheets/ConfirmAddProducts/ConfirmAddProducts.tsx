@@ -1,21 +1,17 @@
-import React, { useState } from "react";
-import { CreateOrderProductPayload, IProduct } from "../../../../@types";
-import { WaiterOrdersService } from "../../../../api";
-import { Button } from "../../../../components";
-import { ProductsRowCard } from "../../../WaiterProducts/components";
-import { AddProduct } from "../../WaiterAddProducts";
-import "./styles.scss";
 import { AxiosError } from "axios";
 import { useToast } from "leux";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+	ConfirmAddProductsProps,
+	CreateOrderProductPayload,
+	IProduct,
+} from "../../../@types";
+import { WaiterOrdersService } from "../../../api";
+import { ProductsRowCard } from "../../../pages/WaiterProducts/components";
+import { Button } from "../../Button";
 
-interface ConfirmAddProductsProps {
-	orderId: string;
-	productList: AddProduct;
-	cancel?: () => void;
-	onChange?: (productList: AddProduct) => void;
-	onConfirm?: () => void;
-}
+import S from "./ConfirmAddProducts.styles";
 
 const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 	productList,
@@ -80,45 +76,39 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 	};
 
 	return (
-		<div className="c-a-p">
-			<div className="c-a-p-card">
-				<span className="c-a-p-title">
-					Deseja Adicionar esses items à Comanda ?
-				</span>
+		<S.Container>
+			<S.List>
+				{Object.values(productList).map(({ product, quantity }) => (
+					<ProductsRowCard
+						key={product._id}
+						product={product}
+						quantity={quantity}
+						showChangeButtons
+						onChange={onAddProduct}
+					/>
+				))}
+			</S.List>
 
-				<div className="c-a-p-list">
-					{Object.values(productList).map(({ product, quantity }) => (
-						<ProductsRowCard
-							key={product._id}
-							product={product}
-							quantity={quantity}
-							showChangeButtons
-							onChange={onAddProduct}
-						/>
-					))}
-				</div>
-
-				<footer className="c-a-p-footer">
-					<Button
-						className="fill-row"
-						theme="secondary"
-						variant="outlined"
-						onClick={cancel}
-					>
-						Cancelar
-					</Button>
-					<Button
-						className="fill-row"
-						theme="secondary"
-						loading={adding}
-						onClick={confirmAddProducts}
-					>
-						Confirmar
-					</Button>
-				</footer>
-			</div>
-		</div>
+			<S.Footer>
+				<Button
+					className="fill-row"
+					theme="secondary"
+					variant="outlined"
+					onClick={cancel}
+				>
+					{t("WaiterAddProducts.Buttons.Cancel")}
+				</Button>
+				<Button
+					className="fill-row"
+					theme="secondary"
+					loading={adding}
+					onClick={confirmAddProducts}
+				>
+					{t("WaiterAddProducts.Buttons.Confirm")}
+				</Button>
+			</S.Footer>
+		</S.Container>
 	);
 };
 
-export { ConfirmAddProducts };
+export default ConfirmAddProducts;

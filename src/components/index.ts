@@ -11,6 +11,7 @@ export * from "./MainContainer";
 export * from "./Modal";
 export * from "./OrderBy";
 export * from "./Select";
+export * from "./Sheets";
 export * from "./Spinner";
 export * from "./UploadBox";
 export * from "./WaiterHeader";

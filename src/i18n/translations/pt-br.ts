@@ -122,6 +122,7 @@ export const ptBr = {
 			pix: "Pix",
 			"credit-card": "Cartão de crédito",
 			cash: "Dinheiro",
+			Cancel: "Cancelar",
 		},
 		Table: {
 			Headers: {
@@ -132,6 +133,14 @@ export const ptBr = {
 		},
 		MarkAsDelivered: {
 			Title: "Marcar item como<br/> entregue",
+		},
+		Cancel: {
+			Title: "Cancelar pedido",
+			Body: "Tem certeza que deseja cancelar o pedido?",
+			Buttons: {
+				Yes: "Sim",
+				No: "Não",
+			},
 		},
 	},
 	WaiterOrderPayment: {
@@ -149,11 +158,14 @@ export const ptBr = {
 			Payment: "Pagamento",
 			ValuePerPerson: "Valor por pessoa",
 			Attachment: "Comprovante",
+			SelectFile: "Enviar comprovante",
 		},
 		Buttons: {
 			Cancel: "Cancelar",
 			Confirm: "Confirmar",
 			AddPayment: "+ Adicionar pagamento",
+			Continue: "Continuar",
+			Finish: "Finalizar",
 		},
 		Modals: {
 			AddPayment: {
@@ -173,8 +185,13 @@ export const ptBr = {
 	},
 	WaiterAddProducts: {
 		Title: "Items na<br/> Comanda",
+		Confirm: {
+			Title: "Confirmar items",
+		},
 		Buttons: {
 			Add: "Adicionar",
+			Confirm: "Confirmar",
+			Cancel: "Cancelar",
 		},
 		Filters: {
 			Stock: "Estoque",
@@ -256,6 +273,7 @@ export const ptBr = {
 		AttendanceTables: "Carregando mesas...",
 		AttendanceOrders: "Carregando pedidos...",
 		Products: "Carregando produtos...",
+		Orders: "Carregando pedidos...",
 	},
 	Empty: {
 		Orders: "Nenhum pedido encontrado.",

@@ -82,7 +82,8 @@ const ListItem = styled.div.withConfig({
 `;
 
 const LargeButton = styled.button.withConfig({ shouldForwardProp })<{
-	colorScheme?: "primary" | "secondary";
+	colorScheme?: "primary" | "secondary" | "danger";
+	fitSize?: boolean;
 }>`
 	width: 100%;
 	padding: 24px;
@@ -102,6 +103,11 @@ const LargeButton = styled.button.withConfig({ shouldForwardProp })<{
 		`
 		color: ${theme.text.white};
 		background-color: ${theme.colors[colorScheme]};
+	`}
+
+	${({ fitSize }) => fitSize && `
+		width: fit-content;
+		height: fit-content;
 	`}
 
 	&:hover {

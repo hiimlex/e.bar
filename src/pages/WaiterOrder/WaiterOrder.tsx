@@ -1,13 +1,14 @@
 import { AxiosError } from "axios";
 import { Box, useToast } from "leux";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Check, User } from "react-feather";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Check, User, X } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Pages } from "../../@types";
 import { WaiterOrdersService } from "../../api";
 import {
+	BottomSheet,
 	Button,
 	ChipStatus,
 	ChipStatusProps,
@@ -15,7 +16,7 @@ import {
 	MainContainer,
 } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import { Styled } from "../../styles";
+import { getUnitInPx, Styled } from "../../styles";
 
 import S from "./WaiterOrder.styles";
 
@@ -26,6 +27,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	const { t } = useTranslation();
 	const ToastService = useToast();
 	const { order } = useSelector((state: RootState) => state.onOrder);
+	const [showCancelOrder, setShowCancelOrder] = useState(false);
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -104,6 +106,8 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 
 		return { colorScheme: "secondary", variant: "filled" };
 	}, [order?.status]);
+
+	const onCancelOrder = () => {};
 
 	useEffect(() => {
 		getOrder();
@@ -215,6 +219,15 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 						<Check size={20} /> {t("WaiterOrder.Buttons.MarkAsDelivered")}
 					</Button>
 					<S.Footer>
+						<S.LargeButton
+							colorScheme="danger"
+							fitSize
+							onClick={() => setShowCancelOrder(true)}
+						>
+							<X size={32} />
+							<span>{t("WaiterOrder.Buttons.Cancel")}</span>
+						</S.LargeButton>
+
 						{!order?.payment && (
 							<S.LargeButton
 								colorScheme="secondary"
@@ -225,19 +238,43 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 								<span>{t("WaiterOrder.Buttons.Payment")}</span>
 							</S.LargeButton>
 						)}
+
 						{order?.payment && typeof order.payment !== "string" && (
 							<S.LargeButton colorScheme="secondary">
 								<img src={`/src/assets/${order.payment.method}.svg`}></img>
 								<span>{t(`WaiterOrder.Buttons.${order.payment.method}`)}</span>
 							</S.LargeButton>
 						)}
-
-						<S.LargeButton colorScheme="primary">
-							<Icons.SendSVG fill="#fff	" />
-							<span>{t("WaiterOrder.Buttons.Send")}</span>
-						</S.LargeButton>
 					</S.Footer>
 				</S.Container>
+
+				{showCancelOrder && (
+					<BottomSheet title={t("WaiterOrder.Cancel.Title")}>
+						<Box flex flexDirection="column" flexGap={getUnitInPx(3)}>
+							<Styled.Typography.BodyBold textColor="dark">
+								{t("WaiterOrder.Cancel.Body")}
+							</Styled.Typography.BodyBold>
+							<Box
+								flex
+								flexDirection="row"
+								flexGap={getUnitInPx(3)}
+								alignItems="center"
+								justifyContent="space-between"
+							>
+								<Button
+									theme="default"
+									className="fill-row"
+									onClick={() => setShowCancelOrder(false)}
+								>
+									{t("WaiterOrder.Cancel.Buttons.No")}
+								</Button>
+								<Button theme="danger" className="fill-row">
+									{t("WaiterOrder.Cancel.Buttons.Yes")}
+								</Button>
+							</Box>
+						</Box>
+					</BottomSheet>
+				)}
 			</S.Wrapper>
 		</MainContainer>
 	);

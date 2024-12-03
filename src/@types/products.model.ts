@@ -60,3 +60,18 @@ export interface CreateProductPayload {
 	price: number;
 	stock: number;
 }
+
+export interface WaiterAddProductsPageProps {}
+
+export interface ConfirmAddProductsProps {
+	orderId: string;
+	productList: AddProduct;
+	cancel?: () => void;
+	onChange?: (productList: AddProduct) => void;
+	onConfirm?: () => void;
+}
+
+export type AddProduct = Record<
+	string,
+	{ product: IProduct; quantity: number }
+>;

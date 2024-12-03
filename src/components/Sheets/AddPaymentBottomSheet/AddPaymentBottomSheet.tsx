@@ -1,28 +1,23 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Button, Icons, Input } from "../../";
 import {
 	FieldErrorsType,
-	IOrder,
 	IPaymentForm,
 	TPaymentMethods,
-} from "../../../../@types";
-import { Button, Icons, Input } from "../../../../components";
+} from "../../../@types";
 
 import { Box } from "leux";
 import { Paperclip } from "react-feather";
 import { useTheme } from "styled-components";
-import { Styled } from "../../../../styles";
+import { Styled } from "../../../styles";
+import { IAddPaymentBottomSheetProps } from "./AddPaymentBottomSheet.model";
 import S from "./AddPaymentBottomSheet.styles";
-import svg from "../../../../assets/cash.svg";
-
-interface IAddPaymentBottomSheetProps {
-	order: IOrder;
-	onAddPayment: () => void;
-}
 
 const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 	order,
+	onAddPayment,
 }) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
@@ -50,6 +45,14 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 
 		return 0;
 	}, [values.receivedValue]);
+
+	const onInputFileClick = () => {
+		if (inputRef.current) {
+			inputRef.current.click();
+		}
+	};
+
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<S.Container>
@@ -115,10 +118,6 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 							value: true,
 							message: FieldErrorsType.Required,
 						},
-						min: {
-							value: order?.total || 0,
-							message: FieldErrorsType.Min,
-						},
 					}}
 					render={({ field, fieldState: { error } }) => (
 						<Input
@@ -167,43 +166,6 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 							)}
 						/>
 					</Box>
-					<Box>
-						<Styled.Typography.FieldLabel>
-							{t("WaiterOrderPayment.Labels.Attachment")}
-						</Styled.Typography.FieldLabel>
-						<Controller
-							control={control}
-							name="attachment"
-							rules={{
-								required: {
-									value: true,
-									message: FieldErrorsType.Required,
-								},
-							}}
-							render={({ field, fieldState: { error } }) => (
-								<Input
-									hideLabel
-									onChange={(event) => {
-										const {
-											target: { files },
-										} = event;
-
-										if (files && files[0]) {
-											field.onChange({
-												target: { value: files[0] },
-												name: field.name,
-											});
-										}
-									}}
-									hasSuffix
-									suffixContent={<Paperclip color={theme.colors.gray300} />}
-									type="file"
-									errorMessage={error?.message}
-									showError={!!error}
-								/>
-							)}
-						/>
-					</Box>
 				</Box>
 			)}
 			{method === "credit-card" && (
@@ -238,35 +200,6 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 							)}
 						/>
 					</Box>
-					<Box>
-						<Styled.Typography.FieldLabel>
-							{t("WaiterOrderPayment.Labels.Attachment")}
-						</Styled.Typography.FieldLabel>
-						<Controller
-							control={control}
-							name="name"
-							rules={{
-								required: {
-									value: true,
-									message: FieldErrorsType.Required,
-								},
-							}}
-							render={({ field, fieldState: { error } }) => (
-								<Input
-									value={field.value}
-									hideLabel
-									onChangeValue={(value) => {
-										field.onChange(value);
-									}}
-									hasSuffix
-									suffixContent={<Paperclip color={theme.colors.gray300} />}
-									type="file"
-									errorMessage={error?.message}
-									showError={!!error}
-								/>
-							)}
-						/>
-					</Box>
 				</Box>
 			)}
 			{method === "cash" && (
@@ -279,12 +212,51 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 					</Styled.Typography.BodyBold>
 				</div>
 			)}
+			{(method === "credit-card" || method === "pix") && (
+				<Box>
+					<Styled.Typography.FieldLabel>
+						{t("WaiterOrderPayment.Labels.Attachment")}
+					</Styled.Typography.FieldLabel>
+					<Controller
+						control={control}
+						name="attachment"
+						render={({ field }) => (
+							<S.InputFileWrapper onClick={onInputFileClick}>
+								<input
+									type="file"
+									onChange={(e) =>
+										field.onChange(
+											(e.target.files && e.target.files[0]) || null
+										)
+									}
+									ref={inputRef}
+									style={{ display: "none" }}
+								/>
+								<Styled.Typography.BodyBold
+									textColor={field.value ? "dark" : "gray300"}
+								>
+									{field.value?.name ||
+										t("WaiterOrderPayment.Labels.SelectFile")}
+								</Styled.Typography.BodyBold>
+								<S.InputFileSuffix>
+									<Paperclip color={theme.colors.gray300} />
+								</S.InputFileSuffix>
+							</S.InputFileWrapper>
+						)}
+					/>
+				</Box>
+			)}
 			<Box flex flexDirection="row" alignItems="center" customClass="gap-3">
 				<Button className="fill-row" theme="default">
 					{t("WaiterOrderPayment.Buttons.Cancel")}
 				</Button>
-				<Button className="fill-row" theme="primary" disabled={!isValid}>
-					{t("WaiterOrderPayment.Buttons.Confirm")}
+				<Button
+					className="fill-row"
+					theme="secondary"
+					disabled={!isValid}
+					onClick={handleSubmit(onAddPayment)}
+				>
+					{t("WaiterOrderPayment.Buttons.Continue")}
 				</Button>
 			</Box>
 		</S.Container>
