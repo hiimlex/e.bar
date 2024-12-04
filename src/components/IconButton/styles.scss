@@ -85,7 +85,8 @@
 
 	&:disabled {
 		cursor: not-allowed !important;
-		background: $color-gray-3 !important;
+		background: $color-disabled !important;
 		scale: 1 !important;
+		color: $color-gray-1;
 	}
 }

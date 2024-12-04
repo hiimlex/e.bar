@@ -27,7 +27,7 @@ const BottomSheet: React.FC<PropsWithChildren<BottomSheetProps>> = ({
 		config: {
 			bounce: 1,
 		},
-		delay: 250,
+		delay: 200,
 	});
 	const fadeIn = useSpring({
 		from: {

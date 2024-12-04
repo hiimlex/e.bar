@@ -27,6 +27,13 @@ const Chip = styled.div.withConfig({
 		scale: $scale-1;
 	}
 
+	@media (max-width: 768px) {
+		padding: 10px 14px;
+		font-size: 14px;
+		font-weight: 500;
+		border-radius: 10px;
+	}
+
 	${({ colorScheme, active, theme }) =>
 		colorScheme === "primary" &&
 		`
@@ -58,13 +65,6 @@ const Chip = styled.div.withConfig({
 		`
 		}
 	`}
-
-	 @media (max-width: 768px) {
-		padding: 10px 14px;
-		font-size: 14px;
-		font-weight: 500;
-		border-radius: 10px;
-	}
 `;
 
 const ChipContainer = styled.div.withConfig({ shouldForwardProp })<{
