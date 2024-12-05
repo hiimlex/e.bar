@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { CustomThemeText, getUnitInPx, shouldForwardProp } from "./theme";
+import { shouldForwardProp } from "./shouldForwardProp";
+import { CustomThemeText, getUnitInPx } from "./theme";
 
 const LoadingContainer = styled.div`
 	width: 100%;
@@ -35,7 +36,7 @@ interface TypographyProps {
 const Title = styled.h1.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 25px;
 	line-height: 140%;
-	font-weight: ${({ fontWeight }) => fontWeight || 700};
+	font-weight: ${({ fontWeight }) => fontWeight || 600};
 	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
 `;
 
@@ -67,7 +68,7 @@ const FieldLabel = styled.label.withConfig({
 
 const Body = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 16px;
-	font-weight: ${({ fontWeight }) => fontWeight || 400};
+	font-weight: ${({ fontWeight }) => fontWeight || 500};
 	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
 `;
 const BodyBold = styled.strong.withConfig({
@@ -98,6 +99,13 @@ const Currency = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	&:last-child {
 		text-align: right;
 	}
+`;
+
+const Tip = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
+	font-size: 12px;
+	font-weight: ${({ fontWeight }) => fontWeight || 500};
+
+	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
 `;
 
 interface LinkProps {
@@ -158,6 +166,7 @@ const Typography = {
 	FieldLabel,
 	Subtitle2,
 	Currency,
+	Tip,
 };
 
 const Card = styled.div.withConfig({ shouldForwardProp })<{ isGray?: boolean }>`

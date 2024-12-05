@@ -16,10 +16,9 @@ import { OnOrderActions, RootState } from "../../store";
 
 import S from "./WaiterOrderProducts.styles";
 import { Styled } from "../../styles";
+import { FileMinus } from "react-feather";
 
-type WaiterOrderProductsPageProps = {};
-
-const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
+const WaiterOrderProductsPage: React.FC = () => {
 	const { orderId } = useParams();
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const { t } = useTranslation();
@@ -157,8 +156,12 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 						alignItems="center"
 						justifyContent="space-between"
 					>
-						<Styled.Typography.Subtitle2>{t("WaiterOrderProducts.Labels.Total")}</Styled.Typography.Subtitle2>
-						<Styled.Typography.Subtitle2>R$ {order?.total}</Styled.Typography.Subtitle2>
+						<Styled.Typography.Subtitle2>
+							{t("WaiterOrderProducts.Labels.Total")}
+						</Styled.Typography.Subtitle2>
+						<Styled.Typography.Subtitle2>
+							R$ {order?.total}
+						</Styled.Typography.Subtitle2>
 					</Box>
 
 					<S.List className="no-scroll">
@@ -179,6 +182,16 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 								/>
 							);
 						})}
+
+						{!order?.items ||
+							(order?.items.length === 0 && (
+								<Styled.Empty>
+									<FileMinus size={32} />
+									<Styled.Typography.Caption>
+										{t("Empty.Products")}
+									</Styled.Typography.Caption>
+								</Styled.Empty>
+							))}
 					</S.List>
 
 					<S.Footer className="w-o-products-actions">

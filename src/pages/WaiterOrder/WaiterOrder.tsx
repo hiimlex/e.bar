@@ -115,26 +115,31 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	}, [getOrder]);
 
 	return (
-		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
+		<MainContainer
+			wrapperRef={wrapperRef}
+			showGoBack
+			onGoBack={goBack}
+			showMenu={false}
+		>
 			<S.Wrapper>
 				<S.Container>
 					<S.Header>
 						<Box flex flexDirection="row" customClass="gap-2">
-							<ChipStatus customClass="w-on-order-chip" colorScheme="primary">
+							<ChipStatus className="w-on-order-chip" colorScheme="primary">
 								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 							</ChipStatus>
 
 							<ChipStatus
 								colorScheme="primary"
-								customClass="w-on-order-chip flex flex-row gap-2"
+								className="w-on-order-chip flex items-center flex-row gap-2"
 							>
-								<User size={20} />
+								<User size={16} />
 								{order?.customers || 0}
 							</ChipStatus>
 
 							{order?.status && (
 								<ChipStatus
-									customClass="w-on-order-chip"
+									className="w-on-order-chip"
 									variant={orderStatusChip.variant}
 									colorScheme={orderStatusChip.colorScheme}
 								>

@@ -1,17 +1,6 @@
 import { keyframes } from "styled-components";
 
-export const shouldForwardProp: (prop: string) => boolean = (prop) =>
-	![
-		"colorScheme",
-		"variant",
-		"size",
-		"active",
-		"breakpoint",
-		"textColored",
-		"textColor",
-		"textSlashed",
-		'fitSize'
-	].includes(prop);
+
 
 export const colors = {
 	primary: "#9a36fd",

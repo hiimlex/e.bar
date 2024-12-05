@@ -174,7 +174,7 @@ export const ptBr = {
 		},
 	},
 	WaiterOrderProducts: {
-		Title: "Items na<br/> Comanda",
+		Title: "Items no<br/> Pedido",
 		Buttons: {
 			SeeAll: "Ver cardápio",
 		},
@@ -184,7 +184,7 @@ export const ptBr = {
 		},
 	},
 	WaiterAddProducts: {
-		Title: "Items na<br/> Comanda",
+		Title: "Adicionar items<br/> ao pedido",
 		Confirm: {
 			Title: "Confirmar items",
 		},

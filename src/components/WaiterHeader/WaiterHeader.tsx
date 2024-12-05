@@ -27,7 +27,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 				<ChipStatus
 					variant="outlined"
 					colorScheme="success"
-					customClass="text-center self-center"
+					className="text-center self-center"
 				>
 					#{attendance.code}
 				</ChipStatus>
@@ -41,7 +41,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 					)}
 				</div>
 				<div className="w-app-header-brand">
-					<Brands.EBarBrand />
+					<Brands.EBarWaiterBrand />
 				</div>
 				<div className="flex-1 w-app-header-actions">
 					{showSearch && (

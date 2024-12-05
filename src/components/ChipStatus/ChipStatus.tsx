@@ -5,23 +5,27 @@ export interface ChipStatusProps {
 	colorScheme?: StyledChipStatusProps["colorScheme"];
 	variant?: StyledChipStatusProps["variant"];
 	customStyles?: React.CSSProperties;
-	customClass?: string;
+	className?: string;
+	size?: LeSizes;
 }
 
 import S from "./ChipStatus.styles";
+import { LeSizes } from "leux";
 
 const ChipStatus: React.FC<PropsWithChildren<ChipStatusProps>> = ({
 	children,
 	colorScheme = "default",
 	variant = "filled",
-	customClass,
+	className,
 	customStyles,
+	size = "medium",
 }) => {
 	return (
 		<S.ChipStatus
 			colorScheme={colorScheme}
 			variant={variant}
-			className={customClass}
+			size={size}
+			className={className}
 			style={customStyles}
 		>
 			{children}

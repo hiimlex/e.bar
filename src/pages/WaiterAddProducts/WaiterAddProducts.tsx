@@ -137,9 +137,36 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 		[filters]
 	);
 
+	const loadCategories = useCallback(async () => {
+		await dispatch(
+			ProductsThunks.fetchStoreCategories({
+				loading: true,
+				onError: (error) => {
+					if (error.response?.data) {
+						const { message } = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
+	}, []);
+
 	useEffect(() => {
 		loadProducts();
 	}, [loadProducts]);
+
+	useEffect(() => {
+		loadCategories();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const getOrder = useCallback(async () => {
 		try {

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IListOrdersFilters, Pages, SafeAny, TOrderBy } from "../../@types";
-import { Chip, MainContainer, OrderBy, Spinner } from "../../components";
+import { Chip, MainContainer, OrderBy, Spinner, WaiterOrderCard } from "../../components";
 import {
 	AppDispatch,
 	RootState,
@@ -14,7 +14,6 @@ import {
 } from "../../store";
 import { Styled } from "../../styles";
 import { SalesWaitersOrder } from "../Sales";
-import { WaiterOrdersCard } from "../WaiterHome";
 import S from "./WaiterMyOrders.styles";
 
 interface WaiterMyOrdersPageProps {}
@@ -146,7 +145,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 							{orders.map((order, index) => (
 								<div key={index}>
 									{order.status !== "FINISHED" && (
-										<WaiterOrdersCard
+										<WaiterOrderCard
 											order={order}
 											key={index}
 											onClick={() => goToOrder(order._id)}

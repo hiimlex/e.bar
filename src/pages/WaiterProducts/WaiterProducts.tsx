@@ -10,8 +10,8 @@ import {
 	Chip,
 	Input,
 	MainContainer,
-	ProductColumnCard,
 	Spinner,
+	WaiterProductCard,
 } from "../../components";
 import {
 	AppDispatch,
@@ -40,8 +40,6 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [value, setValue] = useState("");
 	const [search, setSearch] = useDebounceValue("", 300);
-
-	const [animationEffect, setAnimationEffect] = useState<any>();
 
 	useEffect(() => {
 		dispatch(ProductsActions.setFilters({ name: search }));
@@ -171,6 +169,20 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 							</S.ChipsWrapper>
 						</S.Filters>
 					</S.Header>
+
+					{/* Products List */}
+					{!isLoadingProducts && (
+						<S.List className="no-scroll">
+							{products.map((product, index) => (
+								<WaiterProductCard
+									product={product}
+									key={index}
+									onCategoryClick={(categoryId) => onSelectCategory(categoryId)}
+								/>
+							))}
+						</S.List>
+					)}
+					{/* Empty */}
 					{!isLoadingProducts && products.length === 0 && (
 						<Styled.Empty className="empty-box">
 							<FileMinus strokeWidth={2} size={32} />
@@ -179,13 +191,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 							</Styled.Typography.Caption>
 						</Styled.Empty>
 					)}
-					{!isLoadingProducts && (
-						<S.List className="no-scroll">
-							{products.map((product, index) => (
-								<ProductColumnCard product={product} key={index} />
-							))}
-						</S.List>
-					)}
+					{/* Loading  */}
 					{isLoadingProducts && (
 						<Styled.LoadingContainer className="w-products-loading">
 							<Spinner size={32} theme="primary" />

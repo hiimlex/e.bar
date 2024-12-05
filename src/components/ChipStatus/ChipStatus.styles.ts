@@ -1,3 +1,4 @@
+import { LeSizes } from "leux";
 import styled, { css, RuleSet } from "styled-components";
 import { hexPercentage, shouldForwardProp } from "../../styles";
 
@@ -11,21 +12,40 @@ export interface StyledChipStatusProps {
 		| "danger"
 		| "default";
 	variant: "filled" | "outlined";
+	size?: LeSizes;
 }
 
 const ChipStatus = styled.div.withConfig({
 	shouldForwardProp,
 })<StyledChipStatusProps>`
-	padding: 4px 12px;
-	border-radius: 12px;
-	font-weight: 600;
+	padding: 8px 12px;
+	border-radius: 8px;
+	font-weight: 500;
 	font-size: 14px;
 	width: fit-content;
 	height: fit-content;
 
 	${({ colorScheme, variant }) =>
 		variant && colorScheme && ChipStatusStyled[variant][colorScheme]}
+
+	${({ size }) => size && ChipStatusSizes[size]}
 `;
+
+const ChipStatusSmall = css`
+	padding: 4px 8px;
+`;
+const ChipStatusMedium = css`
+	padding: 8px 12px;
+`;
+const ChipStatusLarge = css`
+	padding: 12px 16px;
+`;
+
+const ChipStatusSizes: Record<LeSizes, RuleSet> = {
+	small: ChipStatusSmall,
+	medium: ChipStatusMedium,
+	large: ChipStatusLarge,
+};
 
 const ChipSuccessFilled = css`
 	background: ${({ theme }) => theme.colors.success};

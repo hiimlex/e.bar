@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { useToast } from "leux";
+import { Box, Checkbox, useToast } from "leux";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,9 @@ import { WaiterOrdersService } from "../../api";
 import { Button, ChipStatus, MainContainer } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 import { LoaderPage } from "../LoaderPage";
-import "./styles.scss";
+
+import { Styled } from "../../styles";
+import S from "./WaiterOrderServe.styles";
 
 interface WaiterOrderServePageProps {}
 
@@ -133,68 +135,57 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 			showGoBack
 			onGoBack={goBack}
 		>
-			<div className="w-serve-order">
-				<main className="w-serve-order-content">
-					<header className={`w-serve-order-header`}>
-						<div className="flex flex-row gap-2">
-							<ChipStatus
-								colorScheme="secondary"
-								customClass="w-serve-order-table"
-							>
-								{t(`WaiterOrder.Labels.OrderNumber`, { number: order?.number })}
-							</ChipStatus>
-							<ChipStatus
-								colorScheme="primary"
-								customClass="w-serve-order-table"
-							>
-								{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
-							</ChipStatus>
-						</div>
-					</header>
-					<span
+			<S.Container>
+				<S.Content>
+					<Box flex flexDirection="row" customClass="gap-2">
+						<ChipStatus colorScheme="secondary" className="w-serve-order-table">
+							{t(`WaiterOrder.Labels.OrderNumber`, { number: order?.number })}
+						</ChipStatus>
+						<ChipStatus colorScheme="primary" className="w-serve-order-table">
+							{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
+						</ChipStatus>
+					</Box>
+					<Styled.Typography.Title
 						className="page-title"
 						dangerouslySetInnerHTML={{
 							__html: t("WaiterOrder.MarkAsDelivered.Title"),
 						}}
-					></span>
+					></Styled.Typography.Title>
 
-					<div className="detailed-list">
-						<div className="detailed-list-products-header">
-							<span className="detailed-list-products-title"></span>
-							<span className="detailed-list-products-title">
+					<S.List>
+						<S.ListItem className="detailed-list-products-header">
+							<span></span>
+							<Styled.Typography.Button textColor="placeholder">
 								{t("WaiterOrder.Table.Headers.Products")}
-							</span>
-							<span className="detailed-list-products-title">
+							</Styled.Typography.Button>
+							<Styled.Typography.Button textColor="placeholder">
 								{t("WaiterOrder.Table.Headers.Price")}
-							</span>
-						</div>
+							</Styled.Typography.Button>
+						</S.ListItem>
+						<Styled.DashLine />
 						{order?.items.map(
 							(op, index) =>
 								op.status === "PENDING" && (
-									<div
-										key={index}
-										className={`detailed-list-products-item ${
-											toServe.has(op._id) && "text-slash"
-										}`}
-										onClick={() => addToServe(op)}
-									>
-										<div
-											className={`custom-checkbox ${
-												toServe.has(op._id) ? "custom-checkbox-active" : ""
-											}`}
+									<S.ListItem key={index} onClick={() => addToServe(op)}>
+										<Checkbox
+											fieldKey={
+												typeof op.product !== "string" ? op.product._id : "---"
+											}
+											checkBoxProps={{ checked: toServe.has(op._id) }}
 										/>
-										<span className="detailed-list-products-name">
+										<S.ListText textSlashed={toServe.has(op._id)}>
 											({op.quantity}x){" "}
 											{typeof op.product !== "string" ? op.product.name : "---"}
-										</span>
-										<span className="detailed-list-products-price">
+										</S.ListText>
+										<S.ListText textSlashed={toServe.has(op._id)}>
 											<span>{op.total}</span>
-										</span>
-									</div>
+										</S.ListText>
+									</S.ListItem>
 								)
 						)}
-					</div>
-					<footer className="w-serve-order-footer">
+					</S.List>
+
+					<S.Footer className="w-serve-order-footer">
 						<Button
 							className="fill-row"
 							theme="secondary"
@@ -212,9 +203,9 @@ const WaiterOrderServePage: React.FC<WaiterOrderServePageProps> = () => {
 						>
 							{t("Generics.Buttons.Confirm")}
 						</Button>
-					</footer>
-				</main>
-			</div>
+					</S.Footer>
+				</S.Content>
+			</S.Container>
 		</MainContainer>
 	);
 };

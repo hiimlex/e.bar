@@ -5,7 +5,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IOrder, Pages, SafeAny } from "../../@types";
-import { Button, Chip, MainContainer, Spinner } from "../../components";
+import {
+	Button,
+	Chip,
+	MainContainer,
+	Spinner,
+	WaiterOrderCard,
+	WaiterProductCard,
+} from "../../components";
 import {
 	AppDispatch,
 	OnOrderActions,
@@ -15,7 +22,6 @@ import {
 	WaiterActions,
 	WaiterThunks,
 } from "../../store";
-import { WaiterOrdersCard, WaiterProductCard } from "./components";
 
 import S from "./WaiterHome.styles";
 import { Styled } from "../../styles";
@@ -201,7 +207,7 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						{!loadingOrders && (
 							<S.Grid>
 								{orders.map((order, index) => (
-									<WaiterOrdersCard
+									<WaiterOrderCard
 										order={order}
 										onClick={navigateToOrder}
 										key={index}
@@ -271,7 +277,13 @@ const WaiterHomePage: React.FC<WaiterHomePageProps> = () => {
 						{!isLoadingProducts && (
 							<S.Grid className="w-home-grid">
 								{products.map((product) => (
-									<WaiterProductCard product={product} key={product._id} />
+									<WaiterProductCard
+										product={product}
+										key={product._id}
+										onCategoryClick={(categoryId) =>
+											onSelectCategory(categoryId)
+										}
+									/>
 								))}
 							</S.Grid>
 						)}

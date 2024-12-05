@@ -75,61 +75,61 @@ const WaiterOrderPaymentPage: React.FC = () => {
 		closeAddPaymentSheet();
 	};
 
-	const onPay = async (data: IPaymentForm) => {
-		try {
-			if (!order || !attendance) {
-				return;
-			}
+	// const onPay = async (data: IPaymentForm) => {
+	// 	try {
+	// 		if (!order || !attendance) {
+	// 			return;
+	// 		}
 
-			setLoading(true);
+	// 		setLoading(true);
 
-			const { name, nf, receivedValue } = data;
+	// 		const { name, nf, receivedValue } = data;
 
-			const createPayment: ICreatePayment = {
-				method,
-				amount: order.total,
-				order_id: order._id,
-			};
+	// 		const createPayment: ICreatePayment = {
+	// 			method,
+	// 			amount: order.total,
+	// 			order_id: order._id,
+	// 		};
 
-			if (method === "pix") {
-				createPayment.pix_config = {
-					name,
-				};
-			}
+	// 		if (method === "pix") {
+	// 			createPayment.pix_config = {
+	// 				name,
+	// 			};
+	// 		}
 
-			if (method === "credit-card") {
-				createPayment.credit_card_config = {
-					nf,
-				};
-			}
+	// 		if (method === "credit-card") {
+	// 			createPayment.credit_card_config = {
+	// 				nf,
+	// 			};
+	// 		}
 
-			if (method === "cash") {
-				createPayment.cash_config = {
-					charge: chargeBack,
-					receivedValue,
-				};
-			}
+	// 		if (method === "cash") {
+	// 			createPayment.cash_config = {
+	// 				charge: chargeBack,
+	// 				receivedValue,
+	// 			};
+	// 		}
 
-			await PaymentsService.create(createPayment);
+	// 		await PaymentsService.create(createPayment);
 
-			setLoading(false);
+	// 		setLoading(false);
 
-			navigate(Pages.WaiterOrder.replace(":orderId", order._id));
-		} catch (error) {
-			if (error instanceof AxiosError && error.response) {
-				const { message } = error.response.data;
+	// 		navigate(Pages.WaiterOrder.replace(":orderId", order._id));
+	// 	} catch (error) {
+	// 		if (error instanceof AxiosError && error.response) {
+	// 			const { message } = error.response.data;
 
-				if (message && typeof message === "string") {
-					const translateMessage = t(`Errors.${message}`);
+	// 			if (message && typeof message === "string") {
+	// 				const translateMessage = t(`Errors.${message}`);
 
-					ToastService.createToast({
-						label: translateMessage,
-						colorScheme: "danger",
-					});
-				}
-			}
-		}
-	};
+	// 				ToastService.createToast({
+	// 					label: translateMessage,
+	// 					colorScheme: "danger",
+	// 				});
+	// 			}
+	// 		}
+	// 	}
+	// };
 
 	const openAddPaymentSheet = () => {
 		setShowAddPayment(true);
@@ -144,7 +144,7 @@ const WaiterOrderPaymentPage: React.FC = () => {
 	}, []);
 
 	return (
-		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
+		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack} showMenu={false}>
 			<S.Wrapper>
 				<S.Header className="w-op-header">
 					<span

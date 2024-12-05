@@ -10,7 +10,12 @@ const TextLogo = styled.h1`
 	color: ${({ theme }) => theme.colors.secondary};
 `;
 
+const PrimaryText = styled.strong`
+	color: ${({ theme }) => theme.colors.primary};
+`;
+
 export const S = {
 	BrandImg,
+	PrimaryText,
 	TextLogo,
 };

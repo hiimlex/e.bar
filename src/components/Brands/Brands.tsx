@@ -14,6 +14,15 @@ const EBarBrand: React.FC<BrandProps> = () => {
 	);
 };
 
-const Brands = { EBarBrand };
+const EBarWaiterBrand: React.FC<BrandProps> = () => {
+	return (
+		<S.TextLogo>
+			<strong>e</strong>.bar.<S.PrimaryText>waiter</S.PrimaryText>
+		</S.TextLogo>
+		// <img src={socialsipsvg} className={s.brandImg} style={styles} alt="Social Sips" />
+	);
+};
+
+const Brands = { EBarBrand, EBarWaiterBrand };
 
 export default Brands;
