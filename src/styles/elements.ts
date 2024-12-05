@@ -6,6 +6,7 @@ const LoadingContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: ${getUnitInPx(2)};
+	padding: ${getUnitInPx(4)};
 	justify-content: center;
 	align-items: center;
 `;
@@ -19,7 +20,7 @@ const Empty = styled.div`
 	align-items: center;
 	padding: ${getUnitInPx(2)};
 	border-radius: ${getUnitInPx(2)};
-	background: ${({ theme }) => theme.colors.gray100};
+	padding: ${getUnitInPx(4)};
 
 	font-size: 16px;
 	font-weight: 500;
@@ -79,7 +80,7 @@ const BodyBold = styled.strong.withConfig({
 
 const Caption = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 14px;
-	font-weight: ${({ fontWeight }) => fontWeight || 400};
+	font-weight: ${({ fontWeight }) => fontWeight || 500};
 	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
 `;
 const Button = styled.strong.withConfig({ shouldForwardProp })<TypographyProps>`

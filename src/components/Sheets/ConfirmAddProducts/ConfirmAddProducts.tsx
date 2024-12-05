@@ -8,7 +8,7 @@ import {
 	IProduct,
 } from "../../../@types";
 import { WaiterOrdersService } from "../../../api";
-import { ProductsRowCard } from "../../../pages/WaiterProducts/components";
+import { ProductRowCard } from "../../../components";
 import { Button } from "../../Button";
 
 import S from "./ConfirmAddProducts.styles";
@@ -79,7 +79,7 @@ const ConfirmAddProducts: React.FC<ConfirmAddProductsProps> = ({
 		<S.Container>
 			<S.List>
 				{Object.values(productList).map(({ product, quantity }) => (
-					<ProductsRowCard
+					<ProductRowCard
 						key={product._id}
 						product={product}
 						quantity={quantity}

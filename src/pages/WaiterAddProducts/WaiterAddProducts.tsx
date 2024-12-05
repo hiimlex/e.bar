@@ -20,6 +20,7 @@ import {
 	Chip,
 	Input,
 	MainContainer,
+	ProductColumnCard,
 	Sheets,
 	Spinner,
 } from "../../components";
@@ -30,7 +31,6 @@ import {
 	ProductsThunks,
 	RootState,
 } from "../../store";
-import { ProductsRowCard } from "../WaiterProducts/components";
 
 import { Styled } from "../../styles";
 import S from "./WaiterAddProducts.styles";
@@ -244,7 +244,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 					{!isLoadingProducts && (
 						<S.ProductList>
 							{products.map((product, index) => (
-								<ProductsRowCard
+								<ProductColumnCard
 									product={product}
 									key={index}
 									showChangeButtons={true}

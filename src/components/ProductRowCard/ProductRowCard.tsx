@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { Minus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
-import { IProduct } from "../../../../@types";
-import { ChipStatus, IconButton } from "../../../../components";
+import { IProduct } from "../../@types";
+import { ChipStatus, IconButton } from "../index";
 
-import S from "./ProductsRowCard.styles";
 import { Box } from "leux";
-import { Styled } from "../../../../styles";
+import { Styled } from "../../styles";
+import S from "./ProductRowCard.styles";
 
-type ProductsRowCardProps = {
+type ProductRowCardProps = {
 	product: IProduct;
 
 	showChangeButtons?: boolean;
@@ -18,7 +18,7 @@ type ProductsRowCardProps = {
 	slashedText?: boolean;
 };
 
-export const ProductsRowCard: React.FC<ProductsRowCardProps> = ({
+export const ProductRowCard: React.FC<ProductRowCardProps> = ({
 	product,
 	showChangeButtons = false,
 	onChange,

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getUnitInPx } from "../../../../styles";
+import { getUnitInPx } from "../../styles";
 
 const Card = styled.div`
 	display: flex;
@@ -26,10 +26,12 @@ const ChangeQuantity = styled.div`
 	align-items: center;
 	gap: ${getUnitInPx(1)};
 `;
+
 const ChangeQuantityButton = styled.button``;
 
 const ProductImage = styled.img`
 	height: 48px;
+	border-radius: 4px;
 `;
 
 const ProductImageWrapper = styled.div`

@@ -6,15 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDebounceValue } from "usehooks-ts";
 import { Pages, SafeAny } from "../../@types";
-import { Chip, Input, MainContainer, Spinner } from "../../components";
+import {
+	Chip,
+	Input,
+	MainContainer,
+	ProductColumnCard,
+	Spinner,
+} from "../../components";
 import {
 	AppDispatch,
 	ProductsActions,
 	ProductsThunks,
 	RootState,
 } from "../../store";
-import { ProductsRowCard } from "./components";
-import "./styles.scss";
+
+import { Styled } from "../../styles";
+import S from "./WaiterProducts.styles";
 
 interface WaiterProductsPageProps {}
 
@@ -33,6 +40,8 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [value, setValue] = useState("");
 	const [search, setSearch] = useDebounceValue("", 300);
+
+	const [animationEffect, setAnimationEffect] = useState<any>();
 
 	useEffect(() => {
 		dispatch(ProductsActions.setFilters({ name: search }));
@@ -94,6 +103,10 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		[filters]
 	);
 
+	const onShowSearch = () => {
+		setShowSearch((curr) => !curr);
+	};
+
 	useEffect(() => {
 		if (!isLoadingProducts) {
 			loadProducts();
@@ -106,16 +119,15 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 			showGoBack
 			onGoBack={goBack}
 			showSearch
-			onSearch={() => setShowSearch((curr) => !curr)}
+			onSearch={onShowSearch}
 		>
-			<div className="w-products">
-				<main className="w-products-content">
-					<header className={`w-products-header`}>
-						<span
-							className="page-title"
+			<S.Container>
+				<S.Content>
+					<S.Header>
+						<Styled.Typography.Title
 							dangerouslySetInnerHTML={{ __html: t("WaiterProducts.Title") }}
-						></span>
-						<div className="w-products-filters">
+						></Styled.Typography.Title>
+						<S.Filters className="w-products-filters">
 							{showSearch && (
 								<Input
 									placeholder="Buscar produto..."
@@ -128,7 +140,7 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 									value={value}
 								/>
 							)}
-							<div className="w-products-filters-chips scrollable-x no-scroll">
+							<S.ChipsWrapper className="scrollable-x no-scroll">
 								<Chip
 									active={!filters.category_id && !filters.no_stock}
 									clickable
@@ -156,36 +168,34 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 										{category.name}
 									</Chip>
 								))}
-							</div>
-						</div>
-					</header>
+							</S.ChipsWrapper>
+						</S.Filters>
+					</S.Header>
 					{!isLoadingProducts && products.length === 0 && (
-						<div className="empty-box">
+						<Styled.Empty className="empty-box">
 							<FileMinus strokeWidth={2} size={32} />
-							<div>{t("Empty.Products")}</div>
-						</div>
+							<Styled.Typography.Caption>
+								{t("Empty.Products")}
+							</Styled.Typography.Caption>
+						</Styled.Empty>
 					)}
 					{!isLoadingProducts && (
-						<div className="w-products-list no-scroll">
+						<S.List className="no-scroll">
 							{products.map((product, index) => (
-								<ProductsRowCard
-									product={product}
-									key={index}
-									quantity={product.stock}
-								/>
+								<ProductColumnCard product={product} key={index} />
 							))}
-						</div>
+						</S.List>
 					)}
 					{isLoadingProducts && (
-						<div className="w-products-loading">
+						<Styled.LoadingContainer className="w-products-loading">
 							<Spinner size={32} theme="primary" />
-							<span className="w-products-loading-message">
+							<Styled.Typography.Caption>
 								{t("Loaders.Products")}
-							</span>
-						</div>
+							</Styled.Typography.Caption>
+						</Styled.LoadingContainer>
 					)}
-				</main>
-			</div>
+				</S.Content>
+			</S.Container>
 		</MainContainer>
 	);
 };

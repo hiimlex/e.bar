@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+import { Box, useToast } from "leux";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,14 +11,13 @@ import {
 	UpdateOrderProductPayload,
 } from "../../@types";
 import { WaiterOrdersService } from "../../api";
-import { Button, Chip, MainContainer } from "../../components";
+import { Button, Chip, MainContainer, ProductRowCard } from "../../components";
 import { OnOrderActions, RootState } from "../../store";
-import { ProductsRowCard } from "../WaiterProducts/components";
-import "./styles.scss";
-import { AxiosError } from "axios";
-import { useToast } from "leux";
 
-interface WaiterOrderProductsPageProps {}
+import S from "./WaiterOrderProducts.styles";
+import { Styled } from "../../styles";
+
+type WaiterOrderProductsPageProps = {};
 
 const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 	const { orderId } = useParams();
@@ -128,18 +129,18 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 
 	return (
 		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
-			<div className="w-o-products">
-				<main className="w-o-products-content">
-					<header className={`w-o-products-header`}>
+			<S.Container>
+				<S.Content>
+					<S.Header>
 						<span
 							className="page-title"
 							dangerouslySetInnerHTML={{
 								__html: t("WaiterOrderProducts.Title"),
 							}}
 						></span>
-					</header>
+					</S.Header>
 
-					<div>
+					<S.Filters>
 						<Chip
 							active={filters.order_product_status?.includes("DELIVERED")}
 							onClick={seeDeliveredProducts}
@@ -148,15 +149,25 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 						>
 							{t("WaiterOrderProducts.Labels.SeeServed")}
 						</Chip>
-					</div>
+					</S.Filters>
 
-					<div className="w-o-products-list no-scroll">
+					<Box
+						flex
+						flexDirection="row"
+						alignItems="center"
+						justifyContent="space-between"
+					>
+						<Styled.Typography.Subtitle2>{t("WaiterOrderProducts.Labels.Total")}</Styled.Typography.Subtitle2>
+						<Styled.Typography.Subtitle2>R$ {order?.total}</Styled.Typography.Subtitle2>
+					</Box>
+
+					<S.List className="no-scroll">
 						{order?.items.map((op, index) => {
 							const product =
 								typeof op.product !== "string" ? op.product : ({} as IProduct);
 
 							return (
-								<ProductsRowCard
+								<ProductRowCard
 									product={product}
 									key={index}
 									showChangeButtons={op.status === "PENDING"}
@@ -168,14 +179,9 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 								/>
 							);
 						})}
-					</div>
+					</S.List>
 
-					<div className="w-o-products-total">
-						<span>{t("WaiterOrderProducts.Labels.Total")}</span>
-						<span>R$ {order?.total}</span>
-					</div>
-
-					<footer className="w-o-products-actions">
+					<S.Footer className="w-o-products-actions">
 						<Button
 							theme="primary"
 							className="fill-row"
@@ -183,9 +189,9 @@ const WaiterOrderProductsPage: React.FC<WaiterOrderProductsPageProps> = () => {
 						>
 							{t("WaiterOrderProducts.Buttons.SeeAll")}
 						</Button>
-					</footer>
-				</main>
-			</div>
+					</S.Footer>
+				</S.Content>
+			</S.Container>
 		</MainContainer>
 	);
 };

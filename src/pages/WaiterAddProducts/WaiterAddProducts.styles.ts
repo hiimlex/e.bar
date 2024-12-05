@@ -31,12 +31,14 @@ const Filters = styled.div`
 `;
 
 const ProductList = styled.div`
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 150px));
 	gap: ${getUnitInPx(3)};
 	overflow-y: auto;
-	padding-bottom: calc(76px);
+	padding-bottom: 76px;
 	max-height: 100%;
+
+
 `;
 
 const FloatingFooter = styled.footer`
