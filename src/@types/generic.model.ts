@@ -3,7 +3,12 @@ import { Socket } from "socket.io-client";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SafeAny = any;
-export type NavLink = { to: string; label: string; icon?: string | ReactNode };
+export type NavLink = {
+	to: string;
+	label: string;
+	icon?: string | ReactNode;
+	isSvg?: boolean;
+};
 
 export interface SocketSliceState {
 	socket?: Socket;
@@ -34,7 +39,6 @@ export interface WaiterHeaderProps {
 	onFilter?: () => void;
 	showCode?: boolean;
 }
-
 
 export type TabItemType = {
 	label: string;

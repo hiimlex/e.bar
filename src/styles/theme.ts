@@ -15,6 +15,8 @@ export const colors = {
 	danger: "#ff4a4a",
 	warning: "#f5a623",
 	disabled: "#c0c0c0",
+	white: "#fff",
+
 };
 
 export const styles = {

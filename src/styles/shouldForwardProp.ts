@@ -11,5 +11,5 @@ export const shouldForwardProp: (prop: string) => boolean = (prop) =>
 		"fitSize",
 		"isGray",
 		"isSelected",
-		"isClickable"
+		"isClickable",
 	].includes(prop);

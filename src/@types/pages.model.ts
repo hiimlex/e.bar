@@ -19,6 +19,7 @@ export enum Pages {
 	WaiterOrderProducts = "/waiter/order/:orderId/products",
 	WaiterOrderPayment = "/waiter/order/:orderId/payment",
 	WaiterProducts =	"/waiter/products",
+	WaiterTables =	"/waiter/tables",
 	WaiterReports = "/waiter/reports",
 	WaiterSettings = "/waiter/settings",
 	WaiterProfile = "/waiter/profile",

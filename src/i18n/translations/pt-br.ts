@@ -364,4 +364,12 @@ export const ptBr = {
 		ORDER_ALREADY_PAID: "Pedido já pago.",
 		PAYMENT_NOT_FOUND: "Pagamento não encontrado.",
 	},
+	Links: {
+		WaiterHome: "Início",
+		WaiterMyOrders: "Meus Pedidos",
+		WaiterProducts: "Produtos",
+		WaiterTables: "Mesas",
+		WaiterSettings: "Configurações",
+		LogOut: "Sair",
+	}
 };

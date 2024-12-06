@@ -1,24 +1,39 @@
-import { FileText, Home, LogOut, Settings, X } from "react-feather";
+import { Book, Home, LogOut, Settings, ShoppingBag, X } from "react-feather";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Pages, SafeAny } from "../../@types";
 import { UserActions } from "../../store";
-import "./styles.scss";
+
+import { useTranslation } from "react-i18next";
+import { Icons } from "../Icons";
+import S from "./Sidebar.styles";
+import { cloneElement, createElement } from "react";
 
 const WAITER_LINKS: NavLink[] = [
 	{
 		to: Pages.WaiterHome,
-		label: "Home",
+		label: "Links.WaiterHome",
 		icon: <Home size={28} />,
 	},
 	{
 		to: Pages.WaiterMyOrders,
-		label: "Pedidos",
-		icon: <FileText size={28} />,
+		label: "Links.WaiterMyOrders",
+		icon: <ShoppingBag size={28} />,
+	},
+	{
+		to: Pages.WaiterProducts,
+		label: "Links.WaiterProducts",
+		icon: <Book size={28} />,
+	},
+	{
+		to: Pages.WaiterTables,
+		label: "Links.WaiterTables",
+		icon: <Icons.TablesIconSVG width={24} height={24} />,
+		isSvg: true,
 	},
 	{
 		to: Pages.WaiterSettings,
-		label: "Configurações",
+		label: "Links.WaiterSettings",
 		icon: <Settings size={28} />,
 	},
 ];
@@ -32,6 +47,8 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 	const style: SafeAny = {
 		"--navlinks": WAITER_LINKS.length,
 	};
+
+	const { t } = useTranslation();
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -49,31 +66,24 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 
 	return (
 		show && (
-			<nav className="sidebar-nav	" style={style}>
-				<button className="sidebar-nav-button" onClick={onClose}>
-					<span>
-						<X size={24} />
-					</span>
-				</button>
+			<S.Sidebar style={style}>
+				<S.SidebarNavButton className="sidebar-nav-button" onClick={onClose}>
+					<X size={24} />
+				</S.SidebarNavButton>
 				{WAITER_LINKS.map((link, index) => (
-					<span
+					<S.SidebarNavButton
 						key={index}
-						className={`sidebar-nav-button ${
-							location.pathname === link.to ? "active" : ""
-						}`}
+						active={location.pathname === link.to}
 						onClick={() => goTo(link.to)}
 					>
-						<span className="sidebar-nav-button-icon">{link.icon}</span>
-						<span>{link.label}</span>
-					</span>
+						<span>{t(link.label)}</span>
+					</S.SidebarNavButton>
 				))}
-				<button className="sidebar-nav-button" onClick={logout}>
-					<span>
-						<LogOut size={28} />
-					</span>
-					<span>Sair</span>
-				</button>
-			</nav>
+				<S.SidebarNavButton className="sidebar-nav-button" onClick={logout}>
+					<LogOut size={28} />
+					{t("Links.LogOut")}
+				</S.SidebarNavButton>
+			</S.Sidebar>
 		)
 	);
 };
