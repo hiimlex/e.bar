@@ -1,11 +1,13 @@
 import { ArrowLeft, Filter, Menu, Search } from "react-feather";
-import { useBreakpoint } from "../../hooks";
-import { Brands } from "../Brands";
-import "./styles.scss";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import { WaiterHeaderProps } from "../../@types";
+import { useBreakpoint } from "../../hooks";
+import { RootState } from "../../store";
+import { Brands } from "../Brands";
 import { ChipStatus } from "../ChipStatus";
+
+import { Box } from "leux";
+import S from "./WaiterHeader.styles";
 
 const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	onGoBack,
@@ -22,7 +24,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 	const { attendance } = useSelector((state: RootState) => state.user);
 
 	return (
-		<div className="w-app-header-wrapper">
+		<S.Wrapper>
 			{showCode && !!attendance && (
 				<ChipStatus
 					variant="outlined"
@@ -32,36 +34,48 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 					#{attendance.code}
 				</ChipStatus>
 			)}
-			<header className={`w-app-header w-app-header-${breakpoint}`}>
-				<div className="flex-1 w-app-header-action">
+			<S.Header breakpoint={breakpoint}>
+				<Box
+					flex
+					flexDirection="row"
+					customClass="gap-2"
+					alignItems="center"
+					justifyContent="flex-start"
+				>
 					{showGoBack && (
 						<button className="w-app-header-button" onClick={onGoBack}>
 							<ArrowLeft size={28} strokeWidth={1.5} />
 						</button>
 					)}
-				</div>
-				<div className="w-app-header-brand">
+				</Box>
+				<S.Centered>
 					<Brands.EBarWaiterBrand />
-				</div>
-				<div className="flex-1 w-app-header-actions">
+				</S.Centered>
+				<Box
+					flex
+					flexDirection="row"
+					customClass="gap-2"
+					alignItems="center"
+					justifyContent="flex-end"
+				>
 					{showSearch && (
-						<button className="w-app-header-button" onClick={onSearch}>
+						<button onClick={onSearch}>
 							<Search size={24} strokeWidth={1.5} />
 						</button>
 					)}
 					{showFilter && (
-						<button className="w-app-header-button" onClick={onFilter}>
+						<button onClick={onFilter}>
 							<Filter size={24} strokeWidth={1.5} />
 						</button>
 					)}
 					{showMenu && (
-						<button className="w-app-header-button" onClick={onMenu}>
+						<button onClick={onMenu}>
 							<Menu size={24} strokeWidth={1.5} />
 						</button>
 					)}
-				</div>
-			</header>
-		</div>
+				</Box>
+			</S.Header>
+		</S.Wrapper>
 	);
 };
 

@@ -1,24 +1,23 @@
-import "./styles.scss";
 import { Loader } from "react-feather";
+
+import { CustomThemeColors } from "../../styles";
+import S from "./Spinner.styles";
 
 interface SpinnerProps {
 	size: number;
 	strokeWidth?: number;
-	theme: "primary" | "secondary" | 'white';
+	theme: CustomThemeColors;
 }
 
 const Spinner: React.FC<SpinnerProps> = ({
 	size,
 	strokeWidth = 1.5,
-	theme,
+	theme = "primary",
 }) => {
 	return (
-		<div
-			className={`spinner spinner-${theme}`}
-			style={{ width: size, height: size }}
-		>
+		<S.Spinner colorScheme={theme} size={size}>
 			<Loader size={size} strokeWidth={strokeWidth} />
-		</div>
+		</S.Spinner>
 	);
 };
 

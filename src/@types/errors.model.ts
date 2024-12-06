@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 export enum FieldErrorsType {
 	Required = "Generics.FieldErrors.Required",
 	InvalidEmail = "Generics.FieldErrors.InvalidEmail",
+	InvalidPhone = "Generics.FieldErrors.InvalidPhone",
 	MinLength = "Generics.FieldErrors.MinLength",
 	MaxLength = "Generics.FieldErrors.MaxLength",
 	Min = "Generics.FieldErrors.Min",

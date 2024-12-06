@@ -4,10 +4,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink, Pages, SafeAny } from "../../@types";
 import { UserActions } from "../../store";
 
+import { cloneElement } from "react";
 import { useTranslation } from "react-i18next";
+import { colors, Styled } from "../../styles";
 import { Icons } from "../Icons";
 import S from "./Sidebar.styles";
-import { cloneElement, createElement } from "react";
 
 const WAITER_LINKS: NavLink[] = [
 	{
@@ -50,10 +51,11 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 
 	const { t } = useTranslation();
 
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
-
+	
+	const dispatch = useDispatch();
+	
 	const logout = () => {
 		dispatch(UserActions.logout());
 
@@ -76,7 +78,16 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 						active={location.pathname === link.to}
 						onClick={() => goTo(link.to)}
 					>
-						<span>{t(link.label)}</span>
+						{!!link.icon &&
+							link.isSvg &&
+							cloneElement(link.icon, {
+								fill:
+									location.pathname === link.to
+										? colors.primary
+										: colors.secondary,
+							})}
+						{!!link.icon && !link.isSvg && link.icon}
+						<Styled.Typography.Caption>{t(link.label)}</Styled.Typography.Caption>
 					</S.SidebarNavButton>
 				))}
 				<S.SidebarNavButton className="sidebar-nav-button" onClick={logout}>

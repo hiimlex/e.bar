@@ -32,7 +32,7 @@ const Filters = styled.div`
 
 const ProductList = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(120px, 150px));
+	grid-template-columns: repeat(auto-fill, minmax(120px, 200px));
 	gap: ${getUnitInPx(3)};
 	overflow-y: auto;
 	padding-bottom: 76px;

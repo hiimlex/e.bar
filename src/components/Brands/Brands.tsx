@@ -3,7 +3,7 @@ interface BrandProps {
 }
 
 import React from "react";
-import { S } from "./Brands.styles";
+import S from "./Brands.styles";
 
 const EBarBrand: React.FC<BrandProps> = () => {
 	return (

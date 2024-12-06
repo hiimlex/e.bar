@@ -25,6 +25,8 @@ export const styles = {
 	scaleLarge: 1.05,
 };
 
+export type CustomThemeColors = keyof typeof colors;
+
 export type CustomThemeText = keyof typeof text;
 
 export const text = {

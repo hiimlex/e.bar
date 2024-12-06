@@ -54,9 +54,7 @@ const SidebarNavButton = styled.button.withConfig({ shouldForwardProp })<{
 		`
 		color: ${theme.colors.primary};
 		
-		svg {
-			stroke: ${theme.colors.primary};
-		}
+		
 		`}
 
 	&:hover {

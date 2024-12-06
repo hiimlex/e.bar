@@ -215,6 +215,38 @@ export const ptBr = {
 			Reduce: "reduzir",
 		},
 	},
+	WaiterSettings: {
+		Title: "Configurações",
+		Subtitle: "Ajustes e configurações da conta.",
+		Menu: {
+			Attendance: "Atendimento",
+			EditProfile: "Editar perfil",
+			ChangePassword: "Alterar senha",
+			Logout: "Sair",
+		},
+		Profile: {
+			Title: "Editar perfil",
+			Fields: {
+				Name: "Nome",
+				Phone: "Telefone",
+				Email: "E-mail",
+			},
+			Buttons: {
+				Save: "Salvar",
+			},
+		},
+		Password: {
+			Title: "Alterar senha",
+			Fields: {
+				Old: "Senha atual",
+				New: "Nova senha",
+				Confirm: "Confirmar nova senha",
+			},
+			Buttons: {
+				Save: "Salvar",
+			},
+		},
+	},
 	Modals: {
 		Product: {
 			create: {
@@ -291,6 +323,7 @@ export const ptBr = {
 		FieldErrors: {
 			Required: "Campo obrigatório",
 			InvalidEmail: "E-mail inválido",
+			InvalidPhone: "Telefone inválido",
 			MinLength: "Mínimo de {{minLength}} caracteres",
 			MaxLength: "Máximo de {{maxLength}} caracteres",
 			Min: "Mínimo de {{min}}",
@@ -371,5 +404,5 @@ export const ptBr = {
 		WaiterTables: "Mesas",
 		WaiterSettings: "Configurações",
 		LogOut: "Sair",
-	}
+	},
 };

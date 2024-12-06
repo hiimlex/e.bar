@@ -30,9 +30,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 		filters: orderFilters,
 	} = useSelector((state: RootState) => state.waiter);
 
-	const goBack = () => {
-		navigate(Pages.WaiterHome);
-	};
+
 
 	const onChangeSort = (
 		sort?: TOrderBy,
@@ -93,7 +91,7 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 	}, [loadOrders]);
 
 	return (
-		<MainContainer showGoBack onGoBack={goBack}>
+		<MainContainer showGoBack onGoBack={() => navigate(-1)}>
 			<S.Container className="w-orders">
 				<S.Content className="w-orders-content">
 					<S.Header className={`w-orders-header`}>

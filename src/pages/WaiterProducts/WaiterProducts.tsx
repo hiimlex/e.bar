@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDebounceValue } from "usehooks-ts";
-import { Pages, SafeAny } from "../../@types";
+import { SafeAny } from "../../@types";
 import {
 	Chip,
 	Input,
@@ -44,10 +44,6 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 	useEffect(() => {
 		dispatch(ProductsActions.setFilters({ name: search }));
 	}, [search]);
-
-	const goBack = () => {
-		navigate(Pages.WaiterHome);
-	};
 
 	const onSelectCategory = (category_id?: string) => {
 		dispatch(ProductsActions.setFilters({ category_id, no_stock: undefined }));
@@ -101,6 +97,28 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		[filters]
 	);
 
+	const loadCategories = useCallback(async () => {
+		await dispatch(
+			ProductsThunks.fetchStoreCategories({
+				loading: true,
+				onError: (error) => {
+					if (error.response?.data) {
+						const { message } = error.response.data as SafeAny;
+
+						if (message && typeof message === "string") {
+							const translateMessage = t(`Errors.${message}`);
+
+							ToastService.createToast({
+								label: translateMessage,
+								colorScheme: "danger",
+							});
+						}
+					}
+				},
+			})
+		);
+	}, []);
+
 	const onShowSearch = () => {
 		setShowSearch((curr) => !curr);
 	};
@@ -111,11 +129,15 @@ const WaiterProductsPage: React.FC<WaiterProductsPageProps> = () => {
 		}
 	}, [loadProducts]);
 
+	useEffect(() => {
+		loadCategories();
+	}, []);
+
 	return (
 		<MainContainer
 			wrapperRef={wrapperRef}
 			showGoBack
-			onGoBack={goBack}
+			onGoBack={() => navigate(-1)}
 			showSearch
 			onSearch={onShowSearch}
 		>

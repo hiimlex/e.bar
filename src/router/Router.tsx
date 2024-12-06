@@ -16,6 +16,9 @@ import {
 	WaiterOrderProductsPage,
 	WaiterOrderServePage,
 	WaiterProductsPage,
+	WaiterSettingsPage,
+	WaiterSettingsPasswordPage,
+	WaiterSettingsProfilePage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -164,6 +167,30 @@ const router = createBrowserRouter([
 		element: (
 			<ProtectedRoute>
 				<WaiterOrderPaymentPage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterSettings,
+		element: (
+			<ProtectedRoute>
+				<WaiterSettingsPage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterSettingsProfile,
+		element: (
+			<ProtectedRoute>
+				<WaiterSettingsProfilePage />
+			</ProtectedRoute>
+		),
+	},
+	{
+		path: Pages.WaiterSettingsPassword,
+		element: (
+			<ProtectedRoute>
+				<WaiterSettingsPasswordPage />
 			</ProtectedRoute>
 		),
 	},
