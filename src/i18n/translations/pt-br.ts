@@ -213,6 +213,8 @@ export const ptBr = {
 			TableNumber: "Mesa {{number}}",
 			Expand: "expandir",
 			Reduce: "reduzir",
+			PaymentMethod: "Forma de pagamento",
+			SeeMore: "ver mais",
 		},
 	},
 	WaiterSettings: {
@@ -245,6 +247,16 @@ export const ptBr = {
 			Buttons: {
 				Save: "Salvar",
 			},
+		},
+	},
+	WaiterOrderResume: {
+		Title: "Resumo do <br/> Pedido N° {{number}}",
+		Labels: {
+			Details: "Detalhes do pedido",
+			Total: "Total",
+			Payments: "Pagamentos",
+			TableNumber: "Mesa {{number}}",
+			Waiter: "Garçom {{name}}",
 		},
 	},
 	Modals: {

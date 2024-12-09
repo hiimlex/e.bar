@@ -54,14 +54,16 @@ const WaiterOrderCard: React.FC<WaiterOrderCardProps> = ({
 					R$ {order.total}
 				</Styled.Typography.BodyBold>
 			</Box>
-			<Styled.Typography.Link
-				role="button"
-				textColored="primary"
-				className="self-center"
-				onClick={() => onClick && onClick(order)}
-			>
-				{t("WaiterHome.Buttons.SeeOrder")}
-			</Styled.Typography.Link>
+			{order.status !== "CANCELED" && (
+				<Styled.Typography.Link
+					role="button"
+					textColored="primary"
+					className="self-center"
+					onClick={() => onClick && onClick(order)}
+				>
+					{t("WaiterHome.Buttons.SeeOrder")}
+				</Styled.Typography.Link>
+			)}
 		</S.Card>
 	);
 };

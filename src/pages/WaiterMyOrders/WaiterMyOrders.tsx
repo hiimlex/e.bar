@@ -1,11 +1,18 @@
-import { useToast } from "leux";
+import { Box, useToast } from "leux";
 import { useCallback, useEffect } from "react";
 import { FileMinus } from "react-feather";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IListOrdersFilters, Pages, SafeAny, TOrderBy } from "../../@types";
-import { Chip, MainContainer, OrderBy, Spinner, WaiterOrderCard } from "../../components";
+import {
+	Chip,
+	MainContainer,
+	OrderBy,
+	Spinner,
+	WaiterDetailedOrder,
+	WaiterOrderCard,
+} from "../../components";
 import {
 	AppDispatch,
 	RootState,
@@ -13,7 +20,6 @@ import {
 	WaiterThunks,
 } from "../../store";
 import { Styled } from "../../styles";
-import { SalesWaitersOrder } from "../Sales";
 import S from "./WaiterMyOrders.styles";
 
 interface WaiterMyOrdersPageProps {}
@@ -29,8 +35,6 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 		loadingOrders,
 		filters: orderFilters,
 	} = useSelector((state: RootState) => state.waiter);
-
-
 
 	const onChangeSort = (
 		sort?: TOrderBy,
@@ -141,18 +145,17 @@ const WaiterMyOrdersPage: React.FC<WaiterMyOrdersPageProps> = () => {
 					{!loadingOrders ? (
 						<S.List className="no-scroll">
 							{orders.map((order, index) => (
-								<div key={index}>
+								<Box key={index}>
 									{order.status !== "FINISHED" && (
 										<WaiterOrderCard
 											order={order}
-											key={index}
 											onClick={() => goToOrder(order._id)}
 										/>
 									)}
 									{order.status === "FINISHED" && (
-										<SalesWaitersOrder order={order} key={index} />
+										<WaiterDetailedOrder order={order} />
 									)}
-								</div>
+								</Box>
 							))}
 							{orders.length === 0 && (
 								<Styled.Empty className="empty-box">

@@ -38,7 +38,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 				<Box
 					flex
 					flexDirection="row"
-					customClass="gap-2"
+					customClass="gap-3"
 					alignItems="center"
 					justifyContent="flex-start"
 				>
@@ -54,7 +54,7 @@ const WaiterHeader: React.FC<WaiterHeaderProps> = ({
 				<Box
 					flex
 					flexDirection="row"
-					customClass="gap-2"
+					customClass="gap-3"
 					alignItems="center"
 					justifyContent="flex-end"
 				>

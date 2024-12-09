@@ -16,6 +16,7 @@ export * from "./Select";
 export * from "./Sheets";
 export * from "./Spinner";
 export * from "./UploadBox";
+export * from "./WaiterDetailedOrder";
 export * from "./WaiterHeader";
 export * from "./WaiterOrderCard";
 export * from "./WaiterProductCard";

@@ -95,10 +95,23 @@ const update_order_products = async (
 	}
 };
 
+const cancel = async (orderId: string): Promise<AxiosResponse<IOrder>> => {
+	try {
+		const url = queryBuilder(Endpoints.WaiterOrderCancel, {}, { id: orderId });
+
+		const res = await api.put(url);
+
+		return res;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export const WaiterOrdersService = {
 	fetchAll,
 	create,
 	add_order_products,
 	update_order_products,
 	getById,
+	cancel,
 };

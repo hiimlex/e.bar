@@ -26,8 +26,8 @@ const Filters = styled.div`
 `;
 
 const List = styled.div`
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 420px));
 	gap: ${getUnitInPx(3)};
 	max-height: 100%;
 	overflow-y: auto;

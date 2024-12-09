@@ -14,6 +14,7 @@ import {
 	WaiterOrderPage,
 	WaiterOrderPaymentPage,
 	WaiterOrderProductsPage,
+	WaiterOrderResumePage,
 	WaiterOrderServePage,
 	WaiterProductsPage,
 	WaiterSettingsPage,
@@ -171,6 +172,14 @@ const router = createBrowserRouter([
 		),
 	},
 	{
+		path: Pages.WaiterOrderResume,
+		element: (
+			<ProtectedRoute>
+				<WaiterOrderResumePage />
+			</ProtectedRoute>
+		),
+	},
+	{
 		path: Pages.WaiterSettings,
 		element: (
 			<ProtectedRoute>
@@ -194,6 +203,7 @@ const router = createBrowserRouter([
 			</ProtectedRoute>
 		),
 	},
+
 	{
 		path: "*",
 		element: <Navigate to="/" />,

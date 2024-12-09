@@ -26,4 +26,5 @@ export enum Pages {
 	WaiterSettingsPassword = "/waiter/settings/password",
 	WaiterSettingsAttendance = "/waiter/settings/attendance",
 	WaiterCode = "/waiter/code",
+	WaiterOrderResume = "/waiter/order/:orderId/resume",
 }

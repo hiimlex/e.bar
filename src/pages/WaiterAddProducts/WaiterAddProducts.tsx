@@ -217,6 +217,7 @@ const WaiterAddProductsPage: React.FC<WaiterAddProductsPageProps> = () => {
 			onGoBack={goBack}
 			showSearch
 			onSearch={() => setShowSearch((curr) => !curr)}
+			showMenu={false}
 		>
 			<S.Container>
 				<S.Content>

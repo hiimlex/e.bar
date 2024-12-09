@@ -28,6 +28,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 	const ToastService = useToast();
 	const { order } = useSelector((state: RootState) => state.onOrder);
 	const [showCancelOrder, setShowCancelOrder] = useState(false);
+	const [cancelOrderLoading, setCancelOrderLoading] = useState(false);
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -104,10 +105,47 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 			return { colorScheme: "success", variant: "outlined" };
 		}
 
+		if(order?.status === 'CANCELED'){
+			return { colorScheme: "danger", variant: "filled" };
+		}
+
+		if(order?.status === 'DELIVERED'){
+			return { colorScheme: "warning", variant: "filled" };
+		}
+
 		return { colorScheme: "secondary", variant: "filled" };
 	}, [order?.status]);
 
-	const onCancelOrder = () => {};
+	const onCancelOrder = async () => {
+		setCancelOrderLoading(true);
+
+		try {
+			if (!orderId) return;
+
+			await WaiterOrdersService.cancel(orderId || "");
+
+			setCancelOrderLoading(false);
+			
+			setShowCancelOrder(false);
+
+			navigate(Pages.WaiterHome)
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+
+				setCancelOrderLoading(false);
+			}
+		}
+	};
 
 	useEffect(() => {
 		getOrder();
@@ -159,7 +197,7 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							<Styled.Typography.Link
 								textColored="secondary"
 								onClick={seeOrderProducts}
-								disabled={order?.status === "FINISHED"}
+								disabled={order?.status === "FINISHED" || order?.status === "CANCELED"}
 							>
 								{t("WaiterOrder.Buttons.SeeProducts")}
 							</Styled.Typography.Link>
@@ -228,6 +266,9 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							colorScheme="danger"
 							fitSize
 							onClick={() => setShowCancelOrder(true)}
+							disabled={
+								order?.status !== "PENDING"
+							}
 						>
 							<X size={32} />
 							<span>{t("WaiterOrder.Buttons.Cancel")}</span>
@@ -273,7 +314,12 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 								>
 									{t("WaiterOrder.Cancel.Buttons.No")}
 								</Button>
-								<Button theme="danger" className="fill-row">
+								<Button
+									theme="danger"
+									className="fill-row"
+									loading={cancelOrderLoading}
+									onClick={onCancelOrder}
+								>
 									{t("WaiterOrder.Cancel.Buttons.Yes")}
 								</Button>
 							</Box>

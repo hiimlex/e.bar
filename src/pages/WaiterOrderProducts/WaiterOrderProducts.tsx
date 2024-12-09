@@ -127,7 +127,7 @@ const WaiterOrderProductsPage: React.FC = () => {
 	}, [getOrder]);
 
 	return (
-		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack}>
+		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack} showMenu={false}>
 			<S.Container>
 				<S.Content>
 					<S.Header>
@@ -173,6 +173,7 @@ const WaiterOrderProductsPage: React.FC = () => {
 								<ProductRowCard
 									product={product}
 									key={index}
+									opStatus={op.status}
 									showChangeButtons={op.status === "PENDING"}
 									onChange={(product, n) => {
 										changeOrderProductQuantity(product, n, op._id);

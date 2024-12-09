@@ -13,6 +13,7 @@ export * from "./WaiterNewOrder";
 export * from "./WaiterOrder";
 export * from "./WaiterOrderPayment";
 export * from "./WaiterOrderProducts";
+export * from "./WaiterOrderResume";
 export * from "./WaiterOrderServe";
 export * from "./WaiterProducts";
 export * from "./WaiterSettings";

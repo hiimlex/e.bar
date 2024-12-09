@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Minus, Plus } from "react-feather";
 import { useTranslation } from "react-i18next";
-import { IProduct } from "../../@types";
-import { ChipStatus, IconButton } from "../index";
+import { IProduct, TOrderProductStatusType } from "../../@types";
+import { IconButton } from "../index";
 
 import { Box } from "leux";
 import { Styled } from "../../styles";
@@ -10,6 +10,7 @@ import S from "./ProductRowCard.styles";
 
 type ProductRowCardProps = {
 	product: IProduct;
+	opStatus?: TOrderProductStatusType;
 
 	showChangeButtons?: boolean;
 	onChange?: (product: IProduct, n: number) => void;
@@ -23,9 +24,12 @@ export const ProductRowCard: React.FC<ProductRowCardProps> = ({
 	showChangeButtons = false,
 	onChange,
 	quantity,
+	opStatus
 }) => {
 	const { t } = useTranslation();
 	const quantity_value = useMemo(() => quantity || 0, [quantity]);
+
+	const isDelivered = useMemo(() => opStatus === "DELIVERED", [opStatus]);
 
 	return (
 		<S.Card>
@@ -40,17 +44,8 @@ export const ProductRowCard: React.FC<ProductRowCardProps> = ({
 					justifyContent="space-between"
 				>
 					<Styled.Typography.BodyBold>
-						{product.name}
+						{isDelivered && `(${quantity}x) `}{product.name}
 					</Styled.Typography.BodyBold>
-
-					{!showChangeButtons && (
-						<ChipStatus
-							colorScheme="secondary"
-							customClass="product-row-info-stock"
-						>
-							{`${quantity}x`}
-						</ChipStatus>
-					)}
 				</Box>
 				<Styled.Typography.Caption fontWeight={500} textColor="dark">
 					{t("Generics.Currency.Format", { value: product.price })}
