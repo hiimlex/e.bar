@@ -20,3 +20,4 @@ export * from "./WaiterDetailedOrder";
 export * from "./WaiterHeader";
 export * from "./WaiterOrderCard";
 export * from "./WaiterProductCard";
+export * from './OrderPaymentItem';

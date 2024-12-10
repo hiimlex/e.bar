@@ -105,11 +105,11 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 			return { colorScheme: "success", variant: "outlined" };
 		}
 
-		if(order?.status === 'CANCELED'){
+		if (order?.status === "CANCELED") {
 			return { colorScheme: "danger", variant: "filled" };
 		}
 
-		if(order?.status === 'DELIVERED'){
+		if (order?.status === "DELIVERED") {
 			return { colorScheme: "warning", variant: "filled" };
 		}
 
@@ -125,10 +125,10 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 			await WaiterOrdersService.cancel(orderId || "");
 
 			setCancelOrderLoading(false);
-			
+
 			setShowCancelOrder(false);
 
-			navigate(Pages.WaiterHome)
+			navigate(Pages.WaiterHome);
 		} catch (error) {
 			if (error instanceof AxiosError && error.response) {
 				const { message } = error.response.data;
@@ -197,7 +197,9 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							<Styled.Typography.Link
 								textColored="secondary"
 								onClick={seeOrderProducts}
-								disabled={order?.status === "FINISHED" || order?.status === "CANCELED"}
+								disabled={
+									order?.status === "FINISHED" || order?.status === "CANCELED"
+								}
 							>
 								{t("WaiterOrder.Buttons.SeeProducts")}
 							</Styled.Typography.Link>
@@ -266,31 +268,27 @@ const WaiterOrderPage: React.FC<WaiterOrderPageProps> = () => {
 							colorScheme="danger"
 							fitSize
 							onClick={() => setShowCancelOrder(true)}
-							disabled={
-								order?.status !== "PENDING"
-							}
+							disabled={order?.status !== "PENDING"}
 						>
 							<X size={32} />
 							<span>{t("WaiterOrder.Buttons.Cancel")}</span>
 						</S.LargeButton>
 
-						{!order?.payment && (
-							<S.LargeButton
-								colorScheme="secondary"
-								onClick={goToPayment}
-								disabled={order?.status !== "DELIVERED"}
-							>
-								<Icons.PaymentSVG fill="#fff" />
-								<span>{t("WaiterOrder.Buttons.Payment")}</span>
-							</S.LargeButton>
-						)}
-
-						{order?.payment && typeof order.payment !== "string" && (
-							<S.LargeButton colorScheme="secondary">
-								<img src={`/src/assets/${order.payment.method}.svg`}></img>
-								<span>{t(`WaiterOrder.Buttons.${order.payment.method}`)}</span>
-							</S.LargeButton>
-						)}
+						<S.LargeButton
+							colorScheme="secondary"
+							onClick={goToPayment}
+							disabled={
+								order?.status === "PENDING" ||
+								order?.status === "CANCELED" ||
+								(order?.total || 0) === 0
+							}
+						>
+							<Icons.PaymentSVG fill="#fff" />
+							<span>
+								{t("WaiterOrder.Buttons.Payment")}{" "}
+								{order?.payment ? t("WaiterOrder.Labels.Started") : ""}
+							</span>
+						</S.LargeButton>
 					</S.Footer>
 				</S.Container>
 

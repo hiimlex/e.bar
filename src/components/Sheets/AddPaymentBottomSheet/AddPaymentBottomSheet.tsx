@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button, Icons, Input } from "../../";
@@ -18,33 +18,25 @@ import S from "./AddPaymentBottomSheet.styles";
 const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 	order,
 	onAddPayment,
+	payment_data,
+	payment_item_id,
+	initial_method = "pix",
 }) => {
 	const theme = useTheme();
 	const { t } = useTranslation();
-	const [method, setMethod] = useState<TPaymentMethods>("pix");
+	const [method, setMethod] = useState<TPaymentMethods>(initial_method);
 	const {
 		control,
 		formState: { isValid },
-		watch,
 		handleSubmit,
 	} = useForm<IPaymentForm>({
 		mode: "all",
+		defaultValues: payment_data,
 	});
-	const values = watch();
 
 	const selectPaymentMethod = (method: TPaymentMethods) => {
 		setMethod(method);
 	};
-
-	const chargeBack = useMemo(() => {
-		if (order?.total) {
-			if (values.receivedValue > order.total) {
-				return values.receivedValue - order.total;
-			}
-		}
-
-		return 0;
-	}, [values.receivedValue]);
 
 	const onInputFileClick = () => {
 		if (inputRef.current) {
@@ -53,6 +45,10 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 	};
 
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	const handleOnAddPayment = (data: IPaymentForm) => {
+		if (onAddPayment) onAddPayment(data, method, payment_item_id);
+	};
 
 	return (
 		<S.Container>
@@ -112,7 +108,7 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 				</Styled.Typography.FieldLabel>
 				<Controller
 					control={control}
-					name="receivedValue"
+					name="received_value"
 					rules={{
 						required: {
 							value: true,
@@ -145,7 +141,7 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 						</Styled.Typography.FieldLabel>
 						<Controller
 							control={control}
-							name="name"
+							name="pix_name"
 							rules={{
 								required: {
 									value: true,
@@ -182,7 +178,7 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 									message: FieldErrorsType.Required,
 								},
 							}}
-							name="nf"
+							name="nf_number"
 							render={({ field, fieldState: { error } }) => (
 								<Input
 									hasPrefix
@@ -201,16 +197,6 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 						/>
 					</Box>
 				</Box>
-			)}
-			{method === "cash" && (
-				<div className="flex flex-row justify-between">
-					<Styled.Typography.BodyBold>
-						{t("WaiterOrderPayment.Labels.PurchaseChange")}
-					</Styled.Typography.BodyBold>
-					<Styled.Typography.BodyBold>
-						R$ {chargeBack}
-					</Styled.Typography.BodyBold>
-				</div>
 			)}
 			{(method === "credit-card" || method === "pix") && (
 				<Box>
@@ -254,7 +240,7 @@ const AddPaymentBottomSheet: React.FC<IAddPaymentBottomSheetProps> = ({
 					className="fill-row"
 					theme="secondary"
 					disabled={!isValid}
-					onClick={handleSubmit(onAddPayment)}
+					onClick={handleSubmit(handleOnAddPayment)}
 				>
 					{t("WaiterOrderPayment.Buttons.Continue")}
 				</Button>

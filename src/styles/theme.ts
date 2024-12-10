@@ -1,7 +1,5 @@
 import { keyframes } from "styled-components";
 
-
-
 export const colors = {
 	primary: "#9a36fd",
 	secondary: "#201f20",
@@ -16,7 +14,6 @@ export const colors = {
 	warning: "#f5a623",
 	disabled: "#c0c0c0",
 	white: "#fff",
-
 };
 
 export const styles = {
@@ -37,6 +34,8 @@ export const text = {
 	gray100: "#f0f0f0",
 	gray200: "#d8d8d8",
 	gray300: "#afafaf",
+	success: "#39c87b",
+	danger: "#ff4a4a",
 };
 
 export const shadows = {

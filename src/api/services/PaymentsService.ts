@@ -4,6 +4,7 @@ import { Endpoints } from "../endpoints";
 import { ICreatePayment, IPayment, IUpdatePayment } from "../../@types";
 
 const fetchAll = () => {};
+
 const create = async (
 	createPaymentData: ICreatePayment
 ): Promise<AxiosResponse<IPayment>> => {
@@ -29,8 +30,20 @@ const update = async (
 	}
 };
 
+const finish = async (paymentId: string): Promise<AxiosResponse<null>> => {
+	try {
+		const url = Endpoints.PaymentFinish.replace(":payment_id", paymentId);
+		const response = await api.put(url);
+
+		return response;
+	} catch (error) {
+		return Promise.reject(error);
+	}
+};
+
 export const PaymentsService = {
 	fetchAll,
 	create,
 	update,
+	finish,
 };

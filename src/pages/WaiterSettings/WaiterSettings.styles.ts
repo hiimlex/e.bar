@@ -36,8 +36,15 @@ const MenuItem = styled.button`
 
 	transition: ${({ theme }) => theme.styles.transition};
 
-	&:hover, &:active {
+	&:hover,
+	&:active {
 		background-color: ${({ theme }) => theme.colors.gray100};
+	}
+
+	&:disabled {
+		&:hover {
+			background-color: transparent;
+		}
 	}
 `;
 
@@ -51,7 +58,6 @@ const Logout = styled.button`
 	gap: ${getUnitInPx(2)};
 	align-self: center;
 	color: ${({ theme }) => theme.colors.danger};
-
 `;
 
 export default {

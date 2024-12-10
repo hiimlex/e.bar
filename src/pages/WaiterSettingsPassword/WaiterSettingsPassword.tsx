@@ -1,23 +1,82 @@
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { FieldErrorsType, IEditWaiterPasswordForm } from "../../@types";
+import {
+	FieldErrorsType,
+	IEditWaiterPasswordForm,
+	SafeAny,
+} from "../../@types";
 import { Button, Input, MainContainer } from "../../components";
 import { Styled } from "../../styles";
 import S from "./WaiterSettingsPassword.styles";
+import { useToast } from "leux";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { WaitersService } from "../../api";
 
 const WaiterSettingsPasswordPage = () => {
 	const { t } = useTranslation();
 	const navigate = useNavigate();
 
-	const { control, handleSubmit, formState } = useForm<IEditWaiterPasswordForm>(
-		{
+	const { control, handleSubmit, formState, watch, setError, reset } =
+		useForm<IEditWaiterPasswordForm>({
 			mode: "all",
-		}
-	);
+		});
+	const [saving, setSaving] = useState(false);
+	const ToastService = useToast();
+	const values = watch();
 
-	const onSave = (formData: IEditWaiterPasswordForm) => {
-		console.log(formData);
+	useEffect(() => {
+		if (values.confirm !== values.new) {
+			setError("confirm", {
+				message: t("WaiterSettings.Password.Fields.ConfirmError"),
+				type: "deps",
+			});
+		}
+
+		if (values.new === values.old) {
+			setError("new", {
+				message: t("WaiterSettings.Password.Fields.NewError"),
+				type: "deps",
+			});
+		}
+	}, [values]);
+
+	const onSave = async (formData: IEditWaiterPasswordForm) => {
+		setSaving(true);
+
+		try {
+			const { old: oldPassword, new: newPassword } = formData;
+
+			await WaitersService.change_password({
+				newPassword,
+				oldPassword,
+			});
+
+			ToastService.createToast({
+				label: t("WaiterSettings.Password.Success"),
+				colorScheme: "success",
+			});
+
+			setSaving(false);
+
+			reset();
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const message = error.response.data as SafeAny;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
+			setSaving(false);
+		}
 	};
 
 	return (
@@ -119,6 +178,7 @@ const WaiterSettingsPasswordPage = () => {
 					theme="secondary"
 					onClick={handleSubmit(onSave)}
 					disabled={!formState.isValid || !formState.isDirty}
+					loading={saving}
 				>
 					{t("WaiterSettings.Password.Buttons.Save")}
 				</Button>

@@ -28,12 +28,12 @@ const ListHeader = styled.div`
 	top: 0;
 	z-index: 4;
 
-	span {
+	strong {
 		color: ${({ theme }) => theme.text.placeholder};
 		text-align: right;
 	}
 
-	span:first-child {
+	strong:first-child {
 		text-align: left;
 	}
 `;

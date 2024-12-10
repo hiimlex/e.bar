@@ -113,6 +113,7 @@ export const ptBr = {
 			TableNumber: "Mesa {{number}}",
 			Total: "Total",
 			OrderNumber: "Pedido N° {{number}}",
+			Started: "Iniciado",
 		},
 		Buttons: {
 			Payment: "Pagamento",
@@ -147,6 +148,7 @@ export const ptBr = {
 		Title: "Pagamento de<br/>Pedido",
 		Labels: {
 			Total: "Total",
+			TotalValue: "Valor total",
 			PaymentMethod: "Meio de pagamento",
 			ReceivedValue: "Valor recebido",
 			Name: "Nome",
@@ -159,6 +161,7 @@ export const ptBr = {
 			ValuePerPerson: "Valor por pessoa",
 			Attachment: "Comprovante",
 			SelectFile: "Enviar comprovante",
+			Remaining: "Restante",
 		},
 		Buttons: {
 			Cancel: "Cancelar",
@@ -171,7 +174,13 @@ export const ptBr = {
 			AddPayment: {
 				Title: "+ Adicionar pagamento",
 			},
+			PixQR: {
+				Title: "Código PIX",
+			}
 		},
+		Messages: {
+			Finished: "Pagamento realizado com sucesso!",
+		}
 	},
 	WaiterOrderProducts: {
 		Title: "Items no<br/> Pedido",
@@ -236,6 +245,7 @@ export const ptBr = {
 			Buttons: {
 				Save: "Salvar",
 			},
+			Success: "Perfil atualizado com sucesso!",
 		},
 		Password: {
 			Title: "Alterar senha",
@@ -243,10 +253,13 @@ export const ptBr = {
 				Old: "Senha atual",
 				New: "Nova senha",
 				Confirm: "Confirmar nova senha",
+				NewError: "A nova senha não pode ser igual a senha atual.",
+				ConfirmError: "As senhas não coincidem.",
 			},
 			Buttons: {
 				Save: "Salvar",
 			},
+			Success: "Senha alterada com sucesso!",
 		},
 	},
 	WaiterOrderResume: {
@@ -408,6 +421,10 @@ export const ptBr = {
 		NO_ORDER_PRODUCTS: "Nenhum produto no pedido.",
 		ORDER_ALREADY_PAID: "Pedido já pago.",
 		PAYMENT_NOT_FOUND: "Pagamento não encontrado.",
+		PAYMENT_AMOUNT_EXCEEDS_TOTAL:
+			"Valor do pagamento excede o total do pedido.",
+		PAYMENT_NOT_COMPLETED: "Pagamento não concluído.",
+		ORDER_ALREADY_FINISHED: "Pedido já finalizado.",
 	},
 	Links: {
 		WaiterHome: "Início",

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ChipStatus, MainContainer } from "../../components";
+import { ChipStatus, MainContainer, OrderPaymentItem } from "../../components";
 
 import { AxiosError } from "axios";
 import { Box, useToast } from "leux";
@@ -81,13 +81,13 @@ const WaiterOrderResumePage: FC = () => {
 				</Box>
 
 				<Box flex flexDirection="row" alignItems="center" customClass="gap-2">
-					<ChipStatus className="w-on-order-chip" colorScheme="primary">
+					<ChipStatus colorScheme="primary">
 						{t(`WaiterOrder.Labels.TableNumber`, { number: tableNumber })}
 					</ChipStatus>
 
 					<ChipStatus
 						colorScheme="primary"
-						className="w-on-order-chip flex items-center flex-row gap-2"
+						className="flex items-center flex-row gap-2"
 					>
 						<User size={16} />
 						{order?.customers || 0}
@@ -99,34 +99,33 @@ const WaiterOrderResumePage: FC = () => {
 				</Styled.Typography.BodyBold>
 
 				<S.List>
-					<S.ListHeader className="detailed-list-products-header">
-						<Styled.Typography.Caption fontWeight={500}>
+					<S.ListHeader>
+						<Styled.Typography.Button>
 							{t("WaiterOrder.Table.Headers.Products")}
-						</Styled.Typography.Caption>
-						<Styled.Typography.Caption fontWeight={500}>
+						</Styled.Typography.Button>
+						<Styled.Typography.Button>
 							{t("WaiterOrder.Table.Headers.Status")}
-						</Styled.Typography.Caption>
-						<Styled.Typography.Caption fontWeight={500}>
+						</Styled.Typography.Button>
+						<Styled.Typography.Button>
 							{t("WaiterOrder.Table.Headers.Price")}
-						</Styled.Typography.Caption>
+						</Styled.Typography.Button>
 					</S.ListHeader>
+
 					{order?.items.map((op, index) => (
 						<S.ListItem key={index} textSlashed={op.status === "DELIVERED"}>
-							<Styled.Typography.Caption fontWeight={600}>
+							<Styled.Typography.Caption>
 								({op.quantity}x){" "}
 								{typeof op.product !== "string" ? op.product.name : "---"}
 							</Styled.Typography.Caption>
-							<Styled.Typography.Caption fontWeight={600}>
+							<Styled.Typography.Caption>
 								{op.status === "DELIVERED" ? "Servido" : "Pendente"}
 							</Styled.Typography.Caption>
-							<Styled.Typography.Caption fontWeight={600}>
+							<Styled.Typography.Caption>
 								{op.total}
 							</Styled.Typography.Caption>
 						</S.ListItem>
 					))}
 				</S.List>
-
-				<Styled.DashLine />
 
 				<Box
 					flex
@@ -134,22 +133,31 @@ const WaiterOrderResumePage: FC = () => {
 					alignItems="center"
 					justifyContent="space-between"
 				>
-					<Styled.Typography.Subtitle2>
+					<Styled.Typography.Button>
 						{t("WaiterOrder.Labels.Total")}
-					</Styled.Typography.Subtitle2>
-					<Styled.Typography.Currency>
-						<Styled.Typography.Subtitle2>
-							{t("Generics.Currency.Symbol")}
-						</Styled.Typography.Subtitle2>
-						<Styled.Typography.Subtitle2>
-							{order?.total}
-						</Styled.Typography.Subtitle2>
-					</Styled.Typography.Currency>
+					</Styled.Typography.Button>
+					<Styled.Typography.Button>
+						R$ {order?.total}
+					</Styled.Typography.Button>
 				</Box>
+
 				<Styled.DashLine />
+
 				<Styled.Typography.BodyBold>
 					{t("WaiterOrderResume.Labels.Payments")}
 				</Styled.Typography.BodyBold>
+
+				{typeof order.payment !== "string" && (
+					<Box flex flexDirection="column" customClass="gap-2">
+						{order.payment.items.map((paymentItem, index) => (
+							<OrderPaymentItem
+								paymentItem={paymentItem}
+								key={index}
+								showActions={false}
+							/>
+						))}
+					</Box>
+				)}
 			</S.Container>
 		</MainContainer>
 	);

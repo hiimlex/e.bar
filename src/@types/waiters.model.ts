@@ -43,3 +43,10 @@ export interface UpdateWaiterPayload {
 	phone?: string;
 	enabled?: boolean;
 }
+
+export type UpdateWaiterProfilePayload = Omit<UpdateWaiterPayload, "enabled">;
+
+export interface UpdateWaiterPassword {
+	newPassword: string;
+	oldPassword: string;
+}

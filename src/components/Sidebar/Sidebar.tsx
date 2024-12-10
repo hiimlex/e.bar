@@ -53,9 +53,9 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 
 	const navigate = useNavigate();
 	const location = useLocation();
-	
+
 	const dispatch = useDispatch();
-	
+
 	const logout = () => {
 		dispatch(UserActions.logout());
 
@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 	return (
 		show && (
 			<S.Sidebar style={style}>
-				<S.SidebarNavButton className="sidebar-nav-button" onClick={onClose}>
+				<S.SidebarNavButton onClick={onClose}>
 					<X size={24} />
 				</S.SidebarNavButton>
 				{WAITER_LINKS.map((link, index) => (
@@ -87,10 +87,12 @@ const Sidebar: React.FC<SidebarProps> = ({ show, onClose }) => {
 										: colors.secondary,
 							})}
 						{!!link.icon && !link.isSvg && link.icon}
-						<Styled.Typography.Caption>{t(link.label)}</Styled.Typography.Caption>
+						<Styled.Typography.Caption>
+							{t(link.label)}
+						</Styled.Typography.Caption>
 					</S.SidebarNavButton>
 				))}
-				<S.SidebarNavButton className="sidebar-nav-button" onClick={logout}>
+				<S.SidebarNavButton onClick={logout}>
 					<LogOut size={28} />
 					{t("Links.LogOut")}
 				</S.SidebarNavButton>

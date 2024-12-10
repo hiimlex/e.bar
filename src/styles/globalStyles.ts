@@ -74,4 +74,8 @@ input {
 		display: none;
 	}
 }
+
+.le-toast {
+	max-width: 100%;
+}
 `;

@@ -13,7 +13,10 @@ const Container = styled.main`
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	max-height: 100%;
+	overflow-y: auto;
 	gap: ${getUnitInPx(3)};
+	margin-bottom: 140px;
 `;
 
 const ContainerHeader = styled.div`
@@ -32,7 +35,19 @@ const ClickableIcon = styled.div`
 `;
 
 const Content = styled.div``;
-const Footer = styled.footer``;
+
+const Footer = styled.footer`
+	display: flex;
+	flex-direction: column;
+	gap: ${getUnitInPx(1)};
+	padding: ${getUnitInPx(3)} ${getUnitInPx(2)};
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	box-shadow:  0 -2px 3px 1px rgba(0, 0, 0, 0.1);
+	background: ${({ theme }) => theme.colors.background};
+`;
 
 const AddPaymentButton = styled.button`
 	width: 100%;
@@ -51,6 +66,12 @@ const AddPaymentButton = styled.button`
 	}
 `;
 
+const PaymentList = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: ${getUnitInPx(2)};
+`;
+
 export default {
 	Wrapper,
 	Container,
@@ -60,4 +81,5 @@ export default {
 	Footer,
 	ClickableIcon,
 	AddPaymentButton,
+	PaymentList
 };

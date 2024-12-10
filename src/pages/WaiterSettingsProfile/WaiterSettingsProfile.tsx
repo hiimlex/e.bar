@@ -1,23 +1,95 @@
+import { AxiosError } from "axios";
+import { useToast } from "leux";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FieldErrorsType, IEditWaiterForm } from "../../@types";
+import { FieldErrorsType, IEditWaiterProfileForm, SafeAny } from "../../@types";
+import { WaitersService } from "../../api";
 import { Button, Input, MainContainer } from "../../components";
+import { AppDispatch, RootState, UserThunks } from "../../store";
 import { Styled } from "../../styles";
-import S from "./WaiterSettingsProfile.styles";
 import { format } from "../../utils";
+import S from "./WaiterSettingsProfile.styles";
 
 const WaiterSettingsProfilePage = () => {
 	const { t } = useTranslation();
+	const currentWaiter = useSelector((state: RootState) => state.user.waiter);
+
 	const navigate = useNavigate();
 
-	const { control, handleSubmit, formState } = useForm<IEditWaiterForm>({
-		mode: "all",
-	});
+	const { control, handleSubmit, formState, setValue, getValues, reset } =
+		useForm<IEditWaiterProfileForm>({
+			mode: "all",
+		});
+	const [saving, setSaving] = useState(false);
+	const ToastService = useToast();
+	const dispatch = useDispatch<AppDispatch>();
 
-	const onSave = (formData: IEditWaiterForm) => {
-		console.log(formData);
+	const onSave = async (formData: IEditWaiterProfileForm) => {
+		setSaving(true);
+
+		try {
+			const { name, email, phone } = formData;
+
+			const unmaskPhone = phone?.replace(/\D/g, "");
+
+			await WaitersService.updateProfile({
+				email,
+				name,
+				phone: unmaskPhone,
+			});
+
+			setSaving(false);
+
+			await dispatch(UserThunks.getCurrentUser());
+
+			ToastService.createToast({
+				label: t("WaiterSettings.Profile.Success"),
+				colorScheme: "success",
+			});
+
+			reset(undefined, {
+				keepValues: true,
+			});
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const message = error.response.data as SafeAny;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+					});
+				}
+			}
+
+			setSaving(false);
+		}
 	};
+
+	useEffect(() => {
+		if (currentWaiter) {
+			const formValues = getValues();
+			if (currentWaiter.name && formValues.name !== currentWaiter?.name) {
+				setValue("name", currentWaiter?.name);
+			}
+
+			if (currentWaiter.email && formValues.email !== currentWaiter.email) {
+				setValue("email", currentWaiter?.email);
+			}
+
+			if (currentWaiter.phone) {
+				const formattedPhone = format.phone(currentWaiter.phone.toString());
+				if (formValues.phone !== formattedPhone) {
+					setValue("phone", formattedPhone);
+				}
+			}
+		}
+	}, [currentWaiter]);
 
 	return (
 		<MainContainer showGoBack onGoBack={() => navigate(-1)} showMenu={false}>
@@ -40,7 +112,7 @@ const WaiterSettingsProfilePage = () => {
 							minLength: {
 								value: 3,
 								message: FieldErrorsType.MinLength,
-							}
+							},
 						}}
 						render={({ field, fieldState: { error } }) => (
 							<Input
@@ -50,7 +122,7 @@ const WaiterSettingsProfilePage = () => {
 								errorMessage={error?.message}
 								showError={!!error}
 								errorValue={{
-									minLength: 3
+									minLength: 3,
 								}}
 							/>
 						)}
@@ -115,6 +187,7 @@ const WaiterSettingsProfilePage = () => {
 					theme="secondary"
 					onClick={handleSubmit(onSave)}
 					disabled={!formState.isValid || !formState.isDirty}
+					loading={saving}
 				>
 					{t("WaiterSettings.Profile.Buttons.Save")}
 				</Button>

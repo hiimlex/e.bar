@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { IOrder, TOrderStatus } from "../../@types";
+import { IOrder } from "../../@types";
 import { ChipStatus, ChipStatusProps } from "../ChipStatus";
 
 import { Box } from "leux";
@@ -22,12 +22,24 @@ const WaiterOrderCard: React.FC<WaiterOrderCardProps> = ({
 		[order.table]
 	);
 
-	const getStatusColor: Record<TOrderStatus, ChipStatusProps["colorScheme"]> = {
-		CANCELED: "danger",
-		DELIVERED: "secondary",
-		FINISHED: "success",
-		PENDING: "warning",
-	};
+	const orderStatusChip: {
+		colorScheme: ChipStatusProps["colorScheme"];
+		variant: ChipStatusProps["variant"];
+	} = useMemo(() => {
+		if (order?.status === "FINISHED") {
+			return { colorScheme: "success", variant: "outlined" };
+		}
+
+		if (order?.status === "CANCELED") {
+			return { colorScheme: "danger", variant: "filled" };
+		}
+
+		if (order?.status === "DELIVERED") {
+			return { colorScheme: "warning", variant: "filled" };
+		}
+
+		return { colorScheme: "secondary", variant: "filled" };
+	}, [order?.status]);
 
 	return (
 		<S.Card>
@@ -35,7 +47,11 @@ const WaiterOrderCard: React.FC<WaiterOrderCardProps> = ({
 				<ChipStatus size="small" colorScheme="primary">
 					{t("WaiterHome.Labels.TableNumber", { number: tableNumber || "" })}
 				</ChipStatus>
-				<ChipStatus size="small" colorScheme={getStatusColor[order.status]}>
+				<ChipStatus
+					size="small"
+					colorScheme={orderStatusChip.colorScheme}
+					variant={orderStatusChip.variant}
+				>
 					{t(`Generics.OrderStatus.${order.status}`)}
 				</ChipStatus>
 			</Box>

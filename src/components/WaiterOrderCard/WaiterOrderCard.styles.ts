@@ -4,6 +4,7 @@ import { getUnitInPx } from "../../styles";
 const Card = styled.div`
 	width: 100%;
 	min-width: 260px;
+	max-width: 420px;
 	display: flex;
 	flex-direction: column;
 	gap: ${getUnitInPx(2)};

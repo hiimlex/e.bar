@@ -4,9 +4,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { ICreatePayment, IPaymentForm, Pages } from "../../@types";
+import {
+	ICreatePaymentItem,
+	IPaymentForm,
+	IPaymentItem,
+	Pages,
+	TPaymentMethods,
+} from "../../@types";
 import { PaymentsService, WaiterOrdersService } from "../../api";
-import { BottomSheet, Button, MainContainer, Sheets } from "../../components";
+import {
+	BottomSheet,
+	Button,
+	MainContainer,
+	OrderPaymentItem,
+	Sheets,
+} from "../../components";
 import { OnOrderActions, RootState } from "../../store";
 
 import { Styled } from "../../styles";
@@ -15,7 +27,14 @@ import S from "./WaiterOrderPayment.styles";
 const WaiterOrderPaymentPage: React.FC = () => {
 	const { orderId } = useParams();
 	const { t } = useTranslation();
+
 	const [showAddPayment, setShowAddPayment] = useState(false);
+	const [finishing, setFinishing] = useState(false);
+	const [selectedPaymentItem, setSelectedPaymentItem] = useState<
+		IPaymentItem | undefined
+	>(undefined);
+	const [showPixQR, setShowPixQR] = useState(false);
+
 	const ToastService = useToast();
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -23,9 +42,6 @@ const WaiterOrderPaymentPage: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const { order } = useSelector((state: RootState) => state.onOrder);
-	const { attendance } = useSelector((state: RootState) => state.user);
-
-	const [loading, setLoading] = useState(false);
 
 	const getOrder = useCallback(async () => {
 		try {
@@ -69,67 +85,155 @@ const WaiterOrderPaymentPage: React.FC = () => {
 		navigate(to);
 	};
 
-	const onAddPayment = (formData: IPaymentForm) => {
-		console.log(formData);
+	const onAddPayment = async (
+		formData: IPaymentForm,
+		method: TPaymentMethods,
+		paymentItemId?: string
+	) => {
+		try {
+			if (!order) {
+				return;
+			}
 
-		closeAddPaymentSheet();
+			const new_items: ICreatePaymentItem[] = [
+				{
+					method,
+					received_value: +formData.received_value,
+					nf_number: formData.nf_number,
+					pix_name: formData.pix_name,
+				},
+			];
+			// first time creating a payment
+			if (!order.payment) {
+				await PaymentsService.create({
+					order_id: order?._id,
+					items: new_items,
+				});
+			}
+
+			// if it's updating
+			if (order.payment && typeof order.payment !== "string") {
+				const paymentId = order.payment._id;
+				let items: ICreatePaymentItem[] = [];
+				// if it's updating a payment item
+				if (paymentItemId) {
+					items = order.payment.items.map((item) => {
+						if (item._id === paymentItemId) {
+							return {
+								method,
+								received_value: +formData.received_value,
+								nf_number: formData.nf_number,
+								pix_name: formData.pix_name,
+							};
+						}
+
+						return item;
+					});
+				}
+				// proceed to normal update
+				if (!paymentItemId) {
+					items = [...order.payment.items, ...new_items];
+				}
+
+				await PaymentsService.update(paymentId, {
+					items,
+				});
+			}
+
+			getOrder();
+			closeAddPaymentSheet();
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+						duration: 3000,
+					});
+				}
+			}
+		}
 	};
 
-	// const onPay = async (data: IPaymentForm) => {
-	// 	try {
-	// 		if (!order || !attendance) {
-	// 			return;
-	// 		}
+	const onRemovePaymentItem = async (removePaymentItemId: string) => {
+		try {
+			if (!order || !order.payment) {
+				return;
+			}
 
-	// 		setLoading(true);
+			if (typeof order?.payment === "string") {
+				return;
+			}
 
-	// 		const { name, nf, receivedValue } = data;
+			const items = order?.payment.items.filter(
+				(item) => item._id !== removePaymentItemId
+			);
 
-	// 		const createPayment: ICreatePayment = {
-	// 			method,
-	// 			amount: order.total,
-	// 			order_id: order._id,
-	// 		};
+			await PaymentsService.update(order.payment._id, {
+				items,
+			});
 
-	// 		if (method === "pix") {
-	// 			createPayment.pix_config = {
-	// 				name,
-	// 			};
-	// 		}
+			getOrder();
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
 
-	// 		if (method === "credit-card") {
-	// 			createPayment.credit_card_config = {
-	// 				nf,
-	// 			};
-	// 		}
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
 
-	// 		if (method === "cash") {
-	// 			createPayment.cash_config = {
-	// 				charge: chargeBack,
-	// 				receivedValue,
-	// 			};
-	// 		}
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+						duration: 3000,
+					});
+				}
+			}
+		}
+	};
 
-	// 		await PaymentsService.create(createPayment);
+	const onFinish = async () => {
+		try {
+			if (!order) return;
 
-	// 		setLoading(false);
+			setFinishing(true);
 
-	// 		navigate(Pages.WaiterOrder.replace(":orderId", order._id));
-	// 	} catch (error) {
-	// 		if (error instanceof AxiosError && error.response) {
-	// 			const { message } = error.response.data;
+			const paymentId =
+				typeof order.payment === "string" ? order.payment : order.payment._id;
 
-	// 			if (message && typeof message === "string") {
-	// 				const translateMessage = t(`Errors.${message}`);
+			await PaymentsService.finish(paymentId);
 
-	// 				ToastService.createToast({
-	// 					label: translateMessage,
-	// 					colorScheme: "danger",
-	// 				});
-	// 			}
-	// 		}
-	// 	}
-	// };
+			ToastService.createToast({
+				label: t("WaiterOrderPayment.Messages.Finished"),
+				colorScheme: "success",
+			});
+
+			getOrder();
+
+			navigate(-1);
+
+			setFinishing(false);
+		} catch (error) {
+			if (error instanceof AxiosError && error.response) {
+				const { message } = error.response.data;
+
+				if (message && typeof message === "string") {
+					const translateMessage = t(`Errors.${message}`);
+
+					ToastService.createToast({
+						label: translateMessage,
+						colorScheme: "danger",
+						duration: 3000,
+					});
+				}
+			}
+
+			setFinishing(false);
+		}
+	};
 
 	const openAddPaymentSheet = () => {
 		setShowAddPayment(true);
@@ -139,20 +243,29 @@ const WaiterOrderPaymentPage: React.FC = () => {
 		setShowAddPayment(false);
 	};
 
+	const selectToEdit = (payment_item: IPaymentItem) => {
+		setSelectedPaymentItem(payment_item);
+		openAddPaymentSheet();
+	};
+
 	useEffect(() => {
 		getOrder();
 	}, []);
 
 	return (
-		<MainContainer wrapperRef={wrapperRef} showGoBack onGoBack={goBack} showMenu={false}>
+		<MainContainer
+			wrapperRef={wrapperRef}
+			showGoBack
+			onGoBack={goBack}
+			showMenu={false}
+		>
 			<S.Wrapper>
 				<S.Header className="w-op-header">
-					<span
-						className="page-title"
+					<Styled.Typography.Title
 						dangerouslySetInnerHTML={{
 							__html: t("WaiterOrderPayment.Title"),
 						}}
-					></span>
+					></Styled.Typography.Title>
 				</S.Header>
 				<S.Container>
 					<S.ContainerHeader>
@@ -165,7 +278,7 @@ const WaiterOrderPaymentPage: React.FC = () => {
 							<Styled.Typography.Subtitle2 className="w-op-order">
 								{t("WaiterOrderPayment.Labels.Payment")}
 							</Styled.Typography.Subtitle2>
-							<S.ClickableIcon>
+							<S.ClickableIcon onClick={() => setShowPixQR(true)}>
 								<img src="/src/assets/qr_code.svg"></img>
 							</S.ClickableIcon>
 						</Box>
@@ -197,15 +310,71 @@ const WaiterOrderPaymentPage: React.FC = () => {
 						</Box>
 					</S.ContainerHeader>
 
-					<S.AddPaymentButton onClick={openAddPaymentSheet}>
-						{t("WaiterOrderPayment.Buttons.AddPayment")}
-					</S.AddPaymentButton>
+					{order?.payment && typeof order?.payment !== "string" && (
+						<>
+							{order.payment.remaining > 0 && (
+								<S.AddPaymentButton onClick={openAddPaymentSheet}>
+									{t("WaiterOrderPayment.Buttons.AddPayment")}
+								</S.AddPaymentButton>
+							)}
+							<S.PaymentList>
+								{order.payment.items.map((payment_item, index) => (
+									<OrderPaymentItem
+										paymentItem={payment_item}
+										key={index}
+										onEdit={() => selectToEdit(payment_item)}
+										onDelete={() => onRemovePaymentItem(payment_item._id)}
+										showActions={order.status !== "FINISHED"}
+									/>
+								))}
+							</S.PaymentList>
+						</>
+					)}
 				</S.Container>
-				<S.Footer className="w-op-actions">
-					<Button className="fill-row" theme="secondary">
-						{t("WaiterOrderPayment.Buttons.Finish")}
-					</Button>
-				</S.Footer>
+
+				{order?.payment &&
+					typeof order.payment !== "string" &&
+					order.status !== "FINISHED" && (
+						<S.Footer className="w-op-actions">
+							<Box
+								flex
+								flexDirection="row"
+								alignItems="center"
+								justifyContent="space-between"
+							>
+								<Styled.Typography.Body>
+									{t("WaiterOrderPayment.Labels.ReceivedValue")}
+								</Styled.Typography.Body>
+								<Styled.Typography.BodyBold textColor="success">
+									R$ {order.payment.amount}
+								</Styled.Typography.BodyBold>
+							</Box>
+							{order.payment.remaining > 0 && (
+								<Box
+									flex
+									flexDirection="row"
+									alignItems="center"
+									justifyContent="space-between"
+								>
+									<Styled.Typography.Body>
+										{t("WaiterOrderPayment.Labels.Remaining")}
+									</Styled.Typography.Body>
+									<Styled.Typography.BodyBold textColor="danger">
+										R$ {order.payment.remaining}
+									</Styled.Typography.BodyBold>
+								</Box>
+							)}
+							<Button
+								disabled={order.payment.remaining > 0}
+								className="fill-row"
+								theme="secondary"
+								loading={finishing}
+								onClick={onFinish}
+							>
+								{t("WaiterOrderPayment.Buttons.Finish")}
+							</Button>
+						</S.Footer>
+					)}
 			</S.Wrapper>
 			{showAddPayment && order && (
 				<BottomSheet
@@ -216,7 +385,19 @@ const WaiterOrderPaymentPage: React.FC = () => {
 					<Sheets.AddPaymentBottomSheet
 						order={order}
 						onAddPayment={onAddPayment}
+						payment_data={selectedPaymentItem}
+						payment_item_id={selectedPaymentItem?._id}
+						initial_method={selectedPaymentItem?.method}
 					/>
+				</BottomSheet>
+			)}
+			{showPixQR && (
+				<BottomSheet
+					title="WaiterOrderPayment.Modals.PixQR.Title"
+					closeOnBackdropClick
+					onClose={() => setShowPixQR(false)}
+				>
+					<Sheets.PixQR />
 				</BottomSheet>
 			)}
 		</MainContainer>

@@ -13,16 +13,14 @@ const WaiterSettingsPage = () => {
 	const navigate = useNavigate();
 
 	const { attendance } = useSelector((state: RootState) => state.user);
-	
-		
+
 	const dispatch = useDispatch();
-	
+
 	const logout = () => {
 		dispatch(UserActions.logout());
 
 		navigate(Pages.Login);
 	};
-
 
 	return (
 		<MainContainer showGoBack onGoBack={() => navigate(-1)} showMenu={false}>
@@ -31,12 +29,12 @@ const WaiterSettingsPage = () => {
 					<Styled.Typography.Title>
 						{t("WaiterSettings.Title")}
 					</Styled.Typography.Title>
-					<Styled.Typography.Caption>
+					<Styled.Typography.Caption textColor="gray300">
 						{t("WaiterSettings.Subtitle")}
 					</Styled.Typography.Caption>
 				</S.Header>
 				<S.Menu>
-					<S.MenuItem onClick={() => navigate(Pages.WaiterSettingsAttendance)}> 
+					<S.MenuItem disabled>
 						<Hash size={24} />
 						<Styled.Typography.BodyBold>
 							{t("WaiterSettings.Menu.Attendance")}
@@ -62,7 +60,7 @@ const WaiterSettingsPage = () => {
 				</S.Menu>
 				<S.Logout onClick={logout}>
 					<LogOut size={20} />
-					<Styled.Typography.BodyBold>
+					<Styled.Typography.BodyBold textColor="danger">
 						{t("WaiterSettings.Menu.Logout")}
 					</Styled.Typography.BodyBold>
 				</S.Logout>

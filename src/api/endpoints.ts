@@ -88,8 +88,7 @@ export enum Endpoints {
 	WaiterListById = "/api/waiters/:id",
 	WaiterUpdate = "/api/waiters/:id",
 	WaiterDelete = "/api/waiters/:id",
-	WaiterOrderAddItem = "/api/w-orders/item/add/:id",
-	WaiterOrderUpdateItem = "/api/w-orders/item/update/:id",
+	WaiterChangePassword = "/api/waiters/change-password",
 
 	// Waiter Orders
 	WaiterOrderCreate = "/api/w-orders",
@@ -98,6 +97,8 @@ export enum Endpoints {
 	WaiterOrderUpdate = "/api/w-orders/:id",
 	WaiterOrderCancel = "/api/w-orders/cancel/:id",
 	WaiterOrderFinish = "/api/w-orders/finish/:id",
+	WaiterOrderAddItem = "/api/w-orders/item/add/:id",
+	WaiterOrderUpdateItem = "/api/w-orders/item/update/:id",
 
 	// Payments
 	PaymentCreate = "/api/payments",
@@ -105,6 +106,7 @@ export enum Endpoints {
 	PaymentShowByOrder = "/api/payments/order/:order_id",
 	PaymentListById = "/api/payments/:id",
 	PaymentUpdate = "/api/payments/:id",
+	PaymentFinish = "/api/payments/finish/:payment_id",
 
 
 	// Tables

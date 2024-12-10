@@ -37,25 +37,29 @@ const Title = styled.h1.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 25px;
 	line-height: 140%;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Subtitle = styled.h3.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 20px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Subtitle2 = styled.h4.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 18px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Label = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 17px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const FieldLabel = styled.label.withConfig({
@@ -63,32 +67,37 @@ const FieldLabel = styled.label.withConfig({
 })<TypographyProps>`
 	font-size: 13px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Body = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 16px;
 	font-weight: ${({ fontWeight }) => fontWeight || 500};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 const BodyBold = styled.strong.withConfig({
 	shouldForwardProp,
 })<TypographyProps>`
 	font-size: 16px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Caption = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 14px;
 	font-weight: ${({ fontWeight }) => fontWeight || 500};
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 const Button = styled.strong.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 14px;
 	font-weight: ${({ fontWeight }) => fontWeight || 600};
 
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 const Currency = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
@@ -105,7 +114,8 @@ const Tip = styled.span.withConfig({ shouldForwardProp })<TypographyProps>`
 	font-size: 12px;
 	font-weight: ${({ fontWeight }) => fontWeight || 500};
 
-	color: ${({ theme, textColor }) => textColor && theme.text[textColor]};
+	color: ${({ theme, textColor }) =>
+		(textColor && theme.text[textColor]) || theme.text.dark};
 `;
 
 interface LinkProps {
