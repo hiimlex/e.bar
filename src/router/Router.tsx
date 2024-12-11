@@ -20,6 +20,7 @@ import {
 	WaiterSettingsPage,
 	WaiterSettingsPasswordPage,
 	WaiterSettingsProfilePage,
+	WaiterTablesPage,
 } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -204,6 +205,14 @@ const router = createBrowserRouter([
 		),
 	},
 
+	{
+		path: Pages.WaiterTables,
+		element: (
+			<ProtectedRoute>
+				<WaiterTablesPage />
+			</ProtectedRoute>
+		),
+	},
 	{
 		path: "*",
 		element: <Navigate to="/" />,

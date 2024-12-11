@@ -19,3 +19,4 @@ export * from "./WaiterProducts";
 export * from "./WaiterSettings";
 export * from "./WaiterSettingsPassword";
 export * from "./WaiterSettingsProfile";
+export * from "./WaiterTables";
