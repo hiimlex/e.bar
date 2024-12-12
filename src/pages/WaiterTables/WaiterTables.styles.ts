@@ -12,7 +12,7 @@ const Grid = styled.div`
 	grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
 	justify-content: center;
 	align-items: center;
-	gap: ${getUnitInPx(3)};
+	gap: ${getUnitInPx(4)};
 `;
 
 export default {

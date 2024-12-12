@@ -176,11 +176,11 @@ export const ptBr = {
 			},
 			PixQR: {
 				Title: "Código PIX",
-			}
+			},
 		},
 		Messages: {
 			Finished: "Pagamento realizado com sucesso!",
-		}
+		},
 	},
 	WaiterOrderProducts: {
 		Title: "Items no<br/> Pedido",
@@ -272,6 +272,15 @@ export const ptBr = {
 			Waiter: "Garçom {{name}}",
 		},
 	},
+	WaiterTables: {
+		Title: "Status das Mesas",
+		Card: {
+			Labels: {
+				Free: "LIVRE",
+				InUse: "Ocupada",
+			},
+		},
+	},
 	Modals: {
 		Product: {
 			create: {
@@ -337,6 +346,7 @@ export const ptBr = {
 		Products: "Nenhum produto encontrado.",
 		NoAvailableTables: "Nenhuma mesa disponível.",
 		Empty: "VAZIA",
+		Tables: "Nenhuma mesa encontrada.",
 	},
 	Generics: {
 		Buttons: {
